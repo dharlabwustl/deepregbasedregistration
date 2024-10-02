@@ -47,7 +47,7 @@ copy_masks_data() {
   resource_dirname=${3} #str(sys.argv[4])
   output_dirname=${4}   #str(sys.argv[3])
   echo output_dirname::${output_dirname}
-  python3 -c "
+  /opt/conda/envs/deepreg/bin/python3 -c "
 import sys 
 sys.path.append('/software');
 from download_with_session_ID import *; 

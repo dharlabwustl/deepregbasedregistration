@@ -270,51 +270,53 @@ get_maskfile_scan_metadata()" ${sessionId} ${scanId} ${resource_foldername} ${di
 call_download_files_in_a_resource_in_a_session_arguments=('call_download_files_in_a_resource_in_a_session' ${sessionID} "NIFTI_LOCATION" ${working_dir})
 outputfiles_present=$(/opt/conda/envs/deepreg/bin/python3 download_with_session_ID.py "${call_download_files_in_a_resource_in_a_session_arguments[@]}")
 echo '$outputfiles_present'::$outputfiles_present
-#########################################
-#for niftifile_csvfilename in ${working_dir}/*NIFTILOCATION.csv; do
-#  rm ${final_output_directory}/*.*
-#  rm ${output_directory}/*.*
-#  outputfiles_present=0
-#  echo $niftifile_csvfilename
-#  while IFS=',' read -ra array; do
-#    scanID=${array[2]}
-#    echo sessionId::${sessionID}
-#    echo scanId::${scanID}
-#    snipr_output_foldername="EDEMA_BIOMARKER"
-#    ### check if the file exists:
-#    call_check_if_a_file_exist_in_snipr_arguments=('call_check_if_a_file_exist_in_snipr' ${sessionID} ${scanID} ${snipr_output_foldername} .pdf .csv)
-#    outputfiles_present=$(python3 download_with_session_ID.py "${call_check_if_a_file_exist_in_snipr_arguments[@]}")
-#
-#    ################################################
-##    outputfiles_present=0
-#    echo "outputfiles_present:: "${outputfiles_present: -1}"::outputfiles_present"
-#    #echo "outputfiles_present::ATUL${outputfiles_present}::outputfiles_present"
-#    if [[ "${outputfiles_present: -1}" -eq 1 ]]; then
-#      echo " I AM THE ONE"
-#    fi
-#    if  [[ "${outputfiles_present: -1}" -eq 0 ]]; then ## [[ 1 -gt 0 ]]  ; then #
-#
-#      echo "outputfiles_present:: "${outputfiles_present: -1}"::outputfiles_present"
-#
-#      copy_scan_data ${niftifile_csvfilename} ${working_dir_1} #${working_dir}
-#
-#      ##############################################################################################################
-#
-#      ## GET THE RESPECTIVS MASKS NIFTI FILE NAME AND COPY IT TO THE WORKING_DIR
-#
-#      #####################################################################################
-#      resource_dirname='MASKS'
-#      output_dirname=${working_dir}
-#      while IFS=',' read -ra array; do
-#        scanID=${array[2]}
-#        echo sessionId::${sessionID}
-#        echo scanId::${scanID}
-#      done < <(tail -n +2 "${niftifile_csvfilename}")
-#      echo working_dir::${working_dir}
-#      echo output_dirname::${output_dirname}
-#      copy_masks_data ${sessionID} ${scanID} ${resource_dirname} ${output_dirname}
-#      ######################################################################################################################
-#      ## CALCULATE EDEMA BIOMARKERS
+########################################
+for niftifile_csvfilename in ${working_dir}/*NIFTILOCATION.csv; do
+  rm ${final_output_directory}/*.*
+  rm ${output_directory}/*.*
+  outputfiles_present=0
+  echo $niftifile_csvfilename
+  while IFS=',' read -ra array; do
+    scanID=${array[2]}
+    echo sessionId::${sessionID}
+    echo scanId::${scanID}
+    snipr_output_foldername="PREPROCESS_SEGM"
+    ### check if the file exists:
+    call_check_if_a_file_exist_in_snipr_arguments=('call_check_if_a_file_exist_in_snipr' ${sessionID} ${scanID} ${snipr_output_foldername} .pdf .csv)
+    outputfiles_present=$(python3 download_with_session_ID.py "${call_check_if_a_file_exist_in_snipr_arguments[@]}")
+
+    ################################################
+#    outputfiles_present=0
+    echo "outputfiles_present:: "${outputfiles_present: -1}"::outputfiles_present"
+    #echo "outputfiles_present::ATUL${outputfiles_present}::outputfiles_present"
+    if [[ "${outputfiles_present: -1}" -eq 1 ]]; then
+      echo " I AM THE ONE"
+    fi
+    if  [[ "${outputfiles_present: -1}" -eq 0 ]]; then ## [[ 1 -gt 0 ]]  ; then #
+
+      echo "outputfiles_present:: "${outputfiles_present: -1}"::outputfiles_present"
+
+      copy_scan_data ${niftifile_csvfilename} ${working_dir_1} #${working_dir}
+
+      ##############################################################################################################
+
+      ## GET THE RESPECTIVS MASKS NIFTI FILE NAME AND COPY IT TO THE WORKING_DIR
+
+      #####################################################################################
+      resource_dirname='MASKS'
+      output_dirname=${working_dir}
+      while IFS=',' read -ra array; do
+        scanID=${array[2]}
+        echo sessionId::${sessionID}
+        echo scanId::${scanID}
+      done < <(tail -n +2 "${niftifile_csvfilename}")
+      echo working_dir::${working_dir}
+      echo output_dirname::${output_dirname}
+      copy_masks_data ${sessionID} ${scanID} ${resource_dirname} ${output_dirname}
+      resource_dirname='PREPROCESS_SEGM'
+      copy_masks_data ${sessionID} ${scanID} ${resource_dirname} ${output_dirname}
+      ######################################################################################################################
+      ## CALCULATE EDEMA BIOMARKERS
 #      nwucalculation_each_scan
 #      cp ${working_dir}/*.mat  ${output_directory}/
 ##      cp ${working_dir}/*.nii  ${output_directory}/
@@ -358,12 +360,12 @@ echo '$outputfiles_present'::$outputfiles_present
 #        copyoutput_with_prefix_to_snipr ${sessionID} ${scanID} "${output_directory}" ${snipr_output_foldername} ${file_suffix}
 #      done
 #      ######################################################################################################################
-#      echo " FILES NOT PRESENT I AM WORKING ON IT"
-#    else
-#      echo " FILES ARE PRESENT "
-#    ######################################################################################################################
-#    fi
-#    ##
-#
-#  done < <(tail -n +2 "${niftifile_csvfilename}")
-#done
+      echo " FILES NOT PRESENT I AM WORKING ON IT"
+    else
+      echo " FILES ARE PRESENT "
+    ######################################################################################################################
+    fi
+    ##
+
+  done < <(tail -n +2 "${niftifile_csvfilename}")
+done

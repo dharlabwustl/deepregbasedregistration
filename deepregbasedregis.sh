@@ -241,7 +241,7 @@ copy_scan_data() {
   # rm -r ${output_dir}/*
   # sessionID=$1
   # # scanID=$2
-  python3 -c "
+  /opt/conda/envs/deepreg/bin/python3 -c "
 import sys 
 sys.path.append('/software');
 from download_with_session_ID import *; 

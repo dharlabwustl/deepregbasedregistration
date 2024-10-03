@@ -9,6 +9,7 @@ RUN chmod 755 /callfromgithub
 COPY downloadcodefromgithub.sh /callfromgithub/
 RUN chmod +x /callfromgithub/downloadcodefromgithub.sh
 RUN mkdir -p /rapids/notebooks/DeepReg/demos/classical_mr_prostate_nonrigid/dataset
+RUN chmod 755 /rapids/notebooks/DeepReg/demos/classical_mr_prostate_nonrigid/dataset
 RUN apt install -y \
   dcm2niix  \ 
   vim  \ 

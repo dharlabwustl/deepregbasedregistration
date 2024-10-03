@@ -38,7 +38,7 @@ args = parser.parse_args()
 
 print('action:{}'.format(args.thisfilename))
 MAIN_PATH = os.getcwd()
-PROJECT_DIR ='/rapids/notebooks/DeepReg/demos/classical_mr_prostate_nonrigid' # "demos/classical_mr_prostate_nonrigid"
+PROJECT_DIR ='/software/DeepReg/demos/classical_mr_prostate_nonrigid' # "demos/classical_mr_prostate_nonrigid"
 os.chdir(PROJECT_DIR)
 
 DATA_PATH = "dataset"

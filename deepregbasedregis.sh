@@ -330,6 +330,7 @@ for niftifile_csvfilename in ${working_dir}/*NIFTILOCATION.csv; do
       echo target_bet_grayscale:${target_bet_grayscale}
       /opt/conda/envs/deepreg/bin/python3 create_datah5files_May24_2023.py ${templatefile_after_linear_transformation} ${target_bet_grayscale}
       cp /software/data.h5 /rapids/notebooks/DeepReg/demos/classical_mr_prostate_nonrigid/dataset/
+      cp /software/demo_register_batch_atul.py /rapids/notebooks/DeepReg/demos/classical_mr_prostate_nonrigid/
       /opt/conda/envs/deepreg/bin/python3 /software/demo_register_batch_atul.py /rapids/notebooks/DeepReg/demos/classical_mr_prostate_nonrigid/dataset/data.h5 ${output_directory}
 
       ## make the h5 file which will contain both target and template data along with its corresponding masks.

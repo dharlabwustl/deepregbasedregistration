@@ -12,10 +12,10 @@ import deepreg.model.layer as layer
 import deepreg.util as util
 from deepreg.registry import REGISTRY
 # ## load ddf file
-FILE_PATH_DDF='/storage1/fs1/dharr/Active/ATUL/PROJECTS/DeepReg/demos/classical_mr_prostate_nonrigid/logs_reg/ddf.nii.gz'
+FILE_PATH_DDF='/workingoutput/ddf.nii.gz' #'/storage1/fs1/dharr/Active/ATUL/PROJECTS/DeepReg/demos/classical_mr_prostate_nonrigid/logs_reg/ddf.nii.gz'
 import nibabel as nib
 DDF_data=nib.load(FILE_PATH_DDF).get_fdata()
-fixed_image_file='/storage1/fs1/dharr/Active/ATUL/PROJECTS/DeepReg/demos/classical_mr_prostate_nonrigid/logs_reg/fixed_image.nii.gz'
+fixed_image_file='/workingoutput/fixed_image.nii.gz' #'/storage1/fs1/dharr/Active/ATUL/PROJECTS/DeepReg/demos/classical_mr_prostate_nonrigid/logs_reg/fixed_image.nii.gz'
 fixed_image=nib.load(fixed_image_file).get_fdata()
 fixed_image=tf.cast(tf.expand_dims(fixed_image, axis=0), dtype=tf.float32)
 warping = layer.Warping(fixed_image_size=fixed_image.shape[1:4])
@@ -23,7 +23,7 @@ warping = layer.Warping(fixed_image_size=fixed_image.shape[1:4])
 var_ddf = tf.cast(tf.expand_dims(DDF_data, axis=0), dtype=tf.float32)
 # fixed_image = tf.cast(tf.expand_dims(fid["image1"], axis=0), dtype=tf.float32)
 # ## load template_ventricle_mask_file
-ventricle_mask_file='/storage1/fs1/dharr/Active/ATUL/PROJECTS/DeepReg/DATA/COLESIUM_SAMPLEDATA/workingoutput/SAH_10_02092014_1114_1_resaved_levelset_brain_fscct_strippedResampled1_onlyventricle_lin1_1.nii.gz' 
+ventricle_mask_file=sys.argv[1] #'/storage1/fs1/dharr/Active/ATUL/PROJECTS/DeepReg/DATA/COLESIUM_SAMPLEDATA/workingoutput/SAH_10_02092014_1114_1_resaved_levelset_brain_fscct_strippedResampled1_onlyventricle_lin1_1.nii.gz'
 
 # .nii.gz'/storage1/fs1/dharr/Active/ATUL/PROJECTS/SAH/SOFTWARE/REGISTRATION_APPROACH/scct_strippedResampled1_onlyventricle_BW.nii.gz' 
 #'/storage1/fs1/dharr/Active/ATUL/PROJECTS/SAH/SOFTWARE/REGISTRATION_APPROACH/scct_strippedResampled1_onlyventricle_BET.nii.gz'
@@ -37,7 +37,7 @@ warped_moving_image = warping(inputs=[var_ddf, moving_image])
 print(type(warped_moving_image))
 # warped_moving_image[warped_moving_image<0.9]=0
 print('warped_moving_image {}'.format(warped_moving_image.shape))
-SAVE_PATH='/storage1/fs1/dharr/Active/ATUL/PROJECTS/DeepReg/demos/classical_mr_prostate_nonrigid/logs_reg'
+SAVE_PATH=sys.argv[2] #'/storage1/fs1/dharr/Active/ATUL/PROJECTS/DeepReg/demos/classical_mr_prostate_nonrigid/logs_reg'
 arr_name='warped_' + os.path.basename(ventricle_mask_file).split(".nii")[0] #scct_strippedResampled1_onlyventricle.nii.gz'
 util.save_array(
     save_dir=SAVE_PATH, arr=tf.squeeze(warped_moving_image), name=arr_name, normalize=True, save_png=False

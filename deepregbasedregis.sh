@@ -334,6 +334,10 @@ for niftifile_csvfilename in ${working_dir}/*NIFTILOCATION.csv; do
       cp /software/data.h5 /software/DeepReg/demos/classical_mr_prostate_nonrigid/dataset/
       cp /software/demo_register_batch_atul.py /software/DeepReg/demos/classical_mr_prostate_nonrigid/
       /opt/conda/envs/deepreg/bin/python3 /software/demo_register_batch_atul.py /software/DeepReg/demos/classical_mr_prostate_nonrigid/dataset/data.h5 ${output_directory}
+       template_csf_file='scct_strippedResampled1_onlyventricle.nii.gz'
+       template_csf_file_path=${template_csf_file}
+       template_csf_file_after_linear_transformation=${template_T_OUTPUT_dir}/${template_csf_file_path%.nii*}${betfilename}
+/opt/conda/envs/deepreg/bin/python3 /software/runoncsfmask_atul09272024.py ${template_csf_file_after_linear_transformation} ${output_directory}
 
       ## make the h5 file which will contain both target and template data along with its corresponding masks.
 

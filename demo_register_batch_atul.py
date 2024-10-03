@@ -129,9 +129,9 @@ warped_moving_label = warping(inputs=[var_ddf, moving_label])
 
 # save output to files
 SAVE_PATH =args.thisdirectoryname #sys.argv[2] # "logs_reg" 
-if os.path.exists(SAVE_PATH):
-    shutil.rmtree(SAVE_PATH)
-os.mkdir(SAVE_PATH)
+# if os.path.exists(SAVE_PATH):
+#     shutil.rmtree(SAVE_PATH)
+# os.mkdir(SAVE_PATH)
 
 arrays = [
     tf.squeeze(a)

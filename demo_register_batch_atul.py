@@ -53,6 +53,7 @@ number_it=3000
 total_iter = int(10) if args.test else int(number_it) #3000)
 
 # load images
+print(DATA_PATH)
 if not os.path.exists(DATA_PATH):
     raise ValueError("Download the data using demo_data.py script")
 if not os.path.exists(FILE_PATH):

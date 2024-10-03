@@ -156,6 +156,7 @@ arrays = [
 # ]
 filename_prefix=os.path.basename(args.thisfilename).split('_resaved_levelset')[0]+"_"
 arr_names = [
+
     "moving_image",
     "fixed_image",
     "warped_moving_image",

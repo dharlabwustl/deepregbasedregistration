@@ -156,13 +156,20 @@ arrays = [
 # ]
 filename_prefix=os.path.basename(args.thisfilename).split('_resaved_levelset')[0]+"_"
 arr_names = [
-    filename_prefix+"moving_image",
-    filename_prefix+"fixed_image",
-    filename_prefix+"warped_moving_image",
-    filename_prefix+"moving_label",
-    filename_prefix+"fixed_label",
-    filename_prefix+"warped_moving_label",
-    filename_prefix+"ddf",
+    "moving_image",
+    "fixed_image",
+    "warped_moving_image",
+    "moving_label",
+    "fixed_label",
+    "warped_moving_label",
+    "ddf",
+    # filename_prefix+"moving_image",
+    # filename_prefix+"fixed_image",
+    # filename_prefix+"warped_moving_image",
+    # filename_prefix+"moving_label",
+    # filename_prefix+"fixed_label",
+    # filename_prefix+"warped_moving_label",
+    # filename_prefix+"ddf",
 ]
 for arr, arr_name in zip(arrays, arr_names):
     util.save_array(

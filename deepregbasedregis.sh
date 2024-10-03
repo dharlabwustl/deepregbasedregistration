@@ -315,6 +315,20 @@ for niftifile_csvfilename in ${working_dir}/*NIFTILOCATION.csv; do
       copy_masks_data ${sessionID} ${scanID} ${resource_dirname} ${output_dirname}
       resource_dirname='PREPROCESS_SEGM'
       copy_masks_data ${sessionID} ${scanID} ${resource_dirname} ${output_dirname}
+
+      template_file='scct_strippedResampled1.nii.gz'
+      template_file_path=${template_file} #${template_dir}/${template_file}
+      template_T_OUTPUT_dir=${working_dir} ##'/workingoutput'
+      target_file_path=$( ls ${working_dir_1}/*'.nii' )
+      inv_transformmatrix_file=$(ls '/workinginput/'*'_resaved_levelset_brain_f_scct_strippedResampled1lin1Inv.mat' )
+      inv_file=${inv_transformmatrix_file}
+      inv_file_basename=$(basename ${inv_file})
+      betfilename=${inv_file_basename%_scct_strippedResampled1lin1Inv.mat}.nii.gz
+      transformed_output_file=${template_T_OUTPUT_dir}/${template_file%.nii*}${betfilename}
+      echo transformed_output_file::${transformed_output_file}
+#      /opt/conda/envs/deepreg/bin/python3 create_datah5files_May24_2023.py
+      ## make the h5 file which will contain both target and template data along with its corresponding masks.
+
       ######################################################################################################################
       ## CALCULATE EDEMA BIOMARKERS
 #      nwucalculation_each_scan

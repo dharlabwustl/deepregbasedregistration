@@ -324,9 +324,10 @@ for niftifile_csvfilename in ${working_dir}/*NIFTILOCATION.csv; do
       inv_file=${inv_transformmatrix_file}
       inv_file_basename=$(basename ${inv_file})
       betfilename=${inv_file_basename%_scct_strippedResampled1lin1Inv.mat}.nii.gz
-      transformed_output_file=${template_T_OUTPUT_dir}/${template_file%.nii*}${betfilename}
-      echo transformed_output_file::${transformed_output_file}
-#      /opt/conda/envs/deepreg/bin/python3 create_datah5files_May24_2023.py
+      templatefile_after_linear_transformation=${template_T_OUTPUT_dir}/${template_file%.nii*}${betfilename}
+      echo templatefile_after_linear_transformation::${templatefile_after_linear_transformation}
+      target_bet_grayscale=${betfilename}
+      /opt/conda/envs/deepreg/bin/python3 create_datah5files_May24_2023.py ${templatefile_after_linear_transformation} ${target_bet_grayscale}
       ## make the h5 file which will contain both target and template data along with its corresponding masks.
 
       ######################################################################################################################

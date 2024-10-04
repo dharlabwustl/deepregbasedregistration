@@ -16,7 +16,7 @@ copyoutput_to_snipr() {
   file_suffix=$5
   output_dir=$3
   echo " I AM IN copyoutput_to_snipr "
-  python3 -c "
+   /opt/conda/envs/deepreg/bin/python3 -c "
 import sys 
 sys.path.append('/software');
 from download_with_session_ID import *; 
@@ -30,7 +30,7 @@ copyoutput_with_prefix_to_snipr() {
   file_suffix=$5
   output_dir=$3
   echo " I AM IN copyoutput_to_snipr "
-  python3 -c "
+   /opt/conda/envs/deepreg/bin/python3 -c "
 import sys
 sys.path.append('/software');
 from download_with_session_ID import *;

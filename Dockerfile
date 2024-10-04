@@ -20,7 +20,7 @@ RUN apt install -y \
   tree
 RUN /opt/conda/envs/deepreg/bin/pip3 install \
   nibabel  \ 
-  numpy  \ 
+  numpy  \
   xmltodict  \ 
   pandas  \ 
   requests  \ 
@@ -32,5 +32,6 @@ RUN /opt/conda/envs/deepreg/bin/pip3 install \
   PyGithub \
   SimpleITK \
   h5py \
-  webcolors
+  webcolors \
+  
 

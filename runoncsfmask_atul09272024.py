@@ -74,6 +74,6 @@ print(upper_lower_limit_vent)
 upper_lower_limit_vent_df=pd.DataFrame(upper_lower_limit_vent).T
 upper_lower_limit_vent_df.columns=['SESSION_ID','SCAN_ID','NIFTI_FILENAME','LOWER_SLICE_NUM','UPPER_SCLICE_NUM']
 print(upper_lower_limit_vent_df)
-upper_lower_limit_vent_df.to_csv(os.path.join(SAVE_PATH,original_nifti_filename.split('.nii')[0]+'.csv'),index=False)
+upper_lower_limit_vent_df.to_csv(os.path.join(SAVE_PATH,original_nifti_filename.split('.nii')[0]+'_ventricle_bounds.csv'),index=False)
 
 

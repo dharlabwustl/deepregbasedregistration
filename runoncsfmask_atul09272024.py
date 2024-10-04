@@ -52,3 +52,28 @@ util.save_array(
 )
 print(warped_image.get_fdata().shape)
 print(os.path.join(SAVE_PATH,arr_name))
+
+## find top and botton slice and write into csv file:
+
+sessionID=sys.argv[3]
+scanID=sys.argv[4]
+original_nifti_filename=sys.argv[5]
+
+
+ventricle_mask=nib.load(os.path.join(SAVE_PATH,arr_name+".nii.gz")).get_fdata()
+non_zero_slice_num=[]
+# print(ventricle_mask.get_fdata().shape[2])
+for slice_num in range(ventricle_mask.shape[2]):
+    this_slice_sum=np.sum(ventricle_mask[:,:,slice_num])
+    if this_slice_sum >0 :
+        # print(this_slice_sum)
+        non_zero_slice_num.append(slice_num)
+if len(non_zero_slice_num)>0:
+    upper_lower_limit_vent=[sessionID,scanID,original_nifti_filename,min(non_zero_slice_num),max(non_zero_slice_num)]
+print(upper_lower_limit_vent)
+upper_lower_limit_vent_df=pd.DataFrame(upper_lower_limit_vent).T
+upper_lower_limit_vent_df.columns=['SESSION_ID','SCAN_ID','NIFTI_FILENAME','LOWER_SLICE_NUM','UPPER_SCLICE_NUM']
+print(upper_lower_limit_vent_df)
+upper_lower_limit_vent_df.to_csv(os.path.join(SAVE_PATH,original_nifti_filename.split('.nii')[0]+'.csv'),index=False)
+
+

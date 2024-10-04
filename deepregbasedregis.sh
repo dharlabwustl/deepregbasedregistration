@@ -337,7 +337,8 @@ for niftifile_csvfilename in ${working_dir}/*NIFTILOCATION.csv; do
        template_csf_file='scct_strippedResampled1_onlyventricle.nii.gz'
        template_csf_file_path=${template_csf_file}
        template_csf_file_after_linear_transformation=${template_T_OUTPUT_dir}/${template_csf_file_path%.nii*}${betfilename}
-/opt/conda/envs/deepreg/bin/python3 /software/runoncsfmask_atul09272024.py ${template_csf_file_after_linear_transformation} ${output_directory}
+      original_nifti_filename=$(ls ${working_dir_1}/*.nii)
+      /opt/conda/envs/deepreg/bin/python3 /software/runoncsfmask_atul09272024.py ${template_csf_file_after_linear_transformation} ${output_directory} ${sessionID} ${scanID} ${original_nifti_filename}
 
       ## make the h5 file which will contain both target and template data along with its corresponding masks.
 

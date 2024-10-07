@@ -297,7 +297,8 @@ for niftifile_csvfilename in ${working_dir}/*NIFTILOCATION.csv; do
       echo "outputfiles_present:: "${outputfiles_present: -1}"::outputfiles_present"
 
       copy_scan_data ${niftifile_csvfilename} ${working_dir_1} #${working_dir}
-
+      nifti_file_without_ext=$(basename $(ls ${working_dir_1}/*.nii))
+      nifti_file_without_ext=${nifti_file_without_ext%.nii*}
       ##############################################################################################################
 
       ## GET THE RESPECTIVS MASKS NIFTI FILE NAME AND COPY IT TO THE WORKING_DIR
@@ -320,7 +321,7 @@ for niftifile_csvfilename in ${working_dir}/*NIFTILOCATION.csv; do
       template_file_path=${template_file} #${template_dir}/${template_file}
       template_T_OUTPUT_dir=${working_dir} ##'/workingoutput'
       target_file_path=$( ls ${working_dir_1}/*'.nii' )
-      inv_transformmatrix_file=$(ls '/workinginput/'*'_resaved_levelset_brain_f_scct_strippedResampled1lin1Inv.mat' )
+      inv_transformmatrix_file=$(ls '/workinginput/'*${nifti_file_without_ext}*'_resaved_levelset_brain_f_scct_strippedResampled1lin1Inv.mat' )
       inv_file=${inv_transformmatrix_file}
       inv_file_basename=$(basename ${inv_file})
       betfilename=${inv_file_basename%_scct_strippedResampled1lin1Inv.mat}.nii.gz

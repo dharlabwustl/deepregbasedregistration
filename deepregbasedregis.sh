@@ -341,14 +341,14 @@ for niftifile_csvfilename in ${working_dir}/*NIFTILOCATION.csv; do
       original_nifti_filename=$(ls ${working_dir_1}/*.nii)
       /opt/conda/envs/deepreg/bin/python3 /software/runoncsfmask_atul09272024.py ${template_csf_file_after_linear_transformation} ${output_directory} ${sessionID} ${scanID} $(basename  ${original_nifti_filename})
       snipr_output_foldername="PREPROCESS_SEGM"
-#      file_suffixes=( scct_strippedResampled ) #sys.argv[5]
-#      for file_suffix in ${file_suffixes[@]}; do
-#        copyoutput_with_prefix_to_snipr ${sessionID} ${scanID} "${output_directory}" ${snipr_output_foldername} ${file_suffix}
-#      done
-      file_suffixes=( .csv ) #sys.argv[5]
+      file_suffixes=( warped_1_ ) #sys.argv[5]
       for file_suffix in ${file_suffixes[@]}; do
-        copyoutput_to_snipr ${sessionID} ${scanID} "${output_directory}" ${snipr_output_foldername} ${file_suffix}
+        copyoutput_with_prefix_to_snipr ${sessionID} ${scanID} "${output_directory}" ${snipr_output_foldername} ${file_suffix}
       done
+#      file_suffixes=( .csv ) #sys.argv[5]
+#      for file_suffix in ${file_suffixes[@]}; do
+#        copyoutput_to_snipr ${sessionID} ${scanID} "${output_directory}" ${snipr_output_foldername} ${file_suffix}
+#      done
       ## make the h5 file which will contain both target and template data along with its corresponding masks.
 
       ######################################################################################################################

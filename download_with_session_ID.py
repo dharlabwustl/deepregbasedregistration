@@ -22,6 +22,15 @@ api_token=os.environ['REDCAP_API']
 class arguments:
     def __init__(self,stuff=[]):
         self.stuff=stuff
+def bet_gray_when_bet_binary_given():
+    grayfilename_nib=nib.load(sys.argv[1] ) #grayfilename)
+    betfilename_nib=nib.load(sys.argv[2] ) #betfilename)
+    outputfilename=sys.argv[3]
+    betfilename_nib_data=betfilename_nib.get_fdata()
+    grayfilename_nib_data=grayfilename_nib.get_fdata()
+    grayfilename_nib_data[betfilename_nib_data<1]=np.min(grayfilename_nib_data) #.split(".nii")[0]+"RESIZED.nii.gz")
+    array_mask = nib.Nifti1Image(grayfilename_nib_data, affine=grayfilename_nib.affine, header=grayfilename_nib.header)
+    nib.save(array_mask, outputfilename)
 def get_scan_id_given_session_id_N_niftiname(session_id,niftiname):
     this_session_metadata=get_metadata_session(session_id)
     this_session_metadata_df = pd.read_json(json.dumps(this_session_metadata))

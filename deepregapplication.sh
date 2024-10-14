@@ -335,85 +335,10 @@ this_mri_filename_brain_bet=/software/mritemplate/mni_icbm152_t1_tal_nlin_sym_55
 this_mri_filename_brain_bet_gray=${this_mri_filename_brain%.nii*}_bet_gray.nii
 bet_gray_when_bet_binary_given ${this_mri_filename_brain} ${this_mri_filename_brain_bet} ${this_mri_filename_brain_bet_gray}
 echo "LINEAR REGISTRATION TO TEMPLATE"
-/software/linear_rigid_registration.sh ${this_mri_filename_brain_bet_gray} #${templatefilename} #$3 ${6} WUSTL_233_11122015_0840__levelset_brain_f.nii.gz
+#/software/linear_rigid_registration.sh ${this_mri_filename_brain_bet_gray} #${templatefilename} #$3 ${6} WUSTL_233_11122015_0840__levelset_brain_f.nii.gz
 
 template_directory=/software/
 template_file=${template_directory}/'scct_strippedResampled1.nii.gz'
 
 
 /opt/conda/envs/deepreg/bin/python3 create_datah5files_May24_2023.py ${this_mri_filename_brain_bet_gray} ${template_file}
-##      mkdir /rapids/notebooks/DeepReg/demos/classical_mr_prostate_nonrigid/dataset
-#      cp -r /rapids/notebooks/DeepReg /software/
-#      cp /software/data.h5 /software/DeepReg/demos/classical_mr_prostate_nonrigid/dataset/
-#      cp /software/demo_register_batch_atul.py /software/DeepReg/demos/classical_mr_prostate_nonrigid/
-#      /opt/conda/envs/deepreg/bin/python3 /software/demo_register_batch_atul.py /software/DeepReg/demos/classical_mr_prostate_nonrigid/dataset/data.h5 ${output_directory}
-#       template_csf_file='scct_strippedResampled1_onlyventricle.nii.gz'
-#       template_csf_file_path=${template_csf_file}
-#       template_csf_file_after_linear_transformation=${template_T_OUTPUT_dir}/${template_csf_file_path%.nii*}${betfilename}
-#      original_nifti_filename=$(ls ${working_dir_1}/*.nii)
-#      /opt/conda/envs/deepreg/bin/python3 /software/runoncsfmask_atul09272024.py ${template_csf_file_after_linear_transformation} ${output_directory} ${sessionID} ${scanID} $(basename  ${original_nifti_filename})
-#      snipr_output_foldername="PREPROCESS_SEGM"
-#      file_suffixes=( warped_1_ ) #sys.argv[5]
-#      for file_suffix in ${file_suffixes[@]}; do
-#        copyoutput_with_prefix_to_snipr ${sessionID} ${scanID} "${output_directory}" ${snipr_output_foldername} ${file_suffix}
-#      done
-##      file_suffixes=( .csv ) #sys.argv[5]
-##      for file_suffix in ${file_suffixes[@]}; do
-##        copyoutput_to_snipr ${sessionID} ${scanID} "${output_directory}" ${snipr_output_foldername} ${file_suffix}
-##      done
-#      ## make the h5 file which will contain both target and template data along with its corresponding masks.
-#
-#      ######################################################################################################################
-#      ## CALCULATE EDEMA BIOMARKERS
-##      nwucalculation_each_scan
-##      cp ${working_dir}/*.mat  ${output_directory}/
-###      cp ${working_dir}/*.nii  ${output_directory}/
-##      cp ${working_dir}/*_resaved_csf_unet.nii.gz  ${output_directory}/
-###      cp ${working_dir}/*resaved_levelset_brain_f.nii.gz ${output_directory}/
-##      cp ${working_dir}/*resaved_levelset_bet.nii.gz ${output_directory}/
-###      cp ${working_dir}/*resaved_levelset_auto_removesmall.nii.gz ${output_directory}/
-##      # we have template image and we need have transformation matrix (inv) for transforming template to the target reference frame.
-###      template_dir='/storage1/fs1/dharr/Active/ATUL/PROJECTS/DOCKERIZE/templates'
-##      template_file='scct_strippedResampled1.nii.gz'
-##      template_file_path=${template_file} #${template_dir}/${template_file}
-##      template_T_OUTPUT_dir=${output_directory} ##'/workingoutput'
-##      target_file_path=$( ls ${working_dir_1}/*'.nii' )
-##      inv_transformmatrix_file=$(ls '/workingoutput/'*'_resaved_levelset_brain_f_scct_strippedResampled1lin1Inv.mat' )
-##      inv_file=${inv_transformmatrix_file}
-##      inv_file_basename=$(basename ${inv_file})
-##      betfilename=${inv_file_basename%_scct_strippedResampled1lin1Inv.mat}.nii.gz
-##      transformed_output_file=${template_T_OUTPUT_dir}/${template_file%.nii*}${betfilename} ##"/storage1/fs1/dharr/Active/ATUL/PROJECTS/DeepReg/DATA/COLESIUM_SAMPLEDATA/workingoutput/atul.nii.gz"
-###      # /usr/lib/fsl/5.0/flirt -ref  "${img}"  -in "${template_image}"  -dof 12 -out "${output_filename}${exten}lin1_1" -omat ${output_filename}_${exten}lin1_1.mat
-###      /usr/lib/fsl/5.0/flirt -in ${template_file_path} -ref ${target_file_path} -out ${transformed_output_file} -init ${inv_transformmatrix_file} -applyxfm
-###      #######################Linear transformation of CSF mask only
-####      template_dir='/storage1/fs1/dharr/Active/ATUL/PROJECTS/DOCKERIZE/templates'
-###      template_file='scct_strippedResampled1_onlyventricle.nii.gz' #'scct_strippedResampled1.nii.gz'
-###      template_file_path=${template_file} #${template_dir}/${template_file}
-####      template_T_OUTPUT_dir='/storage1/fs1/dharr/Active/ATUL/PROJECTS/DeepReg/DATA/COLESIUM_SAMPLEDATA/workingoutput'
-####      target_file_path='/storage1/fs1/dharr/Active/ATUL/PROJECTS/DeepReg/DATA/COLESIUM_SAMPLEDATA/workingoutput/SAH_10_02092014_1114_1.nii'
-####      inv_transformmatrix_file='/storage1/fs1/dharr/Active/ATUL/PROJECTS/DeepReg/DATA/COLESIUM_SAMPLEDATA/workingoutput/SAH_10_02092014_1114_1_resaved_levelset_brain_f_scct_strippedResampled1lin1Inv.mat'
-####      inv_file=${inv_transformmatrix_file}
-####      inv_file_basename=$(basename ${inv_file})
-####      betfilename=${inv_file_basename%_scct_strippedResampled1lin1Inv.mat}.nii.gz
-###      transformed_output_file=${template_T_OUTPUT_dir}/${template_file%.nii*}${betfilename} ##"/storage1/fs1/dharr/Active/ATUL/PROJECTS/DeepReg/DATA/COLESIUM_SAMPLEDATA/workingoutput/atul.nii.gz"
-###      # /usr/lib/fsl/5.0/flirt -ref  "${img}"  -in "${template_image}"  -dof 12 -out "${output_filename}${exten}lin1_1" -omat ${output_filename}_${exten}lin1_1.mat
-###
-###      /usr/lib/fsl/5.0/flirt -in ${template_file_path} -ref ${target_file_path} -out ${transformed_output_file} -init ${inv_transformmatrix_file} -applyxfm
-##
-##      ######################################################################################################################
-##      ## COPY IT TO THE SNIPR RESPECTIVE SCAN RESOURCES
-##      snipr_output_foldername="PREPROCESS_SEGM"
-##      file_suffixes=( scct_strippedResampled ) #sys.argv[5]
-##      for file_suffix in ${file_suffixes[@]}; do
-##        copyoutput_with_prefix_to_snipr ${sessionID} ${scanID} "${output_directory}" ${snipr_output_foldername} ${file_suffix}
-##      done
-##      ######################################################################################################################
-#      echo " FILES NOT PRESENT I AM WORKING ON IT"
-#    else
-#      echo " FILES ARE PRESENT "
-#    ######################################################################################################################
-#    fi
-#    ##
-#
-#  done < <(tail -n +2 "${niftifile_csvfilename}")
-#done

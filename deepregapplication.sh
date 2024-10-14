@@ -323,7 +323,7 @@ bet_gray_when_bet_binary_given() {
   local this_mri_filename_brain_bet=${2}              # sys.argv[2]
   local outputfilename=${3} # sys.argv[3]
 
-  python3 -c "
+  /opt/conda/envs/deepreg/bin/python3 -c "
 import sys
 sys.path.append('/software');
 from download_with_session_ID import *;

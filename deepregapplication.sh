@@ -335,12 +335,12 @@ this_mri_filename_brain_bet=/software/mritemplate/mni_icbm152_t1_tal_nlin_sym_55
 this_mri_filename_brain_bet_gray=/software/mritemplate/mni_icbm152_t1_tal_nlin_sym_55_ext_bet_grayscct_strippedResampled1lin1.nii.gz #${this_mri_filename_brain%.nii*}_bet_gray.nii
 bet_gray_when_bet_binary_given ${this_mri_filename_brain} ${this_mri_filename_brain_bet} ${this_mri_filename_brain_bet_gray}
 echo "LINEAR REGISTRATION TO TEMPLATE"
-/software/linear_rigid_registration.sh ${this_mri_filename_brain_bet_gray} #${templatefilename} #$3 ${6} WUSTL_233_11122015_0840__levelset_brain_f.nii.gz
+#/software/linear_rigid_registration.sh ${this_mri_filename_brain_bet_gray} #${templatefilename} #$3 ${6} WUSTL_233_11122015_0840__levelset_brain_f.nii.gz
 
-#template_directory=/software/
-#template_file=${template_directory}/'scct_strippedResampled1.nii.gz'
-#/opt/conda/envs/deepreg/bin/python3 create_datah5files_May24_2023.py ${this_mri_filename_brain_bet_gray} ${template_file}
-#cp -r /rapids/notebooks/DeepReg /software/
-#cp /software/data.h5 /software/DeepReg/demos/classical_mr_prostate_nonrigid/dataset/
-#cp /software/demo_register_batch_atul.py /software/DeepReg/demos/classical_mr_prostate_nonrigid/
-#/opt/conda/envs/deepreg/bin/python3 /software/demo_register_batch_atul.py /software/DeepReg/demos/classical_mr_prostate_nonrigid/dataset/data.h5 ${output_directory}
+template_directory=/software/
+template_file=${template_directory}/'scct_strippedResampled1.nii.gz'
+/opt/conda/envs/deepreg/bin/python3 create_datah5files_May24_2023.py ${this_mri_filename_brain_bet_gray} ${template_file}
+cp -r /rapids/notebooks/DeepReg /software/
+cp /software/data.h5 /software/DeepReg/demos/classical_mr_prostate_nonrigid/dataset/
+cp /software/demo_register_batch_atul.py /software/DeepReg/demos/classical_mr_prostate_nonrigid/
+/opt/conda/envs/deepreg/bin/python3 /software/demo_register_batch_atul.py /software/DeepReg/demos/classical_mr_prostate_nonrigid/dataset/data.h5 ${output_directory}

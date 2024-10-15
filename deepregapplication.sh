@@ -335,7 +335,7 @@ this_mri_filename_brain_bet=/software/mritemplate/mni_icbm152_t1_tal_nlin_sym_55
 this_mri_filename_brain_bet_gray=${this_mri_filename_brain%.nii*}_bet_gray.nii
 bet_gray_when_bet_binary_given ${this_mri_filename_brain} ${this_mri_filename_brain_bet} ${this_mri_filename_brain_bet_gray}
 echo "LINEAR REGISTRATION TO TEMPLATE"
-#/software/linear_rigid_registration.sh ${this_mri_filename_brain_bet_gray} #${templatefilename} #$3 ${6} WUSTL_233_11122015_0840__levelset_brain_f.nii.gz
+/software/linear_rigid_registration.sh ${this_mri_filename_brain_bet_gray} #${templatefilename} #$3 ${6} WUSTL_233_11122015_0840__levelset_brain_f.nii.gz
 
 template_directory=/software/
 template_file=${template_directory}/'scct_strippedResampled1.nii.gz'

@@ -330,19 +330,32 @@ from download_with_session_ID import *;
 bet_gray_when_bet_binary_given()" ${this_mri_filename_brain} ${this_mri_filename_brain_bet} ${outputfilename}
 }
 #### GET MRI FILE
-this_mri_filename_brain=/software/mritemplate/mni_icbm152_t1_tal_nlin_sym_55_ext.nii ## complete MRI of head
-this_mri_filename_brain_bet=/software/mritemplate/mni_icbm152_t1_tal_nlin_sym_55_ext_mask.nii ## binary BET
-this_mri_filename_brain_bet_gray=${this_mri_filename_brain%.nii*}_bet_gray.nii # BET gray: output from 'bet_gray_when_bet_binary_given'
-bet_gray_when_bet_binary_given ${this_mri_filename_brain} ${this_mri_filename_brain_bet} ${this_mri_filename_brain_bet_gray}
-echo "LINEAR REGISTRATION OF MRI TO CT"
-moving_image="${this_mri_filename_brain_bet_gray}"
-fixed_image="/software/scct_strippedResampled1.nii.gz"
-/software/linear_rigid_registration_v10162024.sh ${moving_image}  ${fixed_image} #${templatefilename} #$3 ${6} WUSTL_233_11122015_0840__levelset_brain_f.nii.gz
+#this_mri_filename_brain=/software/mritemplate/mni_icbm152_t1_tal_nlin_sym_55_ext.nii ## complete MRI of head
+#this_mri_filename_brain_bet=/software/mritemplate/mni_icbm152_t1_tal_nlin_sym_55_ext_mask.nii ## binary BET
+this_mri_filename_brain_bet_gray='/software/mritemplate/LINREGTOCT/mov_mni_icbm152_t1_tal_nlin_sym_55_ext_bet_gray_fixed_scct_strippedResampled1_lin1.nii.gz' #${this_mri_filename_brain%.nii*}_bet_gray.nii # BET gray: output from 'bet_gray_when_bet_binary_given'
+#bet_gray_when_bet_binary_given ${this_mri_filename_brain} ${this_mri_filename_brain_bet} ${this_mri_filename_brain_bet_gray}
+#echo "LINEAR REGISTRATION OF MRI TO CT"
+#moving_image="${this_mri_filename_brain_bet_gray}"
+#fixed_image="/software/scct_strippedResampled1.nii.gz"
+#/software/linear_rigid_registration_v10162024.sh ${moving_image}  ${fixed_image} #${templatefilename} #$3 ${6} WUSTL_233_11122015_0840__levelset_brain_f.nii.gz
 
-#template_directory=/software/
-#template_file=${template_directory}/'scct_strippedResampled1.nii.gz'
-#/opt/conda/envs/deepreg/bin/python3 create_datah5files_May24_2023.py ${this_mri_filename_brain_bet_gray} ${template_file}
-#cp -r /rapids/notebooks/DeepReg /software/
-#cp /software/data.h5 /software/DeepReg/demos/classical_mr_prostate_nonrigid/dataset/
-#cp /software/demo_register_batch_atul.py /software/DeepReg/demos/classical_mr_prostate_nonrigid/
-#/opt/conda/envs/deepreg/bin/python3 /software/demo_register_batch_atul.py /software/DeepReg/demos/classical_mr_prostate_nonrigid/dataset/data.h5 ${output_directory}
+template_directory=/software/
+template_file=${template_directory}/'scct_strippedResampled1.nii.gz'
+/opt/conda/envs/deepreg/bin/python3 create_datah5files_May24_2023.py ${this_mri_filename_brain_bet_gray} ${template_file}
+cp -r /rapids/notebooks/DeepReg /software/
+cp /software/data.h5 /software/DeepReg/demos/classical_mr_prostate_nonrigid/dataset/
+cp /software/demo_register_batch_atul.py /software/DeepReg/demos/classical_mr_prostate_nonrigid/
+/opt/conda/envs/deepreg/bin/python3 /software/demo_register_batch_atul.py /software/DeepReg/demos/classical_mr_prostate_nonrigid/dataset/data.h5 ${output_directory}
+###################### RUNNING ON MASKS##########################
+output_nonlinear_dir='/workingoutput'
+region_mask_dir='/software/mritemplate/LINREGTOCT'
+for region_mask_file in ${region_mask_dir}/mov* ;
+do
+#template_csf_file=${region_mask_file} #'scct_strippedResampled1_onlyventricle.nii.gz'
+#template_csf_file_path=${template_csf_file}
+
+region_mask_file_after_non_linear_transformation=${output_nonlinear_dir}/$(basename ${region_mask_file%.nii*})${betfilename}
+original_nifti_filename=$(ls ${working_dir_1}/*.nii)
+/opt/conda/envs/deepreg/bin/python3 /software/runoncsfmask_atul09272024.py ${region_mask_file_after_non_linear_transformation} ${output_directory} ${sessionID} ${scanID} $(basename  ${original_nifti_filename})
+
+done

@@ -354,8 +354,8 @@ do
 #template_csf_file=${region_mask_file} #'scct_strippedResampled1_onlyventricle.nii.gz'
 #template_csf_file_path=${template_csf_file}
 
-region_mask_file_after_non_linear_transformation=${output_nonlinear_dir}/$(basename ${region_mask_file%.nii*})${betfilename}
-original_nifti_filename=$(ls ${working_dir_1}/*.nii)
-/opt/conda/envs/deepreg/bin/python3 /software/runoncsfmask_atul09272024.py ${region_mask_file_after_non_linear_transformation} ${output_directory} ${sessionID} ${scanID} $(basename  ${original_nifti_filename})
+region_mask_file_after_non_linear_transformation=${output_nonlinear_dir}/$(basename ${region_mask_file%.nii*})_non_lin$(basename ${template_file})
+#original_nifti_filename=$(ls ${working_dir_1}/*.nii)
+/opt/conda/envs/deepreg/bin/python3 /software/nonlineartransformationwithmatgiven.py ${region_mask_file_after_non_linear_transformation} ${output_directory} ${sessionID} ${scanID} $(basename  ${original_nifti_filename})
 
 done

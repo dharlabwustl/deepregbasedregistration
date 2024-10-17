@@ -340,7 +340,25 @@ cp /software/demo_register_batch_atul.py /software/DeepReg/demos/classical_mr_pr
 ###################### RUNNING ON MASKS##########################
 output_nonlinear_dir='/workingoutput'
 region_mask_dir='/software/mritemplate/LINREGTOCT'
+count=0
 for region_mask_file in ${region_mask_dir}/mov*.nii* ;
 do
 /opt/conda/envs/deepreg/bin/python3 /software/nonlineartransformationwithmatgiven.py ${region_mask_file}  ${output_nonlinear_dir}
+count=$((count+1))
+if [[ $count -gt 3 ]] ; then
+  break
+fi
+done
+count=0
+mask_binary_output_dir=${output_nonlinear_dir}
+for each_mri_mask_file in ${output_nonlinear_dir}/warped* ;
+do
+threshold=0
+function_with_arguments=('call_gray2binary' ${each_mri_mask_file}  ${mask_binary_output_dir} ${threshold})
+echo "outputfiles_present="'$(python3 utilities_simple_trimmed.py' "${function_with_arguments[@]}"
+outputfiles_present=$(python3 utilities_simple_trimmed.py "${function_with_arguments[@]}")
+count=$((count+1))
+if [[ $count -gt 3 ]] ; then
+  break
+fi
 done

@@ -332,18 +332,18 @@ bet_gray_when_bet_binary_given()" ${this_mri_filename_brain} ${this_mri_filename
 moving_image_filename='/software/mritemplate/LINREGTOCT/mov_mni_icbm152_t1_tal_nlin_sym_55_ext_bet_gray_fixed_scct_strippedResampled1_lin1.nii.gz' #${this_mri_filename_brain%.nii*}_bet_gray.nii # BET gray: output from 'bet_gray_when_bet_binary_given'
 
 fixed_image_filename='/software/scct_strippedResampled1.nii.gz'
-/opt/conda/envs/deepreg/bin/python3 create_datah5files_May24_2023.py ${moving_image_filename} ${fixed_image_filename}
+#/opt/conda/envs/deepreg/bin/python3 create_datah5files_May24_2023.py ${moving_image_filename} ${fixed_image_filename}
 cp -r /rapids/notebooks/DeepReg /software/
 cp /software/data.h5 /software/DeepReg/demos/classical_mr_prostate_nonrigid/dataset/
 cp /software/demo_register_batch_atul.py /software/DeepReg/demos/classical_mr_prostate_nonrigid/
-/opt/conda/envs/deepreg/bin/python3 /software/demo_register_batch_atul.py /software/DeepReg/demos/classical_mr_prostate_nonrigid/dataset/data.h5 ${output_directory}
+#/opt/conda/envs/deepreg/bin/python3 /software/demo_register_batch_atul.py /software/DeepReg/demos/classical_mr_prostate_nonrigid/dataset/data.h5 ${output_directory}
 ###################### RUNNING ON MASKS##########################
 output_nonlinear_dir='/workingoutput'
 region_mask_dir='/software/mritemplate/LINREGTOCT'
 count=0
 for region_mask_file in ${region_mask_dir}/mov*.nii* ;
 do
-/opt/conda/envs/deepreg/bin/python3 /software/nonlineartransformationwithmatgiven.py ${region_mask_file}  ${output_nonlinear_dir}
+#/opt/conda/envs/deepreg/bin/python3 /software/nonlineartransformationwithmatgiven.py ${region_mask_file}  ${output_nonlinear_dir}
 count=$((count+1))
 #if [[ $count -gt 3 ]] ; then
 #  break

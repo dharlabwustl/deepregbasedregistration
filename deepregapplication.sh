@@ -345,9 +345,9 @@ for region_mask_file in ${region_mask_dir}/mov*.nii* ;
 do
 /opt/conda/envs/deepreg/bin/python3 /software/nonlineartransformationwithmatgiven.py ${region_mask_file}  ${output_nonlinear_dir}
 count=$((count+1))
-if [[ $count -gt 3 ]] ; then
-  break
-fi
+#if [[ $count -gt 3 ]] ; then
+#  break
+#fi
 done
 count=0
 mask_binary_output_dir=${output_nonlinear_dir}
@@ -358,7 +358,7 @@ function_with_arguments=('call_gray2binary' ${each_mri_mask_file}  ${mask_binary
 echo "outputfiles_present="'$(python3 utilities_simple_trimmed.py' "${function_with_arguments[@]}"
 outputfiles_present=$(python3 utilities_simple_trimmed.py "${function_with_arguments[@]}")
 count=$((count+1))
-if [[ $count -gt 3 ]] ; then
-  break
-fi
+#if [[ $count -gt 3 ]] ; then
+#  break
+#fi
 done

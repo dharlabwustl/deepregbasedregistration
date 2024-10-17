@@ -356,10 +356,10 @@ do
 threshold=0
 function_with_arguments=('call_copy_affine' ${each_mri_mask_file}  ${fixed_image_filename} ${each_mri_mask_file})
 echo "outputfiles_present="'$(python3 utilities_simple_trimmed.py' "${function_with_arguments[@]}"
-outputfiles_present=$(python3 utilities_simple_trimmed.py "${function_with_arguments[@]}")
+outputfiles_present=$(/opt/conda/envs/deepreg/bin/python3 utilities_simple_trimmed.py "${function_with_arguments[@]}")
 function_with_arguments=('call_gray2binary' ${each_mri_mask_file}  ${mask_binary_output_dir} ${threshold})
 echo "outputfiles_present="'$(python3 utilities_simple_trimmed.py' "${function_with_arguments[@]}"
-outputfiles_present=$(python3 utilities_simple_trimmed.py "${function_with_arguments[@]}")
+outputfiles_present=$(/opt/conda/envs/deepreg/bin/python3 utilities_simple_trimmed.py "${function_with_arguments[@]}")
 count=$((count+1))
 #if [[ $count -gt 3 ]] ; then
 #  break

@@ -326,8 +326,16 @@ for niftifile_csvfilename in ${working_dir}/*NIFTILOCATION.csv; do
       template_ct='/software/scct_strippedResampled1.nii.gz'
       template_masks_dir='/software/mritemplate/NONLINREGTOCT/'
       bet_mask_from_yasheng=$(ls ${working_dir}/*_resaved_levelset_bet.nii.gz)
+      echo "levelset_bet_mask_file:${levelset_bet_mask_file}"
+      /opt/conda/envs/deepreg/bin/python3 -c "
+
+      import sys ;
+      sys.path.append('/software/') ;
+      from utilities_simple_trimmed import * ;  levelset2originalRF_new_flip()" "${session_ct}" "${bet_mask_from_yasheng}" "${output_directory}"
+
+
       # now let us make bet gray for session ct:
-       /software/bet_withlevelset.sh ${session_ct} ${bet_mask_from_yasheng}
+       /software/bet_withlevelset.sh ${session_ct} ${output_directory}/$(basename ${bet_mask_from_yasheng})
 #      template_file='scct_strippedResampled1.nii.gz'
 #      template_file_path=${template_file} #${template_dir}/${template_file}
 #      template_T_OUTPUT_dir=${working_dir} ##'/workingoutput'

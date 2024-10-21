@@ -322,7 +322,7 @@ for niftifile_csvfilename in ${working_dir}/*NIFTILOCATION.csv; do
       template_masks_dir='/software/mritemplate/NONLINREGTOCT/'
       bet_mask_from_yasheng=$(ls ${working_dir}/${nifti_file_without_ext}*_resaved_levelset_bet.nii.gz)
       echo "levelset_bet_mask_file:${levelset_bet_mask_file}"
-      python3 -c "
+      /opt/conda/envs/deepreg/bin/python3 -c "
 
 import sys ;
 sys.path.append('/software/') ;

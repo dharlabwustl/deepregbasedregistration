@@ -34,7 +34,7 @@ if [[ ${TYPE_OF_PROGRAM} == 'APPLYDEEPREG' ]]; then
 fi
 if [[ ${TYPE_OF_PROGRAM} == 'APPLYDEEPREGONREGIONMASKS' ]]; then
   echo " I AM AT TYPE_OF_PROGRAM==APPLYDEEPREGONREGIONMASKS"
-  /software/deepregbasedregis_for_location.sh $SESSION_ID $XNAT_USER $XNAT_PASS $XNAT_HOST /input /output
+  /software/deepregbasedregis_location.sh $SESSION_ID $XNAT_USER $XNAT_PASS $XNAT_HOST /input /output
 fi
 if [[ ${TYPE_OF_PROGRAM} == 'APPLYDEEPREGTOMRI' ]]; then
   echo " I AM AT TYPE_OF_PROGRAM==APPLYDEEPREGTOMRI"

@@ -316,7 +316,8 @@ for niftifile_csvfilename in ${working_dir}/*NIFTILOCATION.csv; do
       copy_masks_data ${sessionID} ${scanID} ${resource_dirname} ${output_dirname}
       resource_dirname='PREPROCESS_SEGM'
       copy_masks_data ${sessionID} ${scanID} ${resource_dirname} ${output_dirname}
-
+      resource_dirname='EDEMA_BIOMARKER'
+      copy_masks_data ${sessionID} ${scanID} ${resource_dirname} ${output_dirname}
       template_file='scct_strippedResampled1.nii.gz'
       template_file_path=${template_file} #${template_dir}/${template_file}
       template_T_OUTPUT_dir=${working_dir} ##'/workingoutput'

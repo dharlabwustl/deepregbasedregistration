@@ -295,7 +295,7 @@ for niftifile_csvfilename in ${working_dir}/*NIFTILOCATION.csv; do
     if  [[ "${outputfiles_present: -1}" -eq 0 ]]; then ## [[ 1 -gt 0 ]]  ; then #
 
       echo "outputfiles_present:: "${outputfiles_present: -1}"::outputfiles_present"
-
+      ## GET THE SESSION CT image
       copy_scan_data ${niftifile_csvfilename} ${working_dir_1} #${working_dir}
       nifti_file_without_ext=$(basename $(ls ${working_dir_1}/*.nii))
       nifti_file_without_ext=${nifti_file_without_ext%.nii*}
@@ -318,86 +318,74 @@ for niftifile_csvfilename in ${working_dir}/*NIFTILOCATION.csv; do
       copy_masks_data ${sessionID} ${scanID} ${resource_dirname} ${output_dirname}
       resource_dirname='EDEMA_BIOMARKER'
       copy_masks_data ${sessionID} ${scanID} ${resource_dirname} ${output_dirname}
-      template_file='scct_strippedResampled1.nii.gz'
-      template_file_path=${template_file} #${template_dir}/${template_file}
-      template_T_OUTPUT_dir=${working_dir} ##'/workingoutput'
-      target_file_path=$( ls ${working_dir_1}/*'.nii' )
-      inv_transformmatrix_file=$(ls '/workinginput/'*${nifti_file_without_ext}*'_resaved_levelset_brain_f_scct_strippedResampled1lin1Inv.mat' )
-      inv_file=${inv_transformmatrix_file}
-      inv_file_basename=$(basename ${inv_file})
-      betfilename=${inv_file_basename%_scct_strippedResampled1lin1Inv.mat}.nii.gz
-      templatefile_after_linear_transformation=${template_T_OUTPUT_dir}/${template_file%.nii*}${betfilename}
-      echo templatefile_after_linear_transformation::${templatefile_after_linear_transformation}
-      target_bet_grayscale=${working_dir}/${betfilename}
-      echo target_bet_grayscale:${target_bet_grayscale}
-      /opt/conda/envs/deepreg/bin/python3 create_datah5files_May24_2023.py ${templatefile_after_linear_transformation} ${target_bet_grayscale}
-#      mkdir /rapids/notebooks/DeepReg/demos/classical_mr_prostate_nonrigid/dataset
-      cp -r /rapids/notebooks/DeepReg /software/
-      cp /software/data.h5 /software/DeepReg/demos/classical_mr_prostate_nonrigid/dataset/
-      cp /software/demo_register_batch_atul.py /software/DeepReg/demos/classical_mr_prostate_nonrigid/
-      /opt/conda/envs/deepreg/bin/python3 /software/demo_register_batch_atul.py /software/DeepReg/demos/classical_mr_prostate_nonrigid/dataset/data.h5 ${output_directory}
-       ### here we iterate through all the masks in the mritemplate/NONLINREGTOCT/warped_mov_mri_region*.
-      for each_mov_region_mask in /software/mritemplate/NONLINREGTOCT/BETS/warped_1_mov_m* ;  do
 
-       template_csf_file=${each_mov_region_mask} #'scct_strippedResampled1_onlyventricle.nii.gz'
-       template_csf_file_path=${template_csf_file}
-       template_csf_file_after_linear_transformation=${template_T_OUTPUT_dir}/${template_csf_file_path%.nii*}${betfilename}
-      original_nifti_filename=$(ls ${working_dir_1}/*.nii)
-      /opt/conda/envs/deepreg/bin/python3 /software/runoncsfmask_atul09272024.py ${template_csf_file_after_linear_transformation} ${output_directory} ${sessionID} ${scanID} $(basename  ${original_nifti_filename})
-
-      done
-      snipr_output_foldername="PREPROCESS_SEGM"
-      file_suffixes=( warped_1_ ) #sys.argv[5]
-      for file_suffix in ${file_suffixes[@]}; do
-        copyoutput_with_prefix_to_snipr ${sessionID} ${scanID} "${output_directory}" ${snipr_output_foldername} ${file_suffix}
-      done
-#      file_suffixes=( .csv ) #sys.argv[5]
-#      for file_suffix in ${file_suffixes[@]}; do
-#        copyoutput_to_snipr ${sessionID} ${scanID} "${output_directory}" ${snipr_output_foldername} ${file_suffix}
-#      done
-      ## make the h5 file which will contain both target and template data along with its corresponding masks.
-
-      ######################################################################################################################
-      ## CALCULATE EDEMA BIOMARKERS
-#      nwucalculation_each_scan
-#      cp ${working_dir}/*.mat  ${output_directory}/
-##      cp ${working_dir}/*.nii  ${output_directory}/
-#      cp ${working_dir}/*_resaved_csf_unet.nii.gz  ${output_directory}/
-##      cp ${working_dir}/*resaved_levelset_brain_f.nii.gz ${output_directory}/
-#      cp ${working_dir}/*resaved_levelset_bet.nii.gz ${output_directory}/
-##      cp ${working_dir}/*resaved_levelset_auto_removesmall.nii.gz ${output_directory}/
-#      # we have template image and we need have transformation matrix (inv) for transforming template to the target reference frame.
-##      template_dir='/storage1/fs1/dharr/Active/ATUL/PROJECTS/DOCKERIZE/templates'
+      ###################### BY NOW WE HAVE EVERYTHIN WE NEED #############
+      ## RELEVANT FILES ARE : SESSION CT, TEMPLATE CT, TEMPLATE MASKS, BET MASK FROM YASHENG to  MAKE BET GRAY OF SESSION CT
+      ## and the mat files especially the Inv.mat file let us keep the sensible names from here:
+      session_ct=$( ls ${working_dir_1}/*'.nii' )
+      template_ct='/software/scct_strippedResampled1.nii.gz'
+      template_masks_dir='/software/mritemplate/NONLINREGTOCT/'
+      bet_mask_from_yasheng=$(ls ${workinginput}/*_resaved_levelset_bet.nii.gz)
+      # now let us make bet gray for session ct:
+       /software/bet_withlevelset.sh ${session_ct} ${bet_mask_from_yasheng}
 #      template_file='scct_strippedResampled1.nii.gz'
 #      template_file_path=${template_file} #${template_dir}/${template_file}
-#      template_T_OUTPUT_dir=${output_directory} ##'/workingoutput'
+#      template_T_OUTPUT_dir=${working_dir} ##'/workingoutput'
 #      target_file_path=$( ls ${working_dir_1}/*'.nii' )
-#      inv_transformmatrix_file=$(ls '/workingoutput/'*'_resaved_levelset_brain_f_scct_strippedResampled1lin1Inv.mat' )
+#      inv_transformmatrix_file=$(ls '/workinginput/'*${nifti_file_without_ext}*'_resaved_levelset_brain_f_scct_strippedResampled1lin1Inv.mat' )
 #      inv_file=${inv_transformmatrix_file}
 #      inv_file_basename=$(basename ${inv_file})
 #      betfilename=${inv_file_basename%_scct_strippedResampled1lin1Inv.mat}.nii.gz
-#      transformed_output_file=${template_T_OUTPUT_dir}/${template_file%.nii*}${betfilename} ##"/storage1/fs1/dharr/Active/ATUL/PROJECTS/DeepReg/DATA/COLESIUM_SAMPLEDATA/workingoutput/atul.nii.gz"
-##      # /usr/lib/fsl/5.0/flirt -ref  "${img}"  -in "${template_image}"  -dof 12 -out "${output_filename}${exten}lin1_1" -omat ${output_filename}_${exten}lin1_1.mat
-##      /usr/lib/fsl/5.0/flirt -in ${template_file_path} -ref ${target_file_path} -out ${transformed_output_file} -init ${inv_transformmatrix_file} -applyxfm
-##      #######################Linear transformation of CSF mask only
-###      template_dir='/storage1/fs1/dharr/Active/ATUL/PROJECTS/DOCKERIZE/templates'
-##      template_file='scct_strippedResampled1_onlyventricle.nii.gz' #'scct_strippedResampled1.nii.gz'
-##      template_file_path=${template_file} #${template_dir}/${template_file}
-###      template_T_OUTPUT_dir='/storage1/fs1/dharr/Active/ATUL/PROJECTS/DeepReg/DATA/COLESIUM_SAMPLEDATA/workingoutput'
-###      target_file_path='/storage1/fs1/dharr/Active/ATUL/PROJECTS/DeepReg/DATA/COLESIUM_SAMPLEDATA/workingoutput/SAH_10_02092014_1114_1.nii'
-###      inv_transformmatrix_file='/storage1/fs1/dharr/Active/ATUL/PROJECTS/DeepReg/DATA/COLESIUM_SAMPLEDATA/workingoutput/SAH_10_02092014_1114_1_resaved_levelset_brain_f_scct_strippedResampled1lin1Inv.mat'
-###      inv_file=${inv_transformmatrix_file}
-###      inv_file_basename=$(basename ${inv_file})
-###      betfilename=${inv_file_basename%_scct_strippedResampled1lin1Inv.mat}.nii.gz
-##      transformed_output_file=${template_T_OUTPUT_dir}/${template_file%.nii*}${betfilename} ##"/storage1/fs1/dharr/Active/ATUL/PROJECTS/DeepReg/DATA/COLESIUM_SAMPLEDATA/workingoutput/atul.nii.gz"
-##      # /usr/lib/fsl/5.0/flirt -ref  "${img}"  -in "${template_image}"  -dof 12 -out "${output_filename}${exten}lin1_1" -omat ${output_filename}_${exten}lin1_1.mat
-##
-##      /usr/lib/fsl/5.0/flirt -in ${template_file_path} -ref ${target_file_path} -out ${transformed_output_file} -init ${inv_transformmatrix_file} -applyxfm
+#      ###################### GET THE BET OF THE SESSION CT
+#      this_mri_filename_brain_bet_gray=${this_mri_filename_brain%.nii*}_bet_gray.nii
+#      #
+#      echo "BEGIN LINEAR REGISTRATION  of MRI TO CT TEMPLATE"
+#      bet_gray_when_bet_binary_given ${this_mri_filename_brain} ${this_mri_filename_brain_bet} ${this_mri_filename_brain_bet_gray}
+#      #
+#      ######################linear transformation with given matrix file:
+#      ##########################################################################
+#      mask_binary_input_dir='mritemplate/NONLINREGTOCT/'
+#      mask_binary_output_dir='mritemplate/NONLINREGTOCT/'
+#      for each_mri_mask_file in ${mask_binary_input_dir}/warped_1* ;
+#      do
+#      echo ${each_mri_mask_file}
+#      moving_image=${each_mri_mask_file}
+#      echo "RUNNING /software/linear_rigid_registration_onlytrasnformwith_matfile10162024.sh  ${moving_image} ${fixed_image_filename} ${T_output_filename}  ${mask_binary_output_dir}"
+#      /software/linear_rigid_registration_onlytrasnformwith_matfile10162024.sh  ${moving_image} ${fixed_image_filename} ${T_output_filename} ${mask_binary_output_dir}
+#      done
 #
-#      ######################################################################################################################
-#      ## COPY IT TO THE SNIPR RESPECTIVE SCAN RESOURCES
+#      for each_mri_mask_file in ${mask_binary_output_dir}/* ;
+#      do
+#      threshold=0
+#      function_with_arguments=('call_gray2binary' ${each_mri_mask_file}  ${mask_binary_output_dir} ${threshold})
+#      echo "outputfiles_present="'$(python3 utilities_simple_trimmed.py' "${function_with_arguments[@]}"
+#      outputfiles_present=$(python3 utilities_simple_trimmed.py "${function_with_arguments[@]}")
+#      done
+#
+#
+#      #######################
+#      templatefile_after_linear_transformation=${template_T_OUTPUT_dir}/${template_file%.nii*}${betfilename}
+#      echo templatefile_after_linear_transformation::${templatefile_after_linear_transformation}
+#      target_bet_grayscale=${working_dir}/${betfilename}
+#      echo target_bet_grayscale:${target_bet_grayscale}
+#      /opt/conda/envs/deepreg/bin/python3 create_datah5files_May24_2023.py ${templatefile_after_linear_transformation} ${target_bet_grayscale}
+##      mkdir /rapids/notebooks/DeepReg/demos/classical_mr_prostate_nonrigid/dataset
+#      cp -r /rapids/notebooks/DeepReg /software/
+#      cp /software/data.h5 /software/DeepReg/demos/classical_mr_prostate_nonrigid/dataset/
+#      cp /software/demo_register_batch_atul.py /software/DeepReg/demos/classical_mr_prostate_nonrigid/
+#      /opt/conda/envs/deepreg/bin/python3 /software/demo_register_batch_atul.py /software/DeepReg/demos/classical_mr_prostate_nonrigid/dataset/data.h5 ${output_directory}
+#       ### here we iterate through all the masks in the mritemplate/NONLINREGTOCT/warped_mov_mri_region*.
+#      for each_mov_region_mask in /software/mritemplate/NONLINREGTOCT/BETS/warped_1_mov_m* ;  do
+#
+#       template_csf_file=${each_mov_region_mask} #'scct_strippedResampled1_onlyventricle.nii.gz'
+#       template_csf_file_path=${template_csf_file}
+#       template_csf_file_after_linear_transformation=${template_T_OUTPUT_dir}/${template_csf_file_path%.nii*}${betfilename}
+#      original_nifti_filename=$(ls ${working_dir_1}/*.nii)
+#      /opt/conda/envs/deepreg/bin/python3 /software/runoncsfmask_atul09272024.py ${template_csf_file_after_linear_transformation} ${output_directory} ${sessionID} ${scanID} $(basename  ${original_nifti_filename})
+#
+#      done
 #      snipr_output_foldername="PREPROCESS_SEGM"
-#      file_suffixes=( scct_strippedResampled ) #sys.argv[5]
+#      file_suffixes=( warped_1_ ) #sys.argv[5]
 #      for file_suffix in ${file_suffixes[@]}; do
 #        copyoutput_with_prefix_to_snipr ${sessionID} ${scanID} "${output_directory}" ${snipr_output_foldername} ${file_suffix}
 #      done

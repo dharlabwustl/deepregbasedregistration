@@ -24,4 +24,4 @@ python3 -c "
 import sys ;
 print('I AM HERE')
 sys.path.append('/software');
-from utilities_simple import * ;  betgrayfrombetbinary1_sh_v3()" $input_grayfilename_path     $input_betfilename_path  $output_for_BET
+from utilities_simple_trimmed import * ;  betgrayfrombetbinary1_sh_v3()" $input_grayfilename_path     $input_betfilename_path  $output_for_BET

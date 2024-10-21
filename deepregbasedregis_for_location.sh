@@ -334,8 +334,10 @@ sys.path.append('/software/') ;
 from utilities_simple_trimmed import * ;  levelset2originalRF_new_flip()" "${session_ct}" "${bet_mask_from_yasheng}" "${output_directory}"
 
 
-      # now let us make bet gray for session ct:
-       /software/bet_withlevelset.sh ${session_ct} ${output_directory}/$(basename ${bet_mask_from_yasheng})
+# now let us make bet gray for session ct:
+ /software/bet_withlevelset.sh ${session_ct} ${output_directory}/$(basename ${bet_mask_from_yasheng})
+## output relevant file is which we will use for non-linear registration:
+session_ct_bet_gray=$(ls ${output_directory}/*_brain_f.nii.gz ) ## which we will use for non-linear registration
 #      template_file='scct_strippedResampled1.nii.gz'
 #      template_file_path=${template_file} #${template_dir}/${template_file}
 #      template_T_OUTPUT_dir=${working_dir} ##'/workingoutput'
@@ -351,16 +353,19 @@ from utilities_simple_trimmed import * ;  levelset2originalRF_new_flip()" "${ses
 #      bet_gray_when_bet_binary_given ${this_mri_filename_brain} ${this_mri_filename_brain_bet} ${this_mri_filename_brain_bet_gray}
 #      #
 #      ######################linear transformation with given matrix file:
-#      ##########################################################################
-#      mask_binary_input_dir='mritemplate/NONLINREGTOCT/'
-#      mask_binary_output_dir='mritemplate/NONLINREGTOCT/'
-#      for each_mri_mask_file in ${mask_binary_input_dir}/warped_1* ;
-#      do
-#      echo ${each_mri_mask_file}
-#      moving_image=${each_mri_mask_file}
-#      echo "RUNNING /software/linear_rigid_registration_onlytrasnformwith_matfile10162024.sh  ${moving_image} ${fixed_image_filename} ${T_output_filename}  ${mask_binary_output_dir}"
-#      /software/linear_rigid_registration_onlytrasnformwith_matfile10162024.sh  ${moving_image} ${fixed_image_filename} ${T_output_filename} ${mask_binary_output_dir}
-#      done
+      ##########################################################################
+      mask_binary_input_dir='mritemplate/NONLINREGTOCT/'
+      mask_binary_output_dir='mritemplate/NONLINREGTOCT/'
+      fixed_image_filename=${session_ct_bet_gray}
+      T_output_filename=$(ls ${working_dir}/*_resaved_levelset_brain_f_scct_strippedResampled1lin1Inv.mat )
+      mask_binary_output_dir=${output_directory}
+      for each_mri_mask_file in ${mask_binary_input_dir}/warped_1* ;
+      do
+      echo ${each_mri_mask_file}
+      moving_image=${each_mri_mask_file}
+      echo "RUNNING /software/linear_rigid_registration_onlytrasnformwith_matfile10162024.sh  ${moving_image} ${fixed_image_filename} ${T_output_filename}  ${mask_binary_output_dir}"
+      /software/linear_rigid_registration_onlytrasnformwith_matfile10162024.sh  ${moving_image} ${fixed_image_filename} ${T_output_filename} ${mask_binary_output_dir}
+      done
 #
 #      for each_mri_mask_file in ${mask_binary_output_dir}/* ;
 #      do

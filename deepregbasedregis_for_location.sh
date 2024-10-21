@@ -329,9 +329,9 @@ for niftifile_csvfilename in ${working_dir}/*NIFTILOCATION.csv; do
       echo "levelset_bet_mask_file:${levelset_bet_mask_file}"
       /opt/conda/envs/deepreg/bin/python3 -c "
 
-      import sys ;
-      sys.path.append('/software/') ;
-      from utilities_simple_trimmed import * ;  levelset2originalRF_new_flip()" "${session_ct}" "${bet_mask_from_yasheng}" "${output_directory}"
+import sys ;
+sys.path.append('/software/') ;
+from utilities_simple_trimmed import * ;  levelset2originalRF_new_flip()" "${session_ct}" "${bet_mask_from_yasheng}" "${output_directory}"
 
 
       # now let us make bet gray for session ct:

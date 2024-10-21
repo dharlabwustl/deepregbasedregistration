@@ -336,7 +336,7 @@ for niftifile_csvfilename in ${working_dir}/*NIFTILOCATION.csv; do
       cp /software/demo_register_batch_atul.py /software/DeepReg/demos/classical_mr_prostate_nonrigid/
       /opt/conda/envs/deepreg/bin/python3 /software/demo_register_batch_atul.py /software/DeepReg/demos/classical_mr_prostate_nonrigid/dataset/data.h5 ${output_directory}
        ### here we iterate through all the masks in the mritemplate/NONLINREGTOCT/warped_mov_mri_region*.
-      for each_mov_region_mask in /software/mritemplate/NONLINREGTOCT/warped_mov_mri_region* ;  do
+      for each_mov_region_mask in /software/mritemplate/NONLINREGTOCT/BETS/warped_1_mov_m* ;  do
 
        template_csf_file=${each_mov_region_mask} #'scct_strippedResampled1_onlyventricle.nii.gz'
        template_csf_file_path=${template_csf_file}

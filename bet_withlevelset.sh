@@ -20,7 +20,7 @@ echo "RUNNING BET GRAY for "$input_grayfilename_path
 echo "betfile:${input_betfilename_path}:grayfile:${input_grayfilename_path}:output_for_BET:${3}"
 
 start=`date +%s`
-python3 -c "
+  /opt/conda/envs/deepreg/bin/python3  -c "
 import sys ;
 print('I AM HERE')
 sys.path.append('/software');

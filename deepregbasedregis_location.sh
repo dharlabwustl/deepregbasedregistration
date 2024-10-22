@@ -343,7 +343,7 @@ moving_image=${working_dir}/"mov_warped_mov_mni_icbm152_t1_tal_nlin_sym_55_ext_b
       /opt/conda/envs/deepreg/bin/python3 /software/demo_register_batch_atul.py /software/DeepReg/demos/classical_mr_prostate_nonrigid/dataset/data.h5 ${output_directory}
 
     location_mask_directory=${working_dir}
-    original_nifti_filename=$(ls ${working_dir_1}/*.nii*)
+    original_nifti_filename=$(ls ${working_dir_1}/*.nii)
     for each_location_mask in ${location_mask_directory}/*warped_1*_BET.nii.gz ; do
       echo ${each_location_mask}
 

@@ -341,20 +341,21 @@ moving_image=${working_dir}/"mov_warped_mov_mni_icbm152_t1_tal_nlin_sym_55_ext_b
       cp /software/data.h5 /software/DeepReg/demos/classical_mr_prostate_nonrigid/dataset/
       cp /software/demo_register_batch_atul.py /software/DeepReg/demos/classical_mr_prostate_nonrigid/
       /opt/conda/envs/deepreg/bin/python3 /software/demo_register_batch_atul.py /software/DeepReg/demos/classical_mr_prostate_nonrigid/dataset/data.h5 ${output_directory}
-#
-#    location_mask_directory=${working_dir}
-#    for each_location_mask in ${location_mask_directory}/*warped_1*_BET.nii.gz ; do
-#      echo ${each_location_mask}
-#
-#
-#
-##       template_csf_file='scct_strippedResampled1_onlyventricle.nii.gz'
-##       template_csf_file_path=${template_csf_file}
-##       template_csf_file_after_linear_transformation=${template_T_OUTPUT_dir}/${template_csf_file_path%.nii*}${betfilename}
-#      original_nifti_filename=$(ls ${working_dir_1}/*.nii*)
-#      echo "/opt/conda/envs/deepreg/bin/python3 /software/runoncsfmask_atul09272024.py ${each_location_mask} ${working_dir_1} ${sessionID} ${scanID} $(basename  ${original_nifti_filename})"
-##      /opt/conda/envs/deepreg/bin/python3 /software/runoncsfmask_atul09272024.py ${each_location_mask} ${working_dir_1} ${sessionID} ${scanID} $(basename  ${original_nifti_filename})
-#      done
+
+    location_mask_directory=${working_dir}
+    original_nifti_filename=$(ls ${working_dir_1}/*.nii*)
+    for each_location_mask in ${location_mask_directory}/*warped_1*_BET.nii.gz ; do
+      echo ${each_location_mask}
+
+
+
+#       template_csf_file='scct_strippedResampled1_onlyventricle.nii.gz'
+#       template_csf_file_path=${template_csf_file}
+#       template_csf_file_after_linear_transformation=${template_T_OUTPUT_dir}/${template_csf_file_path%.nii*}${betfilename}
+
+      echo "/opt/conda/envs/deepreg/bin/python3 /software/runoncsfmask_atul09272024.py ${each_location_mask} ${working_dir_1} ${sessionID} ${scanID} $(basename  ${original_nifti_filename})"
+#      /opt/conda/envs/deepreg/bin/python3 /software/runoncsfmask_atul09272024.py ${each_location_mask} ${working_dir_1} ${sessionID} ${scanID} $(basename  ${original_nifti_filename})
+      done
 #
 ##      snipr_output_foldername="PREPROCESS_SEGM"
 ##      file_suffixes=( warped_1_ ) #sys.argv[5]

@@ -364,7 +364,7 @@ moving_image=${working_dir}/"mov_warped_mov_mni_icbm152_t1_tal_nlin_sym_55_ext_b
 #       template_csf_file='scct_strippedResampled1_onlyventricle.nii.gz'
 #       template_csf_file_path=${template_csf_file}
 #       template_csf_file_after_linear_transformation=${template_T_OUTPUT_dir}/${template_csf_file_path%.nii*}${betfilename}
-      original_nifti_filename=$(ls ${working_dir_1}/*.nii)
+      original_nifti_filename=$(ls ${working_dir_1}/*.nii*)
       /opt/conda/envs/deepreg/bin/python3 /software/runoncsfmask_atul09272024.py ${each_location_mask} ${working_dir_1} ${sessionID} ${scanID} $(basename  ${original_nifti_filename})
       done
 

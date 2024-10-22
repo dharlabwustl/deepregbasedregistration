@@ -406,12 +406,12 @@ moving_image=${working_dir}/"mov_warped_mov_mni_icbm152_t1_tal_nlin_sym_55_ext_b
 ##      /usr/lib/fsl/5.0/flirt -in ${template_file_path} -ref ${target_file_path} -out ${transformed_output_file} -init ${inv_transformmatrix_file} -applyxfm
 #
 #      ######################################################################################################################
-#      ## COPY IT TO THE SNIPR RESPECTIVE SCAN RESOURCES
-#      snipr_output_foldername="PREPROCESS_SEGM"
-#      file_suffixes=( scct_strippedResampled ) #sys.argv[5]
-#      for file_suffix in ${file_suffixes[@]}; do
-#        copyoutput_with_prefix_to_snipr ${sessionID} ${scanID} "${output_directory}" ${snipr_output_foldername} ${file_suffix}
-#      done
+      ## COPY IT TO THE SNIPR RESPECTIVE SCAN RESOURCES
+      snipr_output_foldername="PREPROCESS_SEGM"
+      file_suffixes=( warped_1_* ) #sys.argv[5]
+      for file_suffix in ${file_suffixes[@]}; do
+        copyoutput_with_prefix_to_snipr ${sessionID} ${scanID} "${working_dir_1}" ${snipr_output_foldername} ${file_suffix}
+      done
 ##      ######################################################################################################################
       echo " FILES NOT PRESENT I AM WORKING ON IT"
     else

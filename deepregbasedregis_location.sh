@@ -350,10 +350,10 @@ moving_image=${working_dir}/"mov_warped_mov_mni_icbm152_t1_tal_nlin_sym_55_ext_b
       echo "/opt/conda/envs/deepreg/bin/python3 /software/runoncsfmask_atul09272024.py ${each_location_mask} ${working_dir_1} ${sessionID} ${scanID} $(basename  ${original_nifti_filename})"
       /opt/conda/envs/deepreg/bin/python3 /software/runoncsfmask_atul09272024.py ${each_location_mask} ${working_dir_1} ${sessionID} ${scanID} $(basename  ${original_nifti_filename})
       done
-  for each_warped_1 in ${working_dir_1}/warped_1* ; do
-  call_function=('call_copy_affine' ${each_warped_1} ${original_nifti_filename} ${each_warped_1} )
-  outputfiles_present=$(/opt/conda/envs/deepreg/bin/python3 utilities_simple_trimmed.py "${call_function[@]}")
-  done
+#  for each_warped_1 in ${working_dir_1}/warped_1* ; do
+#  call_function=('call_copy_affine' ${each_warped_1} ${original_nifti_filename} ${each_warped_1} )
+#  outputfiles_present=$(/opt/conda/envs/deepreg/bin/python3 utilities_simple_trimmed.py "${call_function[@]}")
+#  done
       ## COPY IT TO THE SNIPR RESPECTIVE SCAN RESOURCES
       snipr_output_foldername="PREPROCESS_SEGM"
       file_suffixes=( warped_1_* ) #sys.argv[5]

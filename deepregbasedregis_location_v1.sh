@@ -334,7 +334,7 @@ for niftifile_csvfilename in ${working_dir}/*NIFTILOCATION.csv; do
 ## output relevant file is which we will use for non-linear registration:
 #session_ct_bet_gray=$(ls ${output_directory}/${nifti_file_without_ext}*_brain_f.nii.gz ) ## fixed image
 fixed_image='/software/scct_strippedResampled1.nii.gz'
-moving_image=mov_${session_ct_bname_noext}_brain_f_fixed_scct_strippedResampled1_lin1.nii.gz ##${session_ct_bet_gray} ##${working_dir}/"mov_warped_mov_mni_icbm152_t1_tal_nlin_sym_55_ext_bet_gray_fixed_scct_strippedResampled1_lin1_fixed_${nifti_file_without_ext}_brain_f_lin1.nii.gz"
+moving_image=${working_dir}/mov_${session_ct_bname_noext}_brain_f_fixed_scct_strippedResampled1_lin1.nii.gz ##${session_ct_bet_gray} ##${working_dir}/"mov_warped_mov_mni_icbm152_t1_tal_nlin_sym_55_ext_bet_gray_fixed_scct_strippedResampled1_lin1_fixed_${nifti_file_without_ext}_brain_f_lin1.nii.gz"
 #####################################################################################################################
 
       /opt/conda/envs/deepreg/bin/python3 create_datah5files_May24_2023.py ${moving_image} ${fixed_image}
@@ -343,7 +343,7 @@ moving_image=mov_${session_ct_bname_noext}_brain_f_fixed_scct_strippedResampled1
       cp /software/data.h5 /software/DeepReg/demos/classical_mr_prostate_nonrigid/dataset/
       cp /software/demo_register_batch_atul.py /software/DeepReg/demos/classical_mr_prostate_nonrigid/
       /opt/conda/envs/deepreg/bin/python3 /software/demo_register_batch_atul.py /software/DeepReg/demos/classical_mr_prostate_nonrigid/dataset/data.h5 ${output_directory}
-    infarct_mask_after_lin_reg=mov_${session_ct_bname_noext}_resaved_infarct_auto_removesmall_fixed_scct_strippedResampled1_lin1_BET.nii.gz
+    infarct_mask_after_lin_reg=${working_dir}/mov_${session_ct_bname_noext}_resaved_infarct_auto_removesmall_fixed_scct_strippedResampled1_lin1_BET.nii.gz
 
 #    location_mask_directory=${working_dir}
     original_nifti_filename=$(ls ${working_dir_1}/*.nii)

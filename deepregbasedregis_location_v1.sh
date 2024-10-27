@@ -319,7 +319,7 @@ for niftifile_csvfilename in ${working_dir}/*NIFTILOCATION.csv; do
       ###########################
       session_ct=$( ls ${working_dir_1}/*'.nii' )
       template_ct='/software/scct_strippedResampled1.nii.gz'
-      template_masks_dir='/software/mritemplate/NONLINREGTOCT/'
+#      template_masks_dir='/software/mritemplate/NONLINREGTOCT/'
       bet_mask_from_yasheng=$(ls ${working_dir}/${nifti_file_without_ext}*_resaved_levelset_bet.nii.gz)
       echo "levelset_bet_mask_file:${levelset_bet_mask_file}"
       /opt/conda/envs/deepreg/bin/python3 -c "
@@ -361,12 +361,13 @@ moving_image=${session_ct_bet_gray} ##${working_dir}/"mov_warped_mov_mni_icbm152
 #        copyoutput_with_prefix_to_snipr ${sessionID} ${scanID} "${working_dir_1}" ${snipr_output_foldername} ${file_suffix}
 #      done
 ###      ######################################################################################################################
-#      echo " FILES NOT PRESENT I AM WORKING ON IT"
-#    else
-#      echo " FILES ARE PRESENT "
-#    ######################################################################################################################
-#    fi
-#    ##
+      echo " FILES NOT PRESENT I AM WORKING ON IT"
+    else
+      echo " FILES ARE PRESENT "
+    ######################################################################################################################
+    fi
+    ##
+
 
   done < <(tail -n +2 "${niftifile_csvfilename}")
 done

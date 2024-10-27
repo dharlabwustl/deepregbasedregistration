@@ -313,48 +313,51 @@ for niftifile_csvfilename in ${working_dir}/*NIFTILOCATION.csv; do
       done < <(tail -n +2 "${niftifile_csvfilename}")
       echo working_dir::${working_dir}
       echo output_dirname::${output_dirname}
-      copy_masks_data ${sessionID} ${scanID} ${resource_dirname} ${output_dirname}
+#      copy_masks_data ${sessionID} ${scanID} ${resource_dirname} ${output_dirname}
       resource_dirname='PREPROCESS_SEGM'
       copy_masks_data ${sessionID} ${scanID} ${resource_dirname} ${output_dirname}
       ###########################
       session_ct=$( ls ${working_dir_1}/*'.nii' )
+      session_ct_bname_noext=$(basename ${session_ct})
+      session_ct_bname_noext=${session_ct_bname_noext%.nii*}
       template_ct='/software/scct_strippedResampled1.nii.gz'
 #      template_masks_dir='/software/mritemplate/NONLINREGTOCT/'
-      bet_mask_from_yasheng=$(ls ${working_dir}/${nifti_file_without_ext}*_resaved_levelset_bet.nii.gz)
-      echo "levelset_bet_mask_file:${levelset_bet_mask_file}"
-      /opt/conda/envs/deepreg/bin/python3 -c "
-
-import sys ;
-sys.path.append('/software/') ;
-from utilities_simple_trimmed import * ;  levelset2originalRF_new_flip()" "${session_ct}" "${bet_mask_from_yasheng}" "${output_directory}"
-# now let us make bet gray for session ct:
- /software/bet_withlevelset.sh ${session_ct} ${output_directory}/$(basename ${bet_mask_from_yasheng})
+#      bet_mask_from_yasheng=$(ls ${working_dir}/${nifti_file_without_ext}*_resaved_levelset_bet.nii.gz)
+#      echo "levelset_bet_mask_file:${levelset_bet_mask_file}"
+#      /opt/conda/envs/deepreg/bin/python3 -c "
+#
+#import sys ;
+#sys.path.append('/software/') ;
+#from utilities_simple_trimmed import * ;  levelset2originalRF_new_flip()" "${session_ct}" "${bet_mask_from_yasheng}" "${output_directory}"
+## now let us make bet gray for session ct:
+# /software/bet_withlevelset.sh ${session_ct} ${output_directory}/$(basename ${bet_mask_from_yasheng})
 ## output relevant file is which we will use for non-linear registration:
-session_ct_bet_gray=$(ls ${output_directory}/${nifti_file_without_ext}*_brain_f.nii.gz ) ## fixed image
+#session_ct_bet_gray=$(ls ${output_directory}/${nifti_file_without_ext}*_brain_f.nii.gz ) ## fixed image
 fixed_image='/software/scct_strippedResampled1.nii.gz'
-moving_image=${session_ct_bet_gray} ##${working_dir}/"mov_warped_mov_mni_icbm152_t1_tal_nlin_sym_55_ext_bet_gray_fixed_scct_strippedResampled1_lin1_fixed_${nifti_file_without_ext}_brain_f_lin1.nii.gz"
+moving_image=mov_${session_ct_bname_noext}_brain_f_fixed_scct_strippedResampled1_lin1.nii.gz ##${session_ct_bet_gray} ##${working_dir}/"mov_warped_mov_mni_icbm152_t1_tal_nlin_sym_55_ext_bet_gray_fixed_scct_strippedResampled1_lin1_fixed_${nifti_file_without_ext}_brain_f_lin1.nii.gz"
 #####################################################################################################################
 
       /opt/conda/envs/deepreg/bin/python3 create_datah5files_May24_2023.py ${moving_image} ${fixed_image}
 ##      mkdir /rapids/notebooks/DeepReg/demos/classical_mr_prostate_nonrigid/dataset
       cp -r /rapids/notebooks/DeepReg /software/
       cp /software/data.h5 /software/DeepReg/demos/classical_mr_prostate_nonrigid/dataset/
-#      cp /software/demo_register_batch_atul.py /software/DeepReg/demos/classical_mr_prostate_nonrigid/
-#      /opt/conda/envs/deepreg/bin/python3 /software/demo_register_batch_atul.py /software/DeepReg/demos/classical_mr_prostate_nonrigid/dataset/data.h5 ${output_directory}
-#
+      cp /software/demo_register_batch_atul.py /software/DeepReg/demos/classical_mr_prostate_nonrigid/
+      /opt/conda/envs/deepreg/bin/python3 /software/demo_register_batch_atul.py /software/DeepReg/demos/classical_mr_prostate_nonrigid/dataset/data.h5 ${output_directory}
+    infarct_mask_after_lin_reg=mov_${session_ct_bname_noext}_resaved_infarct_auto_removesmall_fixed_scct_strippedResampled1_lin1_BET.nii.gz
+
 #    location_mask_directory=${working_dir}
-#    original_nifti_filename=$(ls ${working_dir_1}/*.nii)
+    original_nifti_filename=$(ls ${working_dir_1}/*.nii)
 #    for each_location_mask in ${location_mask_directory}/mov*resaved_infarct_auto_removesmall_fixed_scct_strippedResampled1_lin1_BET.nii.gz ; do
 #      echo ${each_location_mask}
-#
-#      echo "/opt/conda/envs/deepreg/bin/python3 /software/runoncsfmask_atul09272024.py ${each_location_mask} ${working_dir_1} ${sessionID} ${scanID} $(basename  ${original_nifti_filename})"
-#      /opt/conda/envs/deepreg/bin/python3 /software/runoncsfmask_atul09272024.py ${each_location_mask} ${working_dir_1} ${sessionID} ${scanID} $(basename  ${original_nifti_filename})
+
+      echo "/opt/conda/envs/deepreg/bin/python3 /software/runoncsfmask_atul09272024.py ${infarct_mask_after_lin_reg} ${working_dir_1} ${sessionID} ${scanID} $(basename  ${original_nifti_filename})"
+      /opt/conda/envs/deepreg/bin/python3 /software/runoncsfmask_atul09272024.py ${infarct_mask_after_lin_reg} ${working_dir_1} ${sessionID} ${scanID} $(basename  ${original_nifti_filename})
 #      done
-##  for each_warped_1 in ${working_dir_1}/warped_1* ; do
-##  call_function=('call_copy_affine' ${each_warped_1} ${original_nifti_filename} ${each_warped_1} )
-##  outputfiles_present=$(/opt/conda/envs/deepreg/bin/python3 utilities_simple_trimmed.py "${call_function[@]}")
-##  done
-#      ## COPY IT TO THE SNIPR RESPECTIVE SCAN RESOURCES
+#  for each_warped_1 in ${working_dir_1}/warped_1* ; do
+#  call_function=('call_copy_affine' ${each_warped_1} ${original_nifti_filename} ${each_warped_1} )
+#  outputfiles_present=$(/opt/conda/envs/deepreg/bin/python3 utilities_simple_trimmed.py "${call_function[@]}")
+#  done
+      ## COPY IT TO THE SNIPR RESPECTIVE SCAN RESOURCES
 #      snipr_output_foldername="PREPROCESS_SEGM"
 #      file_suffixes=( warped_1_*resaved_infarct_auto_removesmall_fixed_scct_strippedResampled1_lin1_BET* ) #sys.argv[5]
 #      for file_suffix in ${file_suffixes[@]}; do

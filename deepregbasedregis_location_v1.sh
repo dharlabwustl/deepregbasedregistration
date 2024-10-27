@@ -270,103 +270,103 @@ get_maskfile_scan_metadata()" ${sessionId} ${scanId} ${resource_foldername} ${di
 call_download_files_in_a_resource_in_a_session_arguments=('call_download_files_in_a_resource_in_a_session' ${sessionID} "NIFTI_LOCATION" ${working_dir})
 outputfiles_present=$(/opt/conda/envs/deepreg/bin/python3 download_with_session_ID.py "${call_download_files_in_a_resource_in_a_session_arguments[@]}")
 echo '$outputfiles_present'::$outputfiles_present
-########################################
-for niftifile_csvfilename in ${working_dir}/*NIFTILOCATION.csv; do
-  rm ${final_output_directory}/*.*
-  rm ${output_directory}/*.*
-  outputfiles_present=0
-  echo $niftifile_csvfilename
-  while IFS=',' read -ra array; do
-    scanID=${array[2]}
-    echo sessionId::${sessionID}
-    echo scanId::${scanID}
-    snipr_output_foldername="PREPROCESS_SEGM"
-    ### check if the file exists:
-    call_check_if_a_file_exist_in_snipr_arguments=('call_check_if_a_file_exist_in_snipr' ${sessionID} ${scanID} ${snipr_output_foldername} .pdf .csv)
-    outputfiles_present=$(/opt/conda/envs/deepreg/bin/python3 download_with_session_ID.py "${call_check_if_a_file_exist_in_snipr_arguments[@]}")
-
-    ################################################
-#    outputfiles_present=0
-    echo "outputfiles_present:: "${outputfiles_present: -1}"::outputfiles_present"
-    #echo "outputfiles_present::ATUL${outputfiles_present}::outputfiles_present"
-    if [[ "${outputfiles_present: -1}" -eq 1 ]]; then
-      echo " I AM THE ONE"
-    fi
-    if  [[ "${outputfiles_present: -1}" -eq 0 ]]; then ## [[ 1 -gt 0 ]]  ; then #
-
-      echo "outputfiles_present:: "${outputfiles_present: -1}"::outputfiles_present"
-
-      copy_scan_data ${niftifile_csvfilename} ${working_dir_1} #${working_dir}
-      nifti_file_without_ext=$(basename $(ls ${working_dir_1}/*.nii))
-      nifti_file_without_ext=${nifti_file_without_ext%.nii*}
-      ##############################################################################################################
-
-      ## GET THE RESPECTIVS MASKS NIFTI FILE NAME AND COPY IT TO THE WORKING_DIR
-
-      #####################################################################################
-      resource_dirname='MASKS'
-      output_dirname=${working_dir}
-      while IFS=',' read -ra array; do
-        scanID=${array[2]}
-        echo sessionId::${sessionID}
-        echo scanId::${scanID}
-      done < <(tail -n +2 "${niftifile_csvfilename}")
-      echo working_dir::${working_dir}
-      echo output_dirname::${output_dirname}
-      copy_masks_data ${sessionID} ${scanID} ${resource_dirname} ${output_dirname}
-      resource_dirname='PREPROCESS_SEGM'
-      copy_masks_data ${sessionID} ${scanID} ${resource_dirname} ${output_dirname}
-      ###########################
-      session_ct=$( ls ${working_dir_1}/*'.nii' )
-      template_ct='/software/scct_strippedResampled1.nii.gz'
-      template_masks_dir='/software/mritemplate/NONLINREGTOCT/'
-      bet_mask_from_yasheng=$(ls ${working_dir}/${nifti_file_without_ext}*_resaved_levelset_bet.nii.gz)
-      echo "levelset_bet_mask_file:${levelset_bet_mask_file}"
-      /opt/conda/envs/deepreg/bin/python3 -c "
-
-import sys ;
-sys.path.append('/software/') ;
-from utilities_simple_trimmed import * ;  levelset2originalRF_new_flip()" "${session_ct}" "${bet_mask_from_yasheng}" "${output_directory}"
-# now let us make bet gray for session ct:
- /software/bet_withlevelset.sh ${session_ct} ${output_directory}/$(basename ${bet_mask_from_yasheng})
-## output relevant file is which we will use for non-linear registration:
-session_ct_bet_gray=$(ls ${output_directory}/${nifti_file_without_ext}*_brain_f.nii.gz ) ## fixed image
-fixed_image='/software/scct_strippedResampled1.nii.gz'
-moving_image=${session_ct_bet_gray} ##${working_dir}/"mov_warped_mov_mni_icbm152_t1_tal_nlin_sym_55_ext_bet_gray_fixed_scct_strippedResampled1_lin1_fixed_${nifti_file_without_ext}_brain_f_lin1.nii.gz"
-#####################################################################################################################
-
-      /opt/conda/envs/deepreg/bin/python3 create_datah5files_May24_2023.py ${moving_image} ${fixed_image}
-##      mkdir /rapids/notebooks/DeepReg/demos/classical_mr_prostate_nonrigid/dataset
-      cp -r /rapids/notebooks/DeepReg /software/
-      cp /software/data.h5 /software/DeepReg/demos/classical_mr_prostate_nonrigid/dataset/
-      cp /software/demo_register_batch_atul.py /software/DeepReg/demos/classical_mr_prostate_nonrigid/
-      /opt/conda/envs/deepreg/bin/python3 /software/demo_register_batch_atul.py /software/DeepReg/demos/classical_mr_prostate_nonrigid/dataset/data.h5 ${output_directory}
-
-    location_mask_directory=${working_dir}
-    original_nifti_filename=$(ls ${working_dir_1}/*.nii)
-    for each_location_mask in ${location_mask_directory}/mov*resaved_infarct_auto_removesmall_fixed_scct_strippedResampled1_lin1_BET.nii.gz ; do
-      echo ${each_location_mask}
-
-      echo "/opt/conda/envs/deepreg/bin/python3 /software/runoncsfmask_atul09272024.py ${each_location_mask} ${working_dir_1} ${sessionID} ${scanID} $(basename  ${original_nifti_filename})"
-      /opt/conda/envs/deepreg/bin/python3 /software/runoncsfmask_atul09272024.py ${each_location_mask} ${working_dir_1} ${sessionID} ${scanID} $(basename  ${original_nifti_filename})
-      done
-#  for each_warped_1 in ${working_dir_1}/warped_1* ; do
-#  call_function=('call_copy_affine' ${each_warped_1} ${original_nifti_filename} ${each_warped_1} )
-#  outputfiles_present=$(/opt/conda/envs/deepreg/bin/python3 utilities_simple_trimmed.py "${call_function[@]}")
-#  done
-      ## COPY IT TO THE SNIPR RESPECTIVE SCAN RESOURCES
-      snipr_output_foldername="PREPROCESS_SEGM"
-      file_suffixes=( warped_1_*resaved_infarct_auto_removesmall_fixed_scct_strippedResampled1_lin1_BET* ) #sys.argv[5]
-      for file_suffix in ${file_suffixes[@]}; do
-        copyoutput_with_prefix_to_snipr ${sessionID} ${scanID} "${working_dir_1}" ${snipr_output_foldername} ${file_suffix}
-      done
-##      ######################################################################################################################
-      echo " FILES NOT PRESENT I AM WORKING ON IT"
-    else
-      echo " FILES ARE PRESENT "
-    ######################################################################################################################
-    fi
-    ##
-
-  done < <(tail -n +2 "${niftifile_csvfilename}")
-done
+#########################################
+#for niftifile_csvfilename in ${working_dir}/*NIFTILOCATION.csv; do
+#  rm ${final_output_directory}/*.*
+#  rm ${output_directory}/*.*
+#  outputfiles_present=0
+#  echo $niftifile_csvfilename
+#  while IFS=',' read -ra array; do
+#    scanID=${array[2]}
+#    echo sessionId::${sessionID}
+#    echo scanId::${scanID}
+#    snipr_output_foldername="PREPROCESS_SEGM"
+#    ### check if the file exists:
+#    call_check_if_a_file_exist_in_snipr_arguments=('call_check_if_a_file_exist_in_snipr' ${sessionID} ${scanID} ${snipr_output_foldername} .pdf .csv)
+#    outputfiles_present=$(/opt/conda/envs/deepreg/bin/python3 download_with_session_ID.py "${call_check_if_a_file_exist_in_snipr_arguments[@]}")
+#
+#    ################################################
+##    outputfiles_present=0
+#    echo "outputfiles_present:: "${outputfiles_present: -1}"::outputfiles_present"
+#    #echo "outputfiles_present::ATUL${outputfiles_present}::outputfiles_present"
+#    if [[ "${outputfiles_present: -1}" -eq 1 ]]; then
+#      echo " I AM THE ONE"
+#    fi
+#    if  [[ "${outputfiles_present: -1}" -eq 0 ]]; then ## [[ 1 -gt 0 ]]  ; then #
+#
+#      echo "outputfiles_present:: "${outputfiles_present: -1}"::outputfiles_present"
+#
+#      copy_scan_data ${niftifile_csvfilename} ${working_dir_1} #${working_dir}
+#      nifti_file_without_ext=$(basename $(ls ${working_dir_1}/*.nii))
+#      nifti_file_without_ext=${nifti_file_without_ext%.nii*}
+#      ##############################################################################################################
+#
+#      ## GET THE RESPECTIVS MASKS NIFTI FILE NAME AND COPY IT TO THE WORKING_DIR
+#
+#      #####################################################################################
+#      resource_dirname='MASKS'
+#      output_dirname=${working_dir}
+#      while IFS=',' read -ra array; do
+#        scanID=${array[2]}
+#        echo sessionId::${sessionID}
+#        echo scanId::${scanID}
+#      done < <(tail -n +2 "${niftifile_csvfilename}")
+#      echo working_dir::${working_dir}
+#      echo output_dirname::${output_dirname}
+#      copy_masks_data ${sessionID} ${scanID} ${resource_dirname} ${output_dirname}
+#      resource_dirname='PREPROCESS_SEGM'
+#      copy_masks_data ${sessionID} ${scanID} ${resource_dirname} ${output_dirname}
+#      ###########################
+#      session_ct=$( ls ${working_dir_1}/*'.nii' )
+#      template_ct='/software/scct_strippedResampled1.nii.gz'
+#      template_masks_dir='/software/mritemplate/NONLINREGTOCT/'
+#      bet_mask_from_yasheng=$(ls ${working_dir}/${nifti_file_without_ext}*_resaved_levelset_bet.nii.gz)
+#      echo "levelset_bet_mask_file:${levelset_bet_mask_file}"
+#      /opt/conda/envs/deepreg/bin/python3 -c "
+#
+#import sys ;
+#sys.path.append('/software/') ;
+#from utilities_simple_trimmed import * ;  levelset2originalRF_new_flip()" "${session_ct}" "${bet_mask_from_yasheng}" "${output_directory}"
+## now let us make bet gray for session ct:
+# /software/bet_withlevelset.sh ${session_ct} ${output_directory}/$(basename ${bet_mask_from_yasheng})
+### output relevant file is which we will use for non-linear registration:
+#session_ct_bet_gray=$(ls ${output_directory}/${nifti_file_without_ext}*_brain_f.nii.gz ) ## fixed image
+#fixed_image='/software/scct_strippedResampled1.nii.gz'
+#moving_image=${session_ct_bet_gray} ##${working_dir}/"mov_warped_mov_mni_icbm152_t1_tal_nlin_sym_55_ext_bet_gray_fixed_scct_strippedResampled1_lin1_fixed_${nifti_file_without_ext}_brain_f_lin1.nii.gz"
+######################################################################################################################
+#
+#      /opt/conda/envs/deepreg/bin/python3 create_datah5files_May24_2023.py ${moving_image} ${fixed_image}
+###      mkdir /rapids/notebooks/DeepReg/demos/classical_mr_prostate_nonrigid/dataset
+#      cp -r /rapids/notebooks/DeepReg /software/
+#      cp /software/data.h5 /software/DeepReg/demos/classical_mr_prostate_nonrigid/dataset/
+#      cp /software/demo_register_batch_atul.py /software/DeepReg/demos/classical_mr_prostate_nonrigid/
+#      /opt/conda/envs/deepreg/bin/python3 /software/demo_register_batch_atul.py /software/DeepReg/demos/classical_mr_prostate_nonrigid/dataset/data.h5 ${output_directory}
+#
+#    location_mask_directory=${working_dir}
+#    original_nifti_filename=$(ls ${working_dir_1}/*.nii)
+#    for each_location_mask in ${location_mask_directory}/mov*resaved_infarct_auto_removesmall_fixed_scct_strippedResampled1_lin1_BET.nii.gz ; do
+#      echo ${each_location_mask}
+#
+#      echo "/opt/conda/envs/deepreg/bin/python3 /software/runoncsfmask_atul09272024.py ${each_location_mask} ${working_dir_1} ${sessionID} ${scanID} $(basename  ${original_nifti_filename})"
+#      /opt/conda/envs/deepreg/bin/python3 /software/runoncsfmask_atul09272024.py ${each_location_mask} ${working_dir_1} ${sessionID} ${scanID} $(basename  ${original_nifti_filename})
+#      done
+##  for each_warped_1 in ${working_dir_1}/warped_1* ; do
+##  call_function=('call_copy_affine' ${each_warped_1} ${original_nifti_filename} ${each_warped_1} )
+##  outputfiles_present=$(/opt/conda/envs/deepreg/bin/python3 utilities_simple_trimmed.py "${call_function[@]}")
+##  done
+#      ## COPY IT TO THE SNIPR RESPECTIVE SCAN RESOURCES
+#      snipr_output_foldername="PREPROCESS_SEGM"
+#      file_suffixes=( warped_1_*resaved_infarct_auto_removesmall_fixed_scct_strippedResampled1_lin1_BET* ) #sys.argv[5]
+#      for file_suffix in ${file_suffixes[@]}; do
+#        copyoutput_with_prefix_to_snipr ${sessionID} ${scanID} "${working_dir_1}" ${snipr_output_foldername} ${file_suffix}
+#      done
+###      ######################################################################################################################
+#      echo " FILES NOT PRESENT I AM WORKING ON IT"
+#    else
+#      echo " FILES ARE PRESENT "
+#    ######################################################################################################################
+#    fi
+#    ##
+#
+#  done < <(tail -n +2 "${niftifile_csvfilename}")
+#done

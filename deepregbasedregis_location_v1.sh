@@ -343,7 +343,7 @@ moving_image=${working_dir}/mov_${session_ct_bname_noext}_brain_f_fixed_scct_str
       cp /software/data.h5 /software/DeepReg/demos/classical_mr_prostate_nonrigid/dataset/
       cp /software/demo_register_batch_atul.py /software/DeepReg/demos/classical_mr_prostate_nonrigid/
       /opt/conda/envs/deepreg/bin/python3 /software/demo_register_batch_atul.py /software/DeepReg/demos/classical_mr_prostate_nonrigid/dataset/data.h5 ${output_directory}
-    infarct_mask_after_lin_reg=${working_dir}/mov_${session_ct_bname_noext}_resaved_infarct_auto_removesmall_fixed_scct_strippedResampled1_lin1_BET.nii.gz
+    infarct_mask_after_lin_reg=${working_dir}/mov_${session_ct_bname_noext}_resaved_infarct_auto_removesmall_fixed_scct_strippedResampled1_lin1.nii.gz
 
 #    location_mask_directory=${working_dir}
     original_nifti_filename=$(ls ${working_dir_1}/*.nii)

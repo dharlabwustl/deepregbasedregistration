@@ -333,6 +333,15 @@ for niftifile_csvfilename in ${working_dir}/*NIFTILOCATION.csv; do
 # /software/bet_withlevelset.sh ${session_ct} ${output_directory}/$(basename ${bet_mask_from_yasheng})
 ## output relevant file is which we will use for non-linear registration:
 #session_ct_bet_gray=$(ls ${output_directory}/${nifti_file_without_ext}*_brain_f.nii.gz ) ## fixed image
+moving_image_filename=${session_ct_bname_noext}_resaved_infarct_auto_removesmall.nii.gz
+moving_image_filename=${moving_image_filename%.nii*}resampled_mov.nii.gz
+infarct_mask_after_lin_reg=${working_dir}/mov_${moving_image_filename}_fixed_scct_strippedResampled1_normalized_fix_lin1.nii.gz
+fixed_image_filename=/software/scct_strippedResampled1.nii.gz
+fixed_image=${working_dir}/${fixed_image_filename%.nii*}'_normalized_fix.nii.gz'
+
+moving_image_filename=${session_ct_bname_noext}_brain_f.nii.gz
+moving_image_filename=${moving_image_filename%.nii*}resampled_normalized_mov.nii.gz
+registration_nii_file=${working_dir}/mov_${moving_image_filename%.nii*}_fixed_scct_strippedResampled1_normalized_fix_lin1.nii.gz
 fixed_image='/software/scct_strippedResampled1.nii.gz'
 moving_image=${working_dir}/mov_${session_ct_bname_noext}_brain_f_fixed_scct_strippedResampled1_lin1.nii.gz ##${session_ct_bet_gray} ##${working_dir}/"mov_warped_mov_mni_icbm152_t1_tal_nlin_sym_55_ext_bet_gray_fixed_scct_strippedResampled1_lin1_fixed_${nifti_file_without_ext}_brain_f_lin1.nii.gz"
 #####################################################################################################################
@@ -343,7 +352,7 @@ moving_image=${working_dir}/mov_${session_ct_bname_noext}_brain_f_fixed_scct_str
       cp /software/data.h5 /software/DeepReg/demos/classical_mr_prostate_nonrigid/dataset/
       cp /software/demo_register_batch_atul.py /software/DeepReg/demos/classical_mr_prostate_nonrigid/
       /opt/conda/envs/deepreg/bin/python3 /software/demo_register_batch_atul.py /software/DeepReg/demos/classical_mr_prostate_nonrigid/dataset/data.h5 ${output_directory}
-    infarct_mask_after_lin_reg=${working_dir}/mov_${session_ct_bname_noext}_resaved_infarct_auto_removesmall_fixed_scct_strippedResampled1_lin1.nii.gz
+#    infarct_mask_after_lin_reg=${working_dir}/mov_${session_ct_bname_noext}_resaved_infarct_auto_removesmall_fixed_scct_strippedResampled1_lin1.nii.gz
 
 #    location_mask_directory=${working_dir}
     original_nifti_filename=$(ls ${working_dir_1}/*.nii)

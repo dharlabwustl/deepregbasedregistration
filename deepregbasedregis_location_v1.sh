@@ -361,7 +361,7 @@ echo $(ls ${moving_image})
     original_nifti_filename=$(ls ${working_dir_1}/*.nii)
 #    for each_location_mask in ${location_mask_directory}/mov*resaved_infarct_auto_removesmall_fixed_scct_strippedResampled1_lin1_BET.nii.gz ; do
 #      echo ${each_location_mask}
-echo $(ls ${infarct_mask_after_lin_reg})
+    echo $(ls ${infarct_mask_after_lin_reg})
       echo "/opt/conda/envs/deepreg/bin/python3 /software/runoncsfmask_atul09272024.py ${infarct_mask_after_lin_reg} ${working_dir_1} ${sessionID} ${scanID} $(basename  ${original_nifti_filename})"
       /opt/conda/envs/deepreg/bin/python3 /software/runoncsfmask_atul09272024.py ${infarct_mask_after_lin_reg} ${working_dir_1} ${sessionID} ${scanID} $(basename  ${original_nifti_filename})
 #      done

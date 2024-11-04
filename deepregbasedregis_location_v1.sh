@@ -248,7 +248,20 @@ from download_with_session_ID import *;
 downloadniftiwithuri_withcsv()" ${csvfilename} ${dir_to_save}
 
 }
+uploadsinglefile(){
+local sessionID=${1}
+local scanID=${2}
+local mask_binary_output_dir=${3}
+local snipr_output_foldername=${4}
+local mask_binary_output_filename=${5}
 
+echo ${mask_binary_output_dir}/${mask_binary_output_filename}
+python3 -c "
+import sys
+sys.path.append('/software');
+from download_with_session_ID import *;
+uploadsinglefile()" ${sessionID} ${scanID} ${mask_binary_output_dir} ${snipr_output_foldername} ${mask_binary_output_filename}
+}
 getmaskfilesscanmetadata() {
   # def get_maskfile_scan_metadata():
   sessionId=${1}           #sys.argv[1]
@@ -365,12 +378,15 @@ echo $(ls ${moving_image})
       echo "/opt/conda/envs/deepreg/bin/python3 /software/runoncsfmask_atul09272024.py ${infarct_mask_after_lin_reg} ${working_dir_1} ${sessionID} ${scanID} $(basename  ${original_nifti_filename})"
       /opt/conda/envs/deepreg/bin/python3 /software/runoncsfmask_atul09272024.py ${infarct_mask_after_lin_reg} ${working_dir_1} ${sessionID} ${scanID} $(basename  ${original_nifti_filename})
 #      done
+
+      snipr_output_foldername="PREPROCESS_SEGM"
+      uploadsinglefile ${sessionID} ${scanID} ${mask_binary_output_dir} ${snipr_output_foldername} ${mask_binary_output_filename}
+      uploadsinglefile ${sessionID} ${scanID} ${mask_binary_output_dir} ${snipr_output_foldername} ${mask_binary_output_filename}
 #  for each_warped_1 in ${working_dir_1}/warped_1* ; do
 #  call_function=('call_copy_affine' ${each_warped_1} ${original_nifti_filename} ${each_warped_1} )
 #  outputfiles_present=$(/opt/conda/envs/deepreg/bin/python3 utilities_simple_trimmed.py "${call_function[@]}")
 #  done
       ## COPY IT TO THE SNIPR RESPECTIVE SCAN RESOURCES
-#      snipr_output_foldername="PREPROCESS_SEGM"
 #      file_suffixes=( warped_1_*resaved_infarct_auto_removesmall_fixed_scct_strippedResampled1_lin1_BET* ) #sys.argv[5]
 #      for file_suffix in ${file_suffixes[@]}; do
 #        copyoutput_with_prefix_to_snipr ${sessionID} ${scanID} "${working_dir_1}" ${snipr_output_foldername} ${file_suffix}

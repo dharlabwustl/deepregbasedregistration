@@ -2294,6 +2294,47 @@ def project_resource_latest_analytic_file(args):
     # if file_present < len(extension_to_find_list):
     #     return
 # def get_file_for_second_round():
+def call_downloadfiletolocaldir_py(args):
+    sessionId=args.stuff[1]
+    scanId=args.stuff[2]
+    resource_dirname=args.stuff[3]
+    output_dirname=args.stuff[4]
+    downloadfiletolocaldir_py(sessionId,scanId,resource_dirname,output_dirname)
+def downloadfiletolocaldir_py(sessionId,scanId,resource_dirname,output_dirname):
+    # print(sys.argv)
+    # sessionId=str(sys.argv[1])
+    # scanId=str(sys.argv[2])
+    # resource_dirname=str(sys.argv[3])
+    # output_dirname=str(sys.argv[4])
+
+    print('sessionId::scanId::resource_dirname::output_dirname::{}::{}::{}::{}'.format(sessionId,scanId,resource_dirname,output_dirname))
+    xnatSession = XnatSession(username=XNAT_USER, password=XNAT_PASS, host=XNAT_HOST)
+    resource_dir_url=(("/data/experiments/%s/scans/%s")  %
+                      (sessionId, scanId))
+    print('resource_dir_url::{}'.format(resource_dir_url))
+    # resource_metadata=get_resourcefiles_metadata(resource_dir_url,resource_dirname)
+    # df_scan = pd.read_json(json.dumps(resource_metadata))
+    # print('df_scan::{}'.format(resource_metadata))
+    url = (("/data/experiments/%s/scans/%s/resources/" + resource_dirname+ "/files?format=zip")  %
+           (sessionId, scanId))
+
+    xnatSession.renew_httpsession()
+    response = xnatSession.httpsess.get(xnatSession.host + url)
+    zipfilename=sessionId+scanId+'.zip'
+    with open(zipfilename, "wb") as f:
+        for chunk in response.iter_content(chunk_size=512):
+            if chunk:  # filter out keep-alive new chunks
+                f.write(chunk)
+    command='rm -r /ZIPFILEDIR/* '
+    subprocess.call(command,shell=True)
+    command = 'unzip -d /ZIPFILEDIR ' + zipfilename
+    subprocess.call(command,shell=True)
+    xnatSession.close_httpsession()
+    copy_nifti_to_a_dir(output_dirname)
+    copy_mat_to_a_dir(output_dirname)
+
+    return True
+
 
 def main():
     print("WO ZAI ::{}".format("main"))
@@ -2335,6 +2376,8 @@ def main():
         return_value=call_get_metadata_session(args)
     if name_of_the_function=="call_get_session_label":
         return_value=call_get_session_label(args)
+    if name_of_the_function=="call_downloadfiletolocaldir_py":
+        return_value=call_downloadfiletolocaldir_py(args)
     print(return_value)
     if "call" not in name_of_the_function:
         globals()[args.stuff[0]](args)

@@ -292,28 +292,14 @@ session_ct_bname_noext=${session_ct_bname_noext%.nii*}
 template_ct=$( ls ${working_dir_1}/'scct_strippedResampled1'*'.nii.gz' )  ##'/software/scct_strippedResampled1.nii.gz'
 
 moving_image_filename=$( ls ${working_dir_1}/*${session_ct_bname_noext}*'.nii.gz' )   ##${session_ct_bname_noext}_resaved_infarct_auto_removesmall.nii.gz
-#moving_image_filename=${moving_image_filename%.nii*}resampled_mov.nii.gz
-#infarct_mask_after_lin_reg=${working_dir}/mov_${moving_image_filename%.nii*}_fixed_scct_strippedResampled1_normalized_fix_lin1.nii.gz
-#fixed_image_filename=/software/scct_strippedResampled1.nii.gz
-#fixed_image=${working_dir}/${fixed_image_filename%.nii*}'_normalized_fix.nii.gz'
-#
-#moving_image_filename=${session_ct_bname_noext}_brain_f.nii.gz
-#moving_image_filename=${moving_image_filename%.nii*}resampled_normalized_mov.nii.gz
-#registration_nii_file=${working_dir}/mov_${moving_image_filename%.nii*}_fixed_scct_strippedResampled1_normalized_fix_lin1.nii.gz
-#fixed_image='/software/scct_strippedResampled1.nii.gz'
-#echo $(ls ${fixed_image})
-#
-#moving_image=${registration_nii_file} #${working_dir}/mov_${session_ct_bname_noext}_brain_f_fixed_scct_strippedResampled1_lin1.nii.gz ##${session_ct_bet_gray} ##${working_dir}/"mov_warped_mov_mni_icbm152_t1_tal_nlin_sym_55_ext_bet_gray_fixed_scct_strippedResampled1_lin1_fixed_${nifti_file_without_ext}_brain_f_lin1.nii.gz"
-#echo $(ls ${moving_image})
-#####################################################################################################################
 fixed_image=${template_ct}
 moving_image=${moving_image_filename}
-      /opt/conda/envs/deepreg/bin/python3 create_datah5files_May24_2023.py ${moving_image} ${fixed_image}
-##      mkdir /rapids/notebooks/DeepReg/demos/classical_mr_prostate_nonrigid/dataset
-      cp -r /rapids/notebooks/DeepReg /software/
-      cp /software/data.h5 /software/DeepReg/demos/classical_mr_prostate_nonrigid/dataset/
-      cp /software/demo_register_batch_atul.py /software/DeepReg/demos/classical_mr_prostate_nonrigid/
-      /opt/conda/envs/deepreg/bin/python3 /software/demo_register_batch_atul.py /software/DeepReg/demos/classical_mr_prostate_nonrigid/dataset/data.h5 ${output_directory}
+/opt/conda/envs/deepreg/bin/python3 create_datah5files_May24_2023.py ${moving_image} ${fixed_image}
+
+cp -r /rapids/notebooks/DeepReg /software/
+cp /software/data.h5 /software/DeepReg/demos/classical_mr_prostate_nonrigid/dataset/
+cp /software/demo_register_batch_atul.py /software/DeepReg/demos/classical_mr_prostate_nonrigid/
+/opt/conda/envs/deepreg/bin/python3 /software/demo_register_batch_atul.py /software/DeepReg/demos/classical_mr_prostate_nonrigid/dataset/data.h5 ${output_directory}
 ##    infarct_mask_after_lin_reg=${working_dir}/mov_${session_ct_bname_noext}_resaved_infarct_auto_removesmall_fixed_scct_strippedResampled1_lin1.nii.gz
 #
 ##    location_mask_directory=${working_dir}
@@ -321,10 +307,12 @@ moving_image=${moving_image_filename}
 ##    for each_location_mask in ${location_mask_directory}/mov*resaved_infarct_auto_removesmall_fixed_scct_strippedResampled1_lin1_BET.nii.gz ; do
 ##      echo ${each_location_mask}
 #    echo $(ls ${infarct_mask_after_lin_reg})
-#      echo "/opt/conda/envs/deepreg/bin/python3 /software/runoncsfmask_atul09272024.py ${infarct_mask_after_lin_reg} ${working_dir_1} ${sessionID} ${scanID} $(basename  ${original_nifti_filename})"
-#      /opt/conda/envs/deepreg/bin/python3 /software/runoncsfmask_atul09272024.py ${infarct_mask_after_lin_reg} ${working_dir_1} ${sessionID} ${scanID} $(basename  ${original_nifti_filename})
-##      done
-#
+for maskfile in ${working_dir}/*.nii.gz ; do
+      echo "/opt/conda/envs/deepreg/bin/python3 /software/runoncsfmask_atul09272024.py ${maskfile} ${output_directory} ${sessionID} ${scanID} $(basename  ${original_nifti_filename})"
+      /opt/conda/envs/deepreg/bin/python3 /software/runoncsfmask_atul09272024.py ${maskfile} ${output_directory} ${sessionID} ${scanID} $(basename  ${original_nifti_filename})
+
+  done
+
 #      snipr_output_foldername="PREPROCESS_SEGM"
 #      uploadsinglefile ${sessionID} ${scanID} ${mask_binary_output_dir} ${snipr_output_foldername} ${mask_binary_output_filename}
 #      uploadsinglefile ${sessionID} ${scanID} ${mask_binary_output_dir} ${snipr_output_foldername} ${mask_binary_output_filename}

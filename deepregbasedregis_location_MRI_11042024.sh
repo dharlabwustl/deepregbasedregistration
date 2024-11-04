@@ -286,12 +286,12 @@ echo "outputfiles_present="'$(python3 download_with_session_ID.py' "${function_w
 
 function_with_arguments=('call_downloadfiletolocaldir_py' ${sessionID}  ${scanID} NIFTI ${working_dir_1})
 echo "outputfiles_present="'$(python3 download_with_session_ID.py' "${function_with_arguments[@]}"
-session_ct=$( ls ${working_dir_1}/*'.bfc'*'.nii.gz' ) ## This is actually the MRI which will be the moving image.
+session_ct=$( ls ${working_dir_1}/*'bfc'*'.nii'* )  #.gz## This is actually the MRI which will be the moving image.
 session_ct_bname_noext=$(basename ${session_ct})
 session_ct_bname_noext=${session_ct_bname_noext%.nii*}
-template_ct=$( ls ${working_dir_1}/'scct_strippedResampled1'*'.nii.gz' )  ##'/software/scct_strippedResampled1.nii.gz'
+template_ct=$( ls ${working_dir_1}/'scct_strippedResampled1'*'.nii'* )  #.gz##'/software/scct_strippedResampled1.nii.gz'
 
-moving_image_filename=$( ls ${working_dir_1}/*${session_ct_bname_noext}*'.nii.gz' )   ##${session_ct_bname_noext}_resaved_infarct_auto_removesmall.nii.gz
+moving_image_filename=$( ls ${working_dir_1}/*${session_ct_bname_noext}*'.nii'* )  #.gz  ##${session_ct_bname_noext}_resaved_infarct_auto_removesmall.nii.gz
 fixed_image=${template_ct}
 moving_image=${moving_image_filename}
 /opt/conda/envs/deepreg/bin/python3 create_datah5files_May24_2023.py ${moving_image} ${fixed_image}
@@ -307,7 +307,7 @@ cp /software/demo_register_batch_atul.py /software/DeepReg/demos/classical_mr_pr
 ##    for each_location_mask in ${location_mask_directory}/mov*resaved_infarct_auto_removesmall_fixed_scct_strippedResampled1_lin1_BET.nii.gz ; do
 ##      echo ${each_location_mask}
 #    echo $(ls ${infarct_mask_after_lin_reg})
-for maskfile in ${working_dir}/*.nii.gz ; do
+for maskfile in ${working_dir}/*.nii*  ; do #.gz
       echo "/opt/conda/envs/deepreg/bin/python3 /software/runoncsfmask_atul09272024.py ${maskfile} ${output_directory} ${sessionID} ${scanID} $(basename  ${original_nifti_filename})"
       /opt/conda/envs/deepreg/bin/python3 /software/runoncsfmask_atul09272024.py ${maskfile} ${output_directory} ${sessionID} ${scanID} $(basename  ${original_nifti_filename})
 

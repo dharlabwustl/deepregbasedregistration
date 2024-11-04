@@ -283,9 +283,10 @@ scanID='MRI1'
 # get metadata of this session
 function_with_arguments=('call_downloadfiletolocaldir_py' ${sessionID}  ${scanID} PREPROCESS_SEGM ${working_dir})
 echo "outputfiles_present="'$(python3 download_with_session_ID.py' "${function_with_arguments[@]}"
-
+outputfiles_present=$(python3 download_with_session_ID.py "${function_with_arguments[@]}")
 function_with_arguments=('call_downloadfiletolocaldir_py' ${sessionID}  ${scanID} NIFTI ${working_dir_1})
 echo "outputfiles_present="'$(python3 download_with_session_ID.py' "${function_with_arguments[@]}"
+outputfiles_present=$(python3 download_with_session_ID.py "${function_with_arguments[@]}")
 session_ct=$( ls ${working_dir_1}/*'bfc'*'.nii'* )  #.gz## This is actually the MRI which will be the moving image.
 session_ct_bname_noext=$(basename ${session_ct})
 session_ct_bname_noext=${session_ct_bname_noext%.nii*}

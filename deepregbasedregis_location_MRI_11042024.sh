@@ -295,7 +295,7 @@ template_ct=$( ls ${working_dir_1}/'scct_strippedResampled1'*'.nii'* )  #.gz##'/
 moving_image_filename=$( ls ${working_dir}/*${session_ct_bname_noext}*'.nii'* )  #.gz  ##${session_ct_bname_noext}_resaved_infarct_auto_removesmall.nii.gz
 fixed_image=${template_ct}
 moving_image=${moving_image_filename}
-echo "moving_image::${moving_image}::fixed_image::${fixed_image}"
+echo "session_ct_bname_noext::${session_ct_bname_noext}::moving_image::${moving_image}::fixed_image::${fixed_image}"
 #/opt/conda/envs/deepreg/bin/python3 create_datah5files_May24_2023.py ${moving_image} ${fixed_image}
 #
 #cp -r /rapids/notebooks/DeepReg /software/

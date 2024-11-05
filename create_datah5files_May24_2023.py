@@ -28,8 +28,8 @@ def createh5file(image0_file,image1_file,label0_file,label1_file,output_dir="./"
     h5filename=os.path.join(output_dir,os.path.basename(image1_file).split('.nii')[0] + '_h5data.h5')
     print("{}:{}".format('h5filename',h5filename))
     hf = h5py.File(h5filename, 'w')
-    hf.create_dataset('image0',data=image0,dtype='f2') ##dtype='i2') # moving image
-    hf.create_dataset('image1',data=image1,dtype='f2') ##dtype='i2') # fixed image
+    hf.create_dataset('image0',data=image0*255,dtype='f2') ##dtype='i2') # moving image
+    hf.create_dataset('image1',data=image1*255,dtype='f2') ##dtype='i2') # fixed image
     hf.create_dataset('label0',data=label0,dtype='i') # moving mask
     hf.create_dataset('label1',data=label1,dtype='i') # fixed mask
 

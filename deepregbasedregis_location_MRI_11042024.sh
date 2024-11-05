@@ -316,24 +316,24 @@ for maskfile in ${working_dir}/mov*BET*.nii*  ; do #.gz
 
   done
 #
-      snipr_output_foldername="PREPROCESS_SEGM"
-      all_warped_files=$(find ../ -name 'warped_1'*'.nii.gz')
-      for eachfile in ${all_warped_files};
-      do
-        echo ${eachfile}
-        uploadsinglefile ${sessionID} ${scanID} $(dirname ${eachfile}) ${snipr_output_foldername} $(basename ${eachfile} )
-      done
-
-      for eachfile in ${output_directory}/*image*.nii*;
-      do
-        echo ${eachfile}
-        uploadsinglefile ${sessionID} ${scanID} $(dirname ${eachfile}) ${snipr_output_foldername} $(basename ${eachfile} )
-      done
-      for eachfile in ${output_directory}/*ddf*.nii*;
-      do
-        echo ${eachfile}
-        uploadsinglefile ${sessionID} ${scanID} $(dirname ${eachfile}) ${snipr_output_foldername} $(basename ${eachfile} )
-      done
+#      snipr_output_foldername="PREPROCESS_SEGM"
+#      all_warped_files=$(find ../ -name 'warped_1'*'.nii.gz')
+#      for eachfile in ${all_warped_files};
+#      do
+#        echo ${eachfile}
+#        uploadsinglefile ${sessionID} ${scanID} $(dirname ${eachfile}) ${snipr_output_foldername} $(basename ${eachfile} )
+#      done
+#
+#      for eachfile in ${output_directory}/*image*.nii*;
+#      do
+#        echo ${eachfile}
+#        uploadsinglefile ${sessionID} ${scanID} $(dirname ${eachfile}) ${snipr_output_foldername} $(basename ${eachfile} )
+#      done
+#      for eachfile in ${output_directory}/*ddf*.nii*;
+#      do
+#        echo ${eachfile}
+#        uploadsinglefile ${sessionID} ${scanID} $(dirname ${eachfile}) ${snipr_output_foldername} $(basename ${eachfile} )
+#      done
 ##      uploadsinglefile ${sessionID} ${scanID} ${mask_binary_output_dir} ${snipr_output_foldername} ${mask_binary_output_filename}
 ##      uploadsinglefile ${sessionID} ${scanID} ${mask_binary_output_dir} ${snipr_output_foldername} ${mask_binary_output_filename}
 ###  for each_warped_1 in ${working_dir_1}/warped_1* ; do

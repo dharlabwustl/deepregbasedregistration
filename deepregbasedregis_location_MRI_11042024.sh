@@ -296,7 +296,7 @@ moving_image_filename=$( ls ${working_dir}/*${session_ct_bname_noext}*'.nii'* ) 
 fixed_image=${template_ct}
 moving_image=${moving_image_filename}
 echo "session_ct::${session_ct}::session_ct_bname_noext::${session_ct_bname_noext}::moving_image::${moving_image}::fixed_image::${fixed_image}"
-#/opt/conda/envs/deepreg/bin/python3 create_datah5files_May24_2023.py ${moving_image} ${fixed_image}
+/opt/conda/envs/deepreg/bin/python3 create_datah5files_May24_2023.py ${moving_image} ${fixed_image}
 #
 #cp -r /rapids/notebooks/DeepReg /software/
 #cp /software/data.h5 /software/DeepReg/demos/classical_mr_prostate_nonrigid/dataset/

@@ -287,15 +287,15 @@ outputfiles_present=$(/opt/conda/envs/deepreg/bin/python3 download_with_session_
 function_with_arguments=('call_downloadfiletolocaldir_py' ${sessionID}  ${scanID} NIFTI ${working_dir_1})
 echo "outputfiles_present="'$(python3 download_with_session_ID.py' "${function_with_arguments[@]}"
 outputfiles_present=$(/opt/conda/envs/deepreg/bin/python3 download_with_session_ID.py "${function_with_arguments[@]}")
-session_ct=$( ls ${working_dir_1}/*'bfc'*'.nii'* )  #.gz## This is actually the MRI which will be the moving image.
-session_ct_bname_noext=$(basename ${session_ct})
-session_ct_bname_noext=${session_ct_bname_noext%.nii*}
-template_ct=$( ls ${working_dir_1}/'scct_strippedResampled1'*'.nii'* )  #.gz##'/software/scct_strippedResampled1.nii.gz'
-
-moving_image_filename=$( ls ${working_dir}/*${session_ct_bname_noext}*'.nii'* )  #.gz  ##${session_ct_bname_noext}_resaved_infarct_auto_removesmall.nii.gz
-fixed_image=${template_ct}
-moving_image=${moving_image_filename}
-echo "session_ct::${session_ct}::session_ct_bname_noext::${session_ct_bname_noext}::moving_image::${moving_image}::fixed_image::${fixed_image}"
+#session_ct=$( ls ${working_dir_1}/*'bfc'*'.nii'* )  #.gz## This is actually the MRI which will be the moving image.
+#session_ct_bname_noext=$(basename ${session_ct})
+#session_ct_bname_noext=${session_ct_bname_noext%.nii*}
+#template_ct=$( ls ${working_dir_1}/'scct_strippedResampled1'*'.nii'* )  #.gz##'/software/scct_strippedResampled1.nii.gz'
+#
+#moving_image_filename=$( ls ${working_dir}/*${session_ct_bname_noext}*'.nii'* )  #.gz  ##${session_ct_bname_noext}_resaved_infarct_auto_removesmall.nii.gz
+#fixed_image=${template_ct}
+#moving_image=${moving_image_filename}
+#echo "session_ct::${session_ct}::session_ct_bname_noext::${session_ct_bname_noext}::moving_image::${moving_image}::fixed_image::${fixed_image}"
 #/opt/conda/envs/deepreg/bin/python3 create_datah5files_May24_2023.py ${moving_image} ${fixed_image}
 #
 #cp -r /rapids/notebooks/DeepReg /software/

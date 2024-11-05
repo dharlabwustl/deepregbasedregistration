@@ -293,6 +293,7 @@ session_ct_bname_noext=${session_ct_bname_noext%.nii*}
 template_ct=$( ls ${working_dir_1}/'scct_strippedResampled1'*'.nii'* )  ##'/software/scct_strippedResampled1.nii.gz' ##.gz##'/software/scct_strippedResampled1.nii.gz'
 #
 moving_image_filename=$( ls ${working_dir}/*${session_ct_bname_noext}*'.nii'* )  #.gz  ##${session_ct_bname_noext}_resaved_infarct_auto_removesmall.nii.gz
+original_nifti_filename=$(ls ${working_dir_1}/*bfc.nii*)
 fixed_image=${template_ct} ##'/software/scct_strippedResampled1.nii.gz' ##$#${template_ct}
 moving_image=${moving_image_filename}
 echo "session_ct::${session_ct}::session_ct_bname_noext::${session_ct_bname_noext}::moving_image::${moving_image}::fixed_image::${fixed_image}"
@@ -305,7 +306,7 @@ cp /software/demo_register_batch_atul.py /software/DeepReg/demos/classical_mr_pr
 #    infarct_mask_after_lin_reg=${working_dir}/mov_${session_ct_bname_noext}_resaved_infarct_auto_removesmall_fixed_scct_strippedResampled1_lin1.nii.gz
 
 ##    location_mask_directory=${working_dir}
-#    original_nifti_filename=$(ls ${working_dir_1}/*.nii)
+
 ##    for each_location_mask in ${location_mask_directory}/mov*resaved_infarct_auto_removesmall_fixed_scct_strippedResampled1_lin1_BET.nii.gz ; do
 ##      echo ${each_location_mask}
 #    echo $(ls ${infarct_mask_after_lin_reg})

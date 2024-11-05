@@ -11,6 +11,8 @@ import tensorflow as tf
 import deepreg.model.layer as layer
 import deepreg.util as util
 from deepreg.registry import REGISTRY
+from numpy.lib.shape_base import expand_dims
+
 # ## load ddf file
 FILE_PATH_DDF='/workingoutput/ddf.nii.gz' #'/storage1/fs1/dharr/Active/ATUL/PROJECTS/DeepReg/demos/classical_mr_prostate_nonrigid/logs_reg/ddf.nii.gz'
 import nibabel as nib
@@ -61,19 +63,23 @@ original_nifti_filename=sys.argv[5]
 
 
 ventricle_mask=nib.load(os.path.join(SAVE_PATH,arr_name+".nii.gz")).get_fdata()
-non_zero_slice_num=[]
-# print(ventricle_mask.get_fdata().shape[2])
-for slice_num in range(ventricle_mask.shape[2]):
-    this_slice_sum=np.sum(ventricle_mask[:,:,slice_num])
-    if this_slice_sum >0 :
-        # print(this_slice_sum)
-        non_zero_slice_num.append(slice_num)
-if len(non_zero_slice_num)>0:
-    upper_lower_limit_vent=[sessionID,scanID,original_nifti_filename,min(non_zero_slice_num),max(non_zero_slice_num)]
-print(upper_lower_limit_vent)
-upper_lower_limit_vent_df=pd.DataFrame(upper_lower_limit_vent).T
-upper_lower_limit_vent_df.columns=['SESSION_ID','SCAN_ID','NIFTI_FILENAME','LOWER_SLICE_NUM','UPPER_SCLICE_NUM']
-print(upper_lower_limit_vent_df)
-upper_lower_limit_vent_df.to_csv(os.path.join(SAVE_PATH,original_nifti_filename.split('.nii')[0]+'_ventricle_bounds.csv'),index=False)
+try:
+    non_zero_slice_num=[]
+    # print(ventricle_mask.get_fdata().shape[2])
+    for slice_num in range(ventricle_mask.shape[2]):
+        this_slice_sum=np.sum(ventricle_mask[:,:,slice_num])
+        if this_slice_sum >0 :
+            # print(this_slice_sum)
+            non_zero_slice_num.append(slice_num)
+    if len(non_zero_slice_num)>0:
+        upper_lower_limit_vent=[sessionID,scanID,original_nifti_filename,min(non_zero_slice_num),max(non_zero_slice_num)]
+    print(upper_lower_limit_vent)
+    upper_lower_limit_vent_df=pd.DataFrame(upper_lower_limit_vent).T
+    upper_lower_limit_vent_df.columns=['SESSION_ID','SCAN_ID','NIFTI_FILENAME','LOWER_SLICE_NUM','UPPER_SCLICE_NUM']
+    print(upper_lower_limit_vent_df)
+    upper_lower_limit_vent_df.to_csv(os.path.join(SAVE_PATH,original_nifti_filename.split('.nii')[0]+'_ventricle_bounds.csv'),index=False)
+except:
 
+    print(" YOU DID NOT GIVE THE PROPER MASK!")
+    pass
 

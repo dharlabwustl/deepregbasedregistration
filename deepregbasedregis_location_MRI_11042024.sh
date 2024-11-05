@@ -295,45 +295,46 @@ template_ct=$( ls ${working_dir_1}/'scct_strippedResampled1'*'.nii'* )  #.gz##'/
 moving_image_filename=$( ls ${working_dir_1}/*${session_ct_bname_noext}*'.nii'* )  #.gz  ##${session_ct_bname_noext}_resaved_infarct_auto_removesmall.nii.gz
 fixed_image=${template_ct}
 moving_image=${moving_image_filename}
-/opt/conda/envs/deepreg/bin/python3 create_datah5files_May24_2023.py ${moving_image} ${fixed_image}
-
-cp -r /rapids/notebooks/DeepReg /software/
-cp /software/data.h5 /software/DeepReg/demos/classical_mr_prostate_nonrigid/dataset/
-cp /software/demo_register_batch_atul.py /software/DeepReg/demos/classical_mr_prostate_nonrigid/
-/opt/conda/envs/deepreg/bin/python3 /software/demo_register_batch_atul.py /software/DeepReg/demos/classical_mr_prostate_nonrigid/dataset/data.h5 ${output_directory}
-##    infarct_mask_after_lin_reg=${working_dir}/mov_${session_ct_bname_noext}_resaved_infarct_auto_removesmall_fixed_scct_strippedResampled1_lin1.nii.gz
+echo "moving_image::${moving_image}::fixed_image::${fixed_image}"
+#/opt/conda/envs/deepreg/bin/python3 create_datah5files_May24_2023.py ${moving_image} ${fixed_image}
 #
-##    location_mask_directory=${working_dir}
-#    original_nifti_filename=$(ls ${working_dir_1}/*.nii)
-##    for each_location_mask in ${location_mask_directory}/mov*resaved_infarct_auto_removesmall_fixed_scct_strippedResampled1_lin1_BET.nii.gz ; do
-##      echo ${each_location_mask}
-#    echo $(ls ${infarct_mask_after_lin_reg})
-for maskfile in ${working_dir}/*.nii*  ; do #.gz
-      echo "/opt/conda/envs/deepreg/bin/python3 /software/runoncsfmask_atul09272024.py ${maskfile} ${output_directory} ${sessionID} ${scanID} $(basename  ${original_nifti_filename})"
-      /opt/conda/envs/deepreg/bin/python3 /software/runoncsfmask_atul09272024.py ${maskfile} ${output_directory} ${sessionID} ${scanID} $(basename  ${original_nifti_filename})
-
-  done
-
-#      snipr_output_foldername="PREPROCESS_SEGM"
-#      uploadsinglefile ${sessionID} ${scanID} ${mask_binary_output_dir} ${snipr_output_foldername} ${mask_binary_output_filename}
-#      uploadsinglefile ${sessionID} ${scanID} ${mask_binary_output_dir} ${snipr_output_foldername} ${mask_binary_output_filename}
-##  for each_warped_1 in ${working_dir_1}/warped_1* ; do
-##  call_function=('call_copy_affine' ${each_warped_1} ${original_nifti_filename} ${each_warped_1} )
-##  outputfiles_present=$(/opt/conda/envs/deepreg/bin/python3 utilities_simple_trimmed.py "${call_function[@]}")
-##  done
-#      ## COPY IT TO THE SNIPR RESPECTIVE SCAN RESOURCES
-##      file_suffixes=( warped_1_*resaved_infarct_auto_removesmall_fixed_scct_strippedResampled1_lin1_BET* ) #sys.argv[5]
-##      for file_suffix in ${file_suffixes[@]}; do
-##        copyoutput_with_prefix_to_snipr ${sessionID} ${scanID} "${working_dir_1}" ${snipr_output_foldername} ${file_suffix}
-##      done
-#####      ######################################################################################################################
-##      echo " FILES NOT PRESENT I AM WORKING ON IT"
-##    else
-##      echo " FILES ARE PRESENT "
-##    ######################################################################################################################
-##    fi
-##    ##
+#cp -r /rapids/notebooks/DeepReg /software/
+#cp /software/data.h5 /software/DeepReg/demos/classical_mr_prostate_nonrigid/dataset/
+#cp /software/demo_register_batch_atul.py /software/DeepReg/demos/classical_mr_prostate_nonrigid/
+#/opt/conda/envs/deepreg/bin/python3 /software/demo_register_batch_atul.py /software/DeepReg/demos/classical_mr_prostate_nonrigid/dataset/data.h5 ${output_directory}
+###    infarct_mask_after_lin_reg=${working_dir}/mov_${session_ct_bname_noext}_resaved_infarct_auto_removesmall_fixed_scct_strippedResampled1_lin1.nii.gz
 ##
-##
-##  done < <(tail -n +2 "${niftifile_csvfilename}")
-##done
+###    location_mask_directory=${working_dir}
+##    original_nifti_filename=$(ls ${working_dir_1}/*.nii)
+###    for each_location_mask in ${location_mask_directory}/mov*resaved_infarct_auto_removesmall_fixed_scct_strippedResampled1_lin1_BET.nii.gz ; do
+###      echo ${each_location_mask}
+##    echo $(ls ${infarct_mask_after_lin_reg})
+#for maskfile in ${working_dir}/*.nii*  ; do #.gz
+#      echo "/opt/conda/envs/deepreg/bin/python3 /software/runoncsfmask_atul09272024.py ${maskfile} ${output_directory} ${sessionID} ${scanID} $(basename  ${original_nifti_filename})"
+#      /opt/conda/envs/deepreg/bin/python3 /software/runoncsfmask_atul09272024.py ${maskfile} ${output_directory} ${sessionID} ${scanID} $(basename  ${original_nifti_filename})
+#
+#  done
+#
+##      snipr_output_foldername="PREPROCESS_SEGM"
+##      uploadsinglefile ${sessionID} ${scanID} ${mask_binary_output_dir} ${snipr_output_foldername} ${mask_binary_output_filename}
+##      uploadsinglefile ${sessionID} ${scanID} ${mask_binary_output_dir} ${snipr_output_foldername} ${mask_binary_output_filename}
+###  for each_warped_1 in ${working_dir_1}/warped_1* ; do
+###  call_function=('call_copy_affine' ${each_warped_1} ${original_nifti_filename} ${each_warped_1} )
+###  outputfiles_present=$(/opt/conda/envs/deepreg/bin/python3 utilities_simple_trimmed.py "${call_function[@]}")
+###  done
+##      ## COPY IT TO THE SNIPR RESPECTIVE SCAN RESOURCES
+###      file_suffixes=( warped_1_*resaved_infarct_auto_removesmall_fixed_scct_strippedResampled1_lin1_BET* ) #sys.argv[5]
+###      for file_suffix in ${file_suffixes[@]}; do
+###        copyoutput_with_prefix_to_snipr ${sessionID} ${scanID} "${working_dir_1}" ${snipr_output_foldername} ${file_suffix}
+###      done
+######      ######################################################################################################################
+###      echo " FILES NOT PRESENT I AM WORKING ON IT"
+###    else
+###      echo " FILES ARE PRESENT "
+###    ######################################################################################################################
+###    fi
+###    ##
+###
+###
+###  done < <(tail -n +2 "${niftifile_csvfilename}")
+###done

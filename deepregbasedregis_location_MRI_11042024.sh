@@ -302,18 +302,18 @@ cp -r /rapids/notebooks/DeepReg /software/
 cp /software/data.h5 /software/DeepReg/demos/classical_mr_prostate_nonrigid/dataset/
 cp /software/demo_register_batch_atul.py /software/DeepReg/demos/classical_mr_prostate_nonrigid/
 /opt/conda/envs/deepreg/bin/python3 /software/demo_register_batch_atul.py /software/DeepReg/demos/classical_mr_prostate_nonrigid/dataset/data.h5 ${output_directory}
-##    infarct_mask_after_lin_reg=${working_dir}/mov_${session_ct_bname_noext}_resaved_infarct_auto_removesmall_fixed_scct_strippedResampled1_lin1.nii.gz
-#
-###    location_mask_directory=${working_dir}
-##    original_nifti_filename=$(ls ${working_dir_1}/*.nii)
-###    for each_location_mask in ${location_mask_directory}/mov*resaved_infarct_auto_removesmall_fixed_scct_strippedResampled1_lin1_BET.nii.gz ; do
-###      echo ${each_location_mask}
-##    echo $(ls ${infarct_mask_after_lin_reg})
-#for maskfile in ${working_dir}/mov*.nii*  ; do #.gz
-#      echo "/opt/conda/envs/deepreg/bin/python3 /software/runoncsfmask_atul09272024.py ${maskfile} ${output_directory} ${sessionID} ${scanID} $(basename  ${original_nifti_filename})"
-#      /opt/conda/envs/deepreg/bin/python3 /software/runoncsfmask_atul09272024.py ${maskfile} ${output_directory} ${sessionID} ${scanID} $(basename  ${original_nifti_filename})
-#
-#  done
+#    infarct_mask_after_lin_reg=${working_dir}/mov_${session_ct_bname_noext}_resaved_infarct_auto_removesmall_fixed_scct_strippedResampled1_lin1.nii.gz
+
+##    location_mask_directory=${working_dir}
+#    original_nifti_filename=$(ls ${working_dir_1}/*.nii)
+##    for each_location_mask in ${location_mask_directory}/mov*resaved_infarct_auto_removesmall_fixed_scct_strippedResampled1_lin1_BET.nii.gz ; do
+##      echo ${each_location_mask}
+#    echo $(ls ${infarct_mask_after_lin_reg})
+for maskfile in ${working_dir}/mov*BET*.nii*  ; do #.gz
+      echo "/opt/conda/envs/deepreg/bin/python3 /software/runoncsfmask_atul09272024.py ${maskfile} ${output_directory} ${sessionID} ${scanID} $(basename  ${original_nifti_filename})"
+      /opt/conda/envs/deepreg/bin/python3 /software/runoncsfmask_atul09272024.py ${maskfile} ${output_directory} ${sessionID} ${scanID} $(basename  ${original_nifti_filename})
+
+  done
 #
 ##      snipr_output_foldername="PREPROCESS_SEGM"
 ##      uploadsinglefile ${sessionID} ${scanID} ${mask_binary_output_dir} ${snipr_output_foldername} ${mask_binary_output_filename}

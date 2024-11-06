@@ -256,7 +256,7 @@ local snipr_output_foldername=${4}
 local mask_binary_output_filename=${5}
 
 echo ${mask_binary_output_dir}/${mask_binary_output_filename}
-python3 -c "
+ /opt/conda/envs/deepreg/bin/python3 -c "
 import sys
 sys.path.append('/software');
 from download_with_session_ID import *;

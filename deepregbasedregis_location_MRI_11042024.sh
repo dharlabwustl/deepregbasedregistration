@@ -281,7 +281,7 @@ scanID='MRI1'
 # download the niftifile
 #sessionID=$sessionID, scanID=$scanID , resource_dir=NIFTI
 # get metadata of this session
-function_with_arguments=('call_downloadfiletolocaldir_py' ${sessionID}  ${scanID} PREPROCESS_SEGM ${working_dir})
+function_with_arguments=('call_downloadfiletolocaldir_py' ${sessionID}  ${scanID} PREPROCESS_LINR ${working_dir})
 echo "outputfiles_present="'$( /opt/conda/envs/deepreg/bin/python3 download_with_session_ID.py' "${function_with_arguments[@]}"
 outputfiles_present=$(/opt/conda/envs/deepreg/bin/python3 download_with_session_ID.py "${function_with_arguments[@]}")
 function_with_arguments=('call_downloadfiletolocaldir_py' ${sessionID}  ${scanID} NIFTI ${working_dir_1})

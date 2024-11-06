@@ -166,7 +166,7 @@ nwucalculation_each_scan() {
     levelset_infarct_mask_file=${output_directory}/${infarctfilename}
     echo "levelset_infarct_mask_file:${levelset_infarct_mask_file}"
     ## preprocessing infarct mask:
-    python3 -c "
+     /opt/conda/envs/deepreg/bin/python3 -c "
 import sys ;
 sys.path.append('/software/') ;
 from utilities_simple_trimmed import * ;  levelset2originalRF_new_flip()" "${original_ct_file}" "${levelset_infarct_mask_file}" "${output_directory}"
@@ -174,7 +174,7 @@ from utilities_simple_trimmed import * ;  levelset2originalRF_new_flip()" "${ori
     ## preprocessing bet mask:
     levelset_bet_mask_file=${output_directory}/${betfilename}
     echo "levelset_bet_mask_file:${levelset_bet_mask_file}"
-    python3 -c "
+     /opt/conda/envs/deepreg/bin/python3 -c "
 
 import sys ;
 sys.path.append('/software/') ;
@@ -183,7 +183,7 @@ from utilities_simple_trimmed import * ;  levelset2originalRF_new_flip()" "${ori
     #### preprocessing csf mask:
     levelset_csf_mask_file=${output_directory}/${csffilename}
     echo "levelset_csf_mask_file:${levelset_csf_mask_file}"
-    python3 -c "
+     /opt/conda/envs/deepreg/bin/python3 -c "
 import sys ;
 sys.path.append('/software/') ;
 from utilities_simple_trimmed import * ;   levelset2originalRF_new_flip()" "${original_ct_file}" "${levelset_csf_mask_file}" "${output_directory}"
@@ -224,7 +224,7 @@ get_nifti_scan_uri() {
   output_dir=$(dirname ${output_csvfile})
   rm -r ${output_dir}/*
   # scanID=$2
-  python3 -c "
+   /opt/conda/envs/deepreg/bin/python3 -c "
 import sys 
 sys.path.append('/software');
 from download_with_session_ID import *; 
@@ -269,7 +269,7 @@ getmaskfilesscanmetadata() {
   resource_foldername=${3} # sys.argv[3]
   dir_to_save=${4}         # sys.argv[4]
   csvfilename=${5}         # sys.argv[5]
-  python3 -c "
+   /opt/conda/envs/deepreg/bin/python3 -c "
 import sys 
 sys.path.append('/software');
 from download_with_session_ID import *; 
@@ -282,10 +282,10 @@ scanID='MRI1'
 #sessionID=$sessionID, scanID=$scanID , resource_dir=NIFTI
 # get metadata of this session
 function_with_arguments=('call_downloadfiletolocaldir_py' ${sessionID}  ${scanID} PREPROCESS_SEGM ${working_dir})
-echo "outputfiles_present="'$(python3 download_with_session_ID.py' "${function_with_arguments[@]}"
+echo "outputfiles_present="'$( /opt/conda/envs/deepreg/bin/python3 download_with_session_ID.py' "${function_with_arguments[@]}"
 outputfiles_present=$(/opt/conda/envs/deepreg/bin/python3 download_with_session_ID.py "${function_with_arguments[@]}")
 function_with_arguments=('call_downloadfiletolocaldir_py' ${sessionID}  ${scanID} NIFTI ${working_dir_1})
-echo "outputfiles_present="'$(python3 download_with_session_ID.py' "${function_with_arguments[@]}"
+echo "outputfiles_present="'$( /opt/conda/envs/deepreg/bin/python3 download_with_session_ID.py' "${function_with_arguments[@]}"
 outputfiles_present=$(/opt/conda/envs/deepreg/bin/python3 download_with_session_ID.py "${function_with_arguments[@]}")
 session_ct=$( ls ${working_dir_1}/*'bfc'*'.nii'* )  #.gz## This is actually the MRI which will be the moving image.
 session_ct_bname_noext=$(basename ${session_ct})

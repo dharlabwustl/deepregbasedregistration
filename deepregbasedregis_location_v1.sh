@@ -355,11 +355,11 @@ fixed_image=${working_dir}/${fixed_image_filename%.nii*}'_normalized_fix.nii.gz'
 moving_image_filename=${session_ct_bname_noext}_brain_f.nii.gz
 moving_image_filename=${moving_image_filename%.nii*}resampled_normalized_mov.nii.gz
 registration_nii_file=${working_dir}/mov_${moving_image_filename%.nii*}_fixed_scct_strippedResampled1_normalized_fix_lin1.nii.gz
-fixed_image='/software/scct_strippedResampled1.nii.gz'
-echo $(ls ${fixed_image})
+#fixed_image=${working_dir}/'scct_strippedResampled1_normalized_fix.nii.gz' ###'/software/scct_strippedResampled1.nii.gz'
+#echo $(ls ${fixed_image})
 
 moving_image=${registration_nii_file} #${working_dir}/mov_${session_ct_bname_noext}_brain_f_fixed_scct_strippedResampled1_lin1.nii.gz ##${session_ct_bet_gray} ##${working_dir}/"mov_warped_mov_mni_icbm152_t1_tal_nlin_sym_55_ext_bet_gray_fixed_scct_strippedResampled1_lin1_fixed_${nifti_file_without_ext}_brain_f_lin1.nii.gz"
-echo $(ls ${moving_image})
+echo "moving_image::${moving_image}::"
 #####################################################################################################################
 
       /opt/conda/envs/deepreg/bin/python3 create_datah5files_May24_2023.py ${moving_image} ${fixed_image}

@@ -349,9 +349,9 @@ for niftifile_csvfilename in ${working_dir}/*NIFTILOCATION.csv; do
 moving_image_filename=${session_ct_bname_noext}_resaved_infarct_auto_removesmall.nii.gz
 moving_image_filename=${moving_image_filename%.nii*}resampled_mov.nii.gz
 infarct_mask_after_lin_reg=${working_dir}/mov_${moving_image_filename%.nii*}_fixed_scct_strippedResampled1_normalized_fix_lin1.nii.gz
-fixed_image_filename=/software/scct_strippedResampled1.nii.gz
-fixed_image=${working_dir}/${fixed_image_filename%.nii*}'_normalized_fix.nii.gz'
-
+#fixed_image_filename=/software/scct_strippedResampled1.nii.gz
+#fixed_image=${working_dir}/${fixed_image_filename%.nii*}'_normalized_fix.nii.gz'
+fixed_image=${working_dir}/'scct_strippedResampled1_normalized_fix.nii.gz'
 moving_image_filename=${session_ct_bname_noext}_brain_f.nii.gz
 moving_image_filename=${moving_image_filename%.nii*}resampled_normalized_mov.nii.gz
 registration_nii_file=${working_dir}/mov_${moving_image_filename%.nii*}_fixed_scct_strippedResampled1_normalized_fix_lin1.nii.gz

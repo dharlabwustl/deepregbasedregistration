@@ -354,7 +354,8 @@ infarct_mask_after_lin_reg=${working_dir}/mov_${moving_image_filename%.nii*}_fix
 fixed_image=${working_dir}/'scct_strippedResampled1_normalized_fix.nii.gz'
 moving_image_filename=${session_ct_bname_noext}_brain_f.nii.gz
 moving_image_filename=${moving_image_filename%.nii*}resampled_normalized_mov.nii.gz
-registration_nii_file=${working_dir}/mov_${moving_image_filename%.nii*}_fixed_scct_strippedResampled1_normalized_fix_lin1.nii.gz
+#mov_COLI_HSP58_09132020_1202_2_brain_fresampled_normalized_mov_fixed_scct_strippedResampled1_normalized_fix_lin1_brain_f.nii.gz
+registration_nii_file=${working_dir}/mov_${moving_image_filename%.nii*}_fixed_scct_strippedResampled1_normalized_fix_lin1_brain_f.nii.gz ##.nii.gz
 #fixed_image=${working_dir}/'scct_strippedResampled1_normalized_fix.nii.gz' ###'/software/scct_strippedResampled1.nii.gz'
 #echo $(ls ${fixed_image})
 

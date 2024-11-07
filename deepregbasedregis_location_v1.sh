@@ -67,7 +67,7 @@ copy_scan_data() {
   # dir_to_receive_the_data=sys.argv[2]
   # resource_dir=sys.argv[3]
   # scanID=$2
-  python -c "
+  /opt/conda/envs/deepreg/bin/python3 -c "
 import sys 
 sys.path.append('/Stroke_CT_Processing');
 from download_with_session_ID import *; 
@@ -166,7 +166,7 @@ nwucalculation_each_scan() {
     levelset_infarct_mask_file=${output_directory}/${infarctfilename}
     echo "levelset_infarct_mask_file:${levelset_infarct_mask_file}"
     ## preprocessing infarct mask:
-    python3 -c "
+    /opt/conda/envs/deepreg/bin/python3 -c "
 import sys ;
 sys.path.append('/software/') ;
 from utilities_simple_trimmed import * ;  levelset2originalRF_new_flip()" "${original_ct_file}" "${levelset_infarct_mask_file}" "${output_directory}"
@@ -174,7 +174,7 @@ from utilities_simple_trimmed import * ;  levelset2originalRF_new_flip()" "${ori
     ## preprocessing bet mask:
     levelset_bet_mask_file=${output_directory}/${betfilename}
     echo "levelset_bet_mask_file:${levelset_bet_mask_file}"
-    python3 -c "
+    /opt/conda/envs/deepreg/bin/python3 -c "
 
 import sys ;
 sys.path.append('/software/') ;
@@ -183,7 +183,7 @@ from utilities_simple_trimmed import * ;  levelset2originalRF_new_flip()" "${ori
     #### preprocessing csf mask:
     levelset_csf_mask_file=${output_directory}/${csffilename}
     echo "levelset_csf_mask_file:${levelset_csf_mask_file}"
-    python3 -c "
+    /opt/conda/envs/deepreg/bin/python3 -c "
 import sys ;
 sys.path.append('/software/') ;
 from utilities_simple_trimmed import * ;   levelset2originalRF_new_flip()" "${original_ct_file}" "${levelset_csf_mask_file}" "${output_directory}"
@@ -224,7 +224,7 @@ get_nifti_scan_uri() {
   output_dir=$(dirname ${output_csvfile})
   rm -r ${output_dir}/*
   # scanID=$2
-  python3 -c "
+  /opt/conda/envs/deepreg/bin/python3 -c "
 import sys 
 sys.path.append('/software');
 from download_with_session_ID import *; 
@@ -256,7 +256,7 @@ local snipr_output_foldername=${4}
 local mask_binary_output_filename=${5}
 
 echo ${mask_binary_output_dir}/${mask_binary_output_filename}
-python3 -c "
+/opt/conda/envs/deepreg/bin/python3 -c "
 import sys
 sys.path.append('/software');
 from download_with_session_ID import *;
@@ -269,7 +269,7 @@ getmaskfilesscanmetadata() {
   resource_foldername=${3} # sys.argv[3]
   dir_to_save=${4}         # sys.argv[4]
   csvfilename=${5}         # sys.argv[5]
-  python3 -c "
+  /opt/conda/envs/deepreg/bin/python3 -c "
 import sys 
 sys.path.append('/software');
 from download_with_session_ID import *; 

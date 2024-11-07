@@ -49,7 +49,7 @@ image_loss_config = {"name": "lncc"}
 deform_loss_config = {"name": "bending"}
 weight_deform_loss = 1
 learning_rate = 0.1
-number_it=5 ##3000
+number_it=3000
 total_iter = int(10) if args.test else int(number_it) #3000)
 
 # load images

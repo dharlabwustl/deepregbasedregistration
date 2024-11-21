@@ -30,6 +30,10 @@ if [[ ${TYPE_OF_PROGRAM} == 'APPLYDEEPREG_V1' ]]; then
   echo " I AM AT TYPE_OF_PROGRAM==APPLYDEEPREG_V1"
   /software/deepregbasedregis_location_v1.sh $SESSION_ID $XNAT_USER $XNAT_PASS $XNAT_HOST /input /output
 fi
+if [[ ${TYPE_OF_PROGRAM} == 'APPLYDEEPREG_V2' ]]; then
+  echo " I AM AT TYPE_OF_PROGRAM==APPLYDEEPREG_V2"
+  /software/deepregbasedregis_location_v2.sh $SESSION_ID $XNAT_USER $XNAT_PASS $XNAT_HOST /input /output
+fi
 
 if [[ ${TYPE_OF_PROGRAM} == 'APPLYDEEPREG' ]]; then
   echo " I AM AT TYPE_OF_PROGRAM==APPLYDEEPREG"

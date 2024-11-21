@@ -190,7 +190,7 @@ from utilities_simple_trimmed import * ;   levelset2originalRF_new_flip()" "${or
 
     lower_threshold=0
     upper_threshold=20
-    templatefilename=scct_strippedResampled1.nii.gz
+    templatefilename=${template_prefix}.nii.gz
     mask_on_template=midlinecssfResampled1.nii.gz
 
     x=$grayimage
@@ -333,7 +333,8 @@ for niftifile_csvfilename in ${working_dir}/*NIFTILOCATION.csv; do
       session_ct=$( ls ${working_dir_1}/*'.nii' )
       session_ct_bname_noext=$(basename ${session_ct})
       session_ct_bname_noext=${session_ct_bname_noext%.nii*}
-      template_ct='/software/COLIHM620406202215542.nii.gz' ###scct_strippedResampled1.nii.gz'
+      template_ct='/software/COLIHM620406202215542.nii.gz' ###${template_prefix}.nii.gz'
+      template_prefix='COLIHM620406202215542'
 #      template_masks_dir='/software/mritemplate/NONLINREGTOCT/'
 #      bet_mask_from_yasheng=$(ls ${working_dir}/${nifti_file_without_ext}*_resaved_levelset_bet.nii.gz)
 #      echo "levelset_bet_mask_file:${levelset_bet_mask_file}"
@@ -348,18 +349,18 @@ for niftifile_csvfilename in ${working_dir}/*NIFTILOCATION.csv; do
 #session_ct_bet_gray=$(ls ${output_directory}/${nifti_file_without_ext}*_brain_f.nii.gz ) ## fixed image
 moving_image_filename=${session_ct_bname_noext}_resaved_infarct_auto_removesmall.nii.gz
 moving_image_filename=${moving_image_filename%.nii*}resampled_mov.nii.gz
-infarct_mask_after_lin_reg=${working_dir}/mov_${moving_image_filename%.nii*}_fixed_scct_strippedResampled1_normalized_fix_lin1.nii.gz
-#fixed_image_filename=/software/scct_strippedResampled1.nii.gz
+infarct_mask_after_lin_reg=${working_dir}/mov_${moving_image_filename%.nii*}_fixed_${template_prefix}_normalized_fix_lin1.nii.gz
+#fixed_image_filename=/software/${template_prefix}.nii.gz
 #fixed_image=${working_dir}/${fixed_image_filename%.nii*}'_normalized_fix.nii.gz'
-fixed_image=${working_dir}/'scct_strippedResampled1_normalized_fix.nii.gz'
+fixed_image=${working_dir}/'${template_prefix}_normalized_fix.nii.gz'
 moving_image_filename=${session_ct_bname_noext}_brain_f.nii.gz
 moving_image_filename=${moving_image_filename%.nii*}resampled_normalized_mov.nii.gz
-#mov_COLI_HSP58_09132020_1202_2_brain_fresampled_normalized_mov_fixed_scct_strippedResampled1_normalized_fix_lin1_brain_f.nii.gz
-registration_nii_file=${working_dir}/mov_${moving_image_filename%.nii*}_fixed_scct_strippedResampled1_normalized_fix_lin1_brain_f.nii.gz ##.nii.gz
-#fixed_image=${working_dir}/'scct_strippedResampled1_normalized_fix.nii.gz' ###'/software/scct_strippedResampled1.nii.gz'
+#mov_COLI_HSP58_09132020_1202_2_brain_fresampled_normalized_mov_fixed_${template_prefix}_normalized_fix_lin1_brain_f.nii.gz
+registration_nii_file=${working_dir}/mov_${moving_image_filename%.nii*}_fixed_${template_prefix}_normalized_fix_lin1_brain_f.nii.gz ##.nii.gz
+#fixed_image=${working_dir}/'${template_prefix}_normalized_fix.nii.gz' ###'/software/${template_prefix}.nii.gz'
 #echo $(ls ${fixed_image})
 
-moving_image=${registration_nii_file} #${working_dir}/mov_${session_ct_bname_noext}_brain_f_fixed_scct_strippedResampled1_lin1.nii.gz ##${session_ct_bet_gray} ##${working_dir}/"mov_warped_mov_mni_icbm152_t1_tal_nlin_sym_55_ext_bet_gray_fixed_scct_strippedResampled1_lin1_fixed_${nifti_file_without_ext}_brain_f_lin1.nii.gz"
+moving_image=${registration_nii_file} #${working_dir}/mov_${session_ct_bname_noext}_brain_f_fixed_${template_prefix}_lin1.nii.gz ##${session_ct_bet_gray} ##${working_dir}/"mov_warped_mov_mni_icbm152_t1_tal_nlin_sym_55_ext_bet_gray_fixed_${template_prefix}_lin1_fixed_${nifti_file_without_ext}_brain_f_lin1.nii.gz"
 echo "moving_image::${moving_image}::fixed_image::${fixed_image}"
 #####################################################################################################################
 
@@ -369,11 +370,11 @@ echo "moving_image::${moving_image}::fixed_image::${fixed_image}"
       cp /software/data.h5 /software/DeepReg/demos/classical_mr_prostate_nonrigid/dataset/
       cp /software/demo_register_batch_atul.py /software/DeepReg/demos/classical_mr_prostate_nonrigid/
       /opt/conda/envs/deepreg/bin/python3 /software/demo_register_batch_atul.py /software/DeepReg/demos/classical_mr_prostate_nonrigid/dataset/data.h5 ${output_directory}
-#    infarct_mask_after_lin_reg=${working_dir}/mov_${session_ct_bname_noext}_resaved_infarct_auto_removesmall_fixed_scct_strippedResampled1_lin1.nii.gz
+#    infarct_mask_after_lin_reg=${working_dir}/mov_${session_ct_bname_noext}_resaved_infarct_auto_removesmall_fixed_${template_prefix}_lin1.nii.gz
 
 #    location_mask_directory=${working_dir}
     original_nifti_filename=$(ls ${working_dir_1}/*.nii)
-#    for each_location_mask in ${location_mask_directory}/mov*resaved_infarct_auto_removesmall_fixed_scct_strippedResampled1_lin1_BET.nii.gz ; do
+#    for each_location_mask in ${location_mask_directory}/mov*resaved_infarct_auto_removesmall_fixed_${template_prefix}_lin1_BET.nii.gz ; do
 #      echo ${each_location_mask}
     echo $(ls ${infarct_mask_after_lin_reg})
       echo "/opt/conda/envs/deepreg/bin/python3 /software/runoncsfmask_atul09272024.py ${infarct_mask_after_lin_reg} ${working_dir_1} ${sessionID} ${scanID} $(basename  ${original_nifti_filename})"
@@ -408,7 +409,7 @@ echo "moving_image::${moving_image}::fixed_image::${fixed_image}"
 #  outputfiles_present=$(/opt/conda/envs/deepreg/bin/python3 utilities_simple_trimmed.py "${call_function[@]}")
 #  done
       ## COPY IT TO THE SNIPR RESPECTIVE SCAN RESOURCES
-#      file_suffixes=( warped_1_*resaved_infarct_auto_removesmall_fixed_scct_strippedResampled1_lin1_BET* ) #sys.argv[5]
+#      file_suffixes=( warped_1_*resaved_infarct_auto_removesmall_fixed_${template_prefix}_lin1_BET* ) #sys.argv[5]
 #      for file_suffix in ${file_suffixes[@]}; do
 #        copyoutput_with_prefix_to_snipr ${sessionID} ${scanID} "${working_dir_1}" ${snipr_output_foldername} ${file_suffix}
 #      done

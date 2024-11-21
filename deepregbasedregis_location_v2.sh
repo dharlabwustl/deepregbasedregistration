@@ -349,14 +349,14 @@ for niftifile_csvfilename in ${working_dir}/*NIFTILOCATION.csv; do
 #session_ct_bet_gray=$(ls ${output_directory}/${nifti_file_without_ext}*_brain_f.nii.gz ) ## fixed image
 moving_image_filename=${session_ct_bname_noext}_resaved_infarct_auto_removesmall.nii.gz
 moving_image_filename=${moving_image_filename%.nii*}resampled_mov.nii.gz
-infarct_mask_after_lin_reg=${working_dir}/mov_${moving_image_filename%.nii*}_fixed_${template_prefix}_normalized_fix_lin1.nii.gz
+infarct_mask_after_lin_reg=${working_dir}/mov_${moving_image_filename%.nii*}_fixed_${template_prefix}_lin1.nii.gz
 #fixed_image_filename=/software/${template_prefix}.nii.gz
 #fixed_image=${working_dir}/${fixed_image_filename%.nii*}'_normalized_fix.nii.gz'
 fixed_image=${working_dir}/${template_prefix}_normalized_fix.nii.gz
 moving_image_filename=${session_ct_bname_noext}_brain_f.nii.gz
 moving_image_filename=${moving_image_filename%.nii*}resampled_normalized_mov.nii.gz
-#mov_COLI_HSP58_09132020_1202_2_brain_fresampled_normalized_mov_fixed_${template_prefix}_normalized_fix_lin1_brain_f.nii.gz
-registration_nii_file=${working_dir}/mov_${moving_image_filename%.nii*}_fixed_${template_prefix}_normalized_fix_lin1_brain_f.nii.gz ##.nii.gz
+#mov_COLI_HSP58_09132020_1202_2_brain_fresampled_normalized_mov_fixed_${template_prefix}_lin1_brain_f.nii.gz
+registration_nii_file=${working_dir}/mov_${moving_image_filename%.nii*}_fixed_${template_prefix}_lin1_brain_f.nii.gz ##.nii.gz
 #fixed_image=${working_dir}/'${template_prefix}_normalized_fix.nii.gz' ###'/software/${template_prefix}.nii.gz'
 #echo $(ls ${fixed_image})
 

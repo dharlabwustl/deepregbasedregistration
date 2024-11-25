@@ -49,5 +49,11 @@ if [[ ${TYPE_OF_PROGRAM} == 'APPLYDEEPREGTOMRI' ]]; then
     /software/deepregbasedregis_location_MRI_11042024.sh $SESSION_ID $XNAT_USER $XNAT_PASS $XNAT_HOST /input /output
 
 fi
+if [[ ${TYPE_OF_PROGRAM} == 'APPLYDEEPREGTOMRIREFCOLIHLP62' ]]; then
+  echo " I AM AT TYPE_OF_PROGRAM==APPLYDEEPREGTOMRIREFCOLIHLP62"
+#  /software/deepregapplication.sh $SESSION_ID $XNAT_USER $XNAT_PASS $XNAT_HOST /input /output
+    /software/deepregbasedregis_location_MRI_REGTO_COLIHLP62.sh $SESSION_ID $XNAT_USER $XNAT_PASS $XNAT_HOST /input /output
+
+fi
 
 

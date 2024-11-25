@@ -292,8 +292,8 @@ session_ct_bname_noext=$(basename ${session_ct})
 session_ct_bname_noext=${session_ct_bname_noext%.nii*}
 template_ct=/software/COLIHM620406202215542.nii.gz #$( ls ${working_dir_1}/'scct_strippedResampled1'*'.nii'* )  ##'/software/scct_strippedResampled1.nii.gz' ##.gz##'/software/scct_strippedResampled1.nii.gz'
 #
-moving_image_filename=$( ls ${working_dir}/*${session_ct_bname_noext}*'.nii'* )  #.gz  ##${session_ct_bname_noext}_resaved_infarct_auto_removesmall.nii.gz
-moving_image_filename=mov_$(basename ${session_ct%.nii*}_fixed_$(basename ${template_ct%.nii*}_lin1.nii.gz))
+#moving_image_filename=$( ls ${working_dir}/*${session_ct_bname_noext}*'.nii'* )  #.gz  ##${session_ct_bname_noext}_resaved_infarct_auto_removesmall.nii.gz
+moving_image_filename=${working_dir}/mov_$(basename ${session_ct%.nii*}_fixed_$(basename ${template_ct%.nii*}_lin1.nii.gz))
 
 original_nifti_filename=$(ls ${working_dir_1}/*bfc.nii*)
 fixed_image=${template_ct} ##'/software/scct_strippedResampled1.nii.gz' ##$#${template_ct}

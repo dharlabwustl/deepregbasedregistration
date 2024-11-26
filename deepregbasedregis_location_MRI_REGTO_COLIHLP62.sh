@@ -291,7 +291,7 @@ session_ct=$( ls ${working_dir_1}/*'bfc'*'.nii'* )  #.gz## This is actually the 
 session_ct_bname_noext=$(basename ${session_ct})
 session_ct_bname_noext=${session_ct_bname_noext%.nii*}
 template_ct=/software/COLIHM620406202215542.nii.gz #$( ls ${working_dir_1}/'scct_strippedResampled1'*'.nii'* )  ##'/software/scct_strippedResampled1.nii.gz' ##.gz##'/software/scct_strippedResampled1.nii.gz'
-#
+template_ct_noext='COLIHM620406202215542'
 #moving_image_filename=$( ls ${working_dir}/*${session_ct_bname_noext}*'.nii'* )  #.gz  ##${session_ct_bname_noext}_resaved_infarct_auto_removesmall.nii.gz
 moving_image_filename=${working_dir}/mov_$(basename ${session_ct%.nii*}_fixed_$(basename ${template_ct%.nii*}_lin1.nii.gz))
 
@@ -313,14 +313,14 @@ cp /software/demo_register_batch_atul.py /software/DeepReg/demos/classical_mr_pr
 ##    for each_location_mask in ${location_mask_directory}/mov*resaved_infarct_auto_removesmall_fixed_scct_strippedResampled1_lin1_BET.nii.gz ; do
 ##      echo ${each_location_mask}
 #    echo $(ls ${infarct_mask_after_lin_reg})
-for maskfile in ${working_dir}/mov*COLIHM620406202215542*BET*.nii*  ; do #.gz
+for maskfile in ${working_dir}/mov*${template_ct_noext}*BET*.nii*  ; do #.gz
       echo "/opt/conda/envs/deepreg/bin/python3 /software/runoncsfmask_atul09272024.py ${maskfile} ${output_directory} ${sessionID} ${scanID} $(basename  ${original_nifti_filename})"
       /opt/conda/envs/deepreg/bin/python3 /software/runoncsfmask_atul09272024.py ${maskfile} ${output_directory} ${sessionID} ${scanID} $(basename  ${original_nifti_filename})
 
   done
 
       snipr_output_foldername="PREPROCESS_SEGM_1"
-      all_warped_files=$(find ../ -name 'warped_1'*COLIHM620406202215542*'.nii.gz')
+      all_warped_files=$(find ../ -name 'warped_1'*${template_ct_noext}*'.nii.gz')
       for eachfile in ${all_warped_files};
       do
         echo ${eachfile}

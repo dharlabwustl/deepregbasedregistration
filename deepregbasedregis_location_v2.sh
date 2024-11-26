@@ -386,7 +386,7 @@ echo "moving_image::${moving_image}::fixed_image::${fixed_image}"
 #      uploadsinglefile ${sessionID} ${scanID} ${mask_binary_output_dir} ${snipr_output_foldername} ${mask_binary_output_filename}
 #      uploadsinglefile ${sessionID} ${scanID} ${mask_binary_output_dir} ${snipr_output_foldername} ${mask_binary_output_filename}
             snipr_output_foldername="PREPROCESS_SEGM"
-            all_warped_files=$(find ../ -name 'warped_1'*'.nii.gz')
+            all_warped_files=$(find ../ -name 'warped_1'*${template_prefix}'.nii.gz')
             for eachfile in ${all_warped_files};
             do
               echo ${eachfile}

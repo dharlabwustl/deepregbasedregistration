@@ -313,14 +313,14 @@ cp /software/demo_register_batch_atul.py /software/DeepReg/demos/classical_mr_pr
 ##    for each_location_mask in ${location_mask_directory}/mov*resaved_infarct_auto_removesmall_fixed_scct_strippedResampled1_lin1_BET.nii.gz ; do
 ##      echo ${each_location_mask}
 #    echo $(ls ${infarct_mask_after_lin_reg})
-for maskfile in ${working_dir}/mov*BET*.nii*  ; do #.gz
+for maskfile in ${working_dir}/mov*COLIHM620406202215542*BET*.nii*  ; do #.gz
       echo "/opt/conda/envs/deepreg/bin/python3 /software/runoncsfmask_atul09272024.py ${maskfile} ${output_directory} ${sessionID} ${scanID} $(basename  ${original_nifti_filename})"
       /opt/conda/envs/deepreg/bin/python3 /software/runoncsfmask_atul09272024.py ${maskfile} ${output_directory} ${sessionID} ${scanID} $(basename  ${original_nifti_filename})
 
   done
 
       snipr_output_foldername="PREPROCESS_SEGM_1"
-      all_warped_files=$(find ../ -name 'warped_1'*'.nii.gz')
+      all_warped_files=$(find ../ -name 'warped_1'*COLIHM620406202215542*'.nii.gz')
       for eachfile in ${all_warped_files};
       do
         echo ${eachfile}

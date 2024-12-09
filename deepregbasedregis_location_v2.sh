@@ -381,6 +381,12 @@ echo "moving_image::${moving_image}::fixed_image::${fixed_image}"
     infarct_mask_after_lin_reg=${working_dir}/mov_${moving_image_filename%.nii*}_fixed_${template_prefix}_lin1_BET.nii.gz
       echo "/opt/conda/envs/deepreg/bin/python3 /software/runoncsfmask_atul09272024.py ${infarct_mask_after_lin_reg} ${working_dir_1} ${sessionID} ${scanID} $(basename  ${original_nifti_filename})"
       /opt/conda/envs/deepreg/bin/python3 /software/runoncsfmask_atul09272024.py ${infarct_mask_after_lin_reg} ${working_dir_1} ${sessionID} ${scanID} $(basename  ${original_nifti_filename})
+#      done mov_COLI_HLP12_09122020_2351_3_resaved_csf_unet_fixed_COLIHM620406202215542_lin1_BET.nii.gz
+    moving_image_filename=${session_ct_bname_noext}_resaved_csf_unet.nii.gz
+    #moving_image_filename=${moving_image_filename%.nii*}resampled_mov.nii.gz
+      csf_mask_after_lin_reg=${working_dir}/mov_${moving_image_filename%.nii*}_fixed_${template_prefix}_lin1_BET.nii.gz
+      echo "/opt/conda/envs/deepreg/bin/python3 /software/runoncsfmask_atul09272024.py ${csf_mask_after_lin_reg} ${working_dir_1} ${sessionID} ${scanID} $(basename  ${original_nifti_filename})"
+      /opt/conda/envs/deepreg/bin/python3 /software/runoncsfmask_atul09272024.py ${csf_mask_after_lin_reg} ${working_dir_1} ${sessionID} ${scanID} $(basename  ${original_nifti_filename})
 #      done
 
       snipr_output_foldername="PREPROCESS_SEGM"

@@ -63,11 +63,11 @@ print(FILE_PATH)
 ## modified on December 24 2024
 image_loss_config = {
     "metrics": [
-        {"name": "mse", "weight": 0.7},    # MSE with weight 0.7
+        {"name": "mse", "weight": 1},    # MSE with weight 0.7
         # {"name": "lncc", "weight": 0.3},  # LNCC with weight 0.3
     ]
 }
-deform_loss_config = {"name": "bending"}
+# deform_loss_config = {"name": "bending"}
 weight_deform_loss = 1
 learning_rate = 0.1
 number_it=3000  #*4
@@ -152,7 +152,7 @@ for step in range(total_iter):
             loss_opt,
             image_loss_config["name"],
             loss_image_opt,
-            deform_loss_config["name"],
+            # deform_loss_config["name"],
             loss_deform_opt,
         )
 

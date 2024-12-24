@@ -64,7 +64,7 @@ print(FILE_PATH)
 image_loss_config = {
     "metrics": [
         {"name": "mse", "weight": 0.7},    # MSE with weight 0.7
-        {"name": "lncc", "weight": 0.3},  # LNCC with weight 0.3
+        # {"name": "lncc", "weight": 0.3},  # LNCC with weight 0.3
     ]
 }
 deform_loss_config = {"name": "bending"}
@@ -105,27 +105,28 @@ def train_step(warper, weights, optimizer, mov, fix) -> tuple:
     with tf.GradientTape() as tape:
         pred = warper(inputs=[weights, mov])
         loss_image = 0
-        for metric in image_loss_config["metrics"]:
-            if metric["name"] == "mse":
-                loss_image += metric["weight"] * tf.reduce_mean(tf.square(fix - pred))
-            elif metric["name"] == "lncc":
-                loss_image += metric["weight"] * REGISTRY.build_loss({"name": "lncc"})(y_true=fix, y_pred=pred)
+        # for metric in image_loss_config["metrics"]:
+        #     if metric["name"] == "mse":
+        #         loss_image += metric["weight"] * tf.reduce_mean(tf.square(fix - pred))
+        #     elif metric["name"] == "lncc":
+        #         loss_image += metric["weight"] * REGISTRY.build_loss({"name": "lncc"})(y_true=fix, y_pred=pred)
 
         # Compute smoothness regularization loss
-        loss_deform = regularization_loss(weights)
 
-        # Combine total loss
-        loss = loss_image + weight_deform_loss * loss_deform
         # loss_image = REGISTRY.build_loss(config=image_loss_config)(
         #     y_true=fix,
         #     y_pred=pred,
         # )
-        # loss_image = tf.reduce_mean(tf.square(fix - pred))  # MSE
+        loss_image = tf.reduce_mean(tf.square(fix - pred))  # MSE
         #
         # loss_deform = REGISTRY.build_loss(config=deform_loss_config)(
         #     inputs=weights,
         # )
         # loss = loss_image + weight_deform_loss * loss_deform
+        loss_deform = regularization_loss(weights)
+
+        # Combine total loss
+        loss = loss_image + weight_deform_loss * loss_deform
     gradients = tape.gradient(loss, [weights])
     optimizer.apply_gradients(zip(gradients, [weights]))
     return loss, loss_image, loss_deform

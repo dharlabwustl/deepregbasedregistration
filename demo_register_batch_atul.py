@@ -61,12 +61,13 @@ FILE_PATH = os.path.join(DATA_PATH,args.thisfilename) #sys.argv[1]) ### "demo2.h
 print(FILE_PATH)
 # registration parameters
 ## modified on December 24 2024
-image_loss_config = {
-    "metrics": [
-        {"name": "mse", "weight": 1},    # MSE with weight 0.7
-        # {"name": "lncc", "weight": 0.3},  # LNCC with weight 0.3
-    ]
-}
+image_loss_config = {"name": "mse"}
+# image_loss_config = {
+#     "metrics": [
+#         {"name": "mse", "weight": 1},    # MSE with weight 0.7
+#         # {"name": "lncc", "weight": 0.3},  # LNCC with weight 0.3
+#     ]
+# }
 # deform_loss_config = {"name": "bending"}
 weight_deform_loss = 1
 learning_rate = 0.1

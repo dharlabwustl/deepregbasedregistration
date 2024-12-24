@@ -45,7 +45,7 @@ DATA_PATH = "dataset"
 FILE_PATH = os.path.join(DATA_PATH,args.thisfilename) #sys.argv[1]) ### "demo2.h5")
 print(FILE_PATH)
 # registration parameters
-image_loss_config = {"name": "mse"}
+image_loss_config = {"name": "lncc"}
 deform_loss_config = {"name": "bending"}
 weight_deform_loss = 1
 learning_rate = 0.1
@@ -83,25 +83,14 @@ def train_step(warper, weights, optimizer, mov, fix) -> tuple:
     """
     with tf.GradientTape() as tape:
         pred = warper(inputs=[weights, mov])
-        # loss_image = REGISTRY.build_loss(config=image_loss_config)(
-        #     y_true=fix,
-        #     y_pred=pred,
-        # )
-        # loss_deform = REGISTRY.build_loss(config=deform_loss_config)(
-        #     inputs=weights,
-        # )
-        # loss = loss_image + weight_deform_loss * loss_deform
-        # Compute similarity loss (MSE)
-        sim_loss = tf.reduce_mean(tf.square(fix - pred))
-
-        # Compute regularization loss (smoothness of the deformation field)
-        dx = tf.abs(weights[:, 1:, :, :, :] - weights[:, :-1, :, :, :])  # x-gradient
-        dy = tf.abs(weights[:, :, 1:, :, :] - weights[:, :, :-1, :, :])  # y-gradient
-        dz = tf.abs(weights[:, :, :, 1:, :] - weights[:, :, :, :-1, :])  # z-gradient
-        reg_loss = tf.reduce_mean(dx) + tf.reduce_mean(dy) + tf.reduce_mean(dz)
-
-        # Combine total loss
-        total_loss = 1.0 * sim_loss + 0.1 * reg_loss
+        loss_image = REGISTRY.build_loss(config=image_loss_config)(
+            y_true=fix,
+            y_pred=pred,
+        )
+        loss_deform = REGISTRY.build_loss(config=deform_loss_config)(
+            inputs=weights,
+        )
+        loss = loss_image + weight_deform_loss * loss_deform
     gradients = tape.gradient(loss, [weights])
     optimizer.apply_gradients(zip(gradients, [weights]))
     return loss, loss_image, loss_deform

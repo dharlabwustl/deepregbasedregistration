@@ -18,10 +18,12 @@ def gray2binary(filename_template):
     return niigzfilenametosave2
 def createh5file(image0_file,image1_file,label0_file,label1_file,output_dir="./"):
     image0=nib.load(image0_file).get_fdata() #'/home/atul/Documents/DEEPREG/DeepReg/demos/classical_mr_prostate_nonrigid/dataset/fixed_images/case_001.nii.gz').get_fdata()
+    image0 = (image0 - np.min(image0)) / (np.max(image0) - np.min(image0))
 
     ## import gray 1
     image1=nib.load(image1_file).get_fdata() #nib.load('/home/atul/Documents/DEEPREG/DeepReg/demos/classical_mr_prostate_nonrigid/dataset/fixed_images/case_009.nii.gz').get_fdata()
-    # import label 0
+    image1 = (image1 - np.min(image0)) / (np.max(image1) - np.min(image1))
+# import label 0
     label0=nib.load(label0_file).get_fdata() # nib.load('/home/atul/Documents/DEEPREG/DeepReg/demos/classical_mr_prostate_nonrigid/dataset/fixed_labels/case_001.nii.gz').get_fdata()
     # import label 1
     label1=nib.load(label1_file).get_fdata() #nib.load('/home/atul/Documents/DEEPREG/DeepReg/demos/classical_mr_prostate_nonrigid/dataset/fixed_labels/case_009.nii.gz').get_fdata()

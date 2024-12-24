@@ -45,7 +45,9 @@ DATA_PATH = "dataset"
 FILE_PATH = os.path.join(DATA_PATH,args.thisfilename) #sys.argv[1]) ### "demo2.h5")
 print(FILE_PATH)
 # registration parameters
-image_loss_config = {"name": "lncc"}
+## modified on December 24 2024
+image_loss_config = {"name": "mse"}  # Use Mean Squared Error for similarity {"name": "lncc"}
+
 deform_loss_config = {"name": "bending"}
 weight_deform_loss = 1
 learning_rate = 0.1
@@ -83,10 +85,12 @@ def train_step(warper, weights, optimizer, mov, fix) -> tuple:
     """
     with tf.GradientTape() as tape:
         pred = warper(inputs=[weights, mov])
-        loss_image = REGISTRY.build_loss(config=image_loss_config)(
-            y_true=fix,
-            y_pred=pred,
-        )
+        # loss_image = REGISTRY.build_loss(config=image_loss_config)(
+        #     y_true=fix,
+        #     y_pred=pred,
+        # )
+        loss_image = tf.reduce_mean(tf.square(fix - pred))  # MSE
+
         loss_deform = REGISTRY.build_loss(config=deform_loss_config)(
             inputs=weights,
         )

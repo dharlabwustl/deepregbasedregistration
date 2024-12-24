@@ -126,7 +126,8 @@ def train_step(warper, weights, optimizer, mov, fix) -> tuple:
         loss_deform = regularization_loss(weights)
 
         # Combine total loss
-        loss = loss_image + weight_deform_loss * loss_deform
+        # loss = loss_image + weight_deform_loss * loss_deform
+        loss = 1 * loss_image + 0.1 * loss_deform
     gradients = tape.gradient(loss, [weights])
     optimizer.apply_gradients(zip(gradients, [weights]))
     return loss, loss_image, loss_deform

@@ -92,16 +92,16 @@ def train_step(warper, weights, optimizer, mov, fix) -> tuple:
         # )
         # loss = loss_image + weight_deform_loss * loss_deform
         # Compute similarity loss (MSE)
-        sim_loss = tf.reduce_mean(tf.square(fix - pred))
+        loss_image = tf.reduce_mean(tf.square(fix - pred))
 
         # Compute regularization loss (smoothness of the deformation field)
         dx = tf.abs(weights[:, 1:, :, :, :] - weights[:, :-1, :, :, :])  # x-gradient
         dy = tf.abs(weights[:, :, 1:, :, :] - weights[:, :, :-1, :, :])  # y-gradient
         dz = tf.abs(weights[:, :, :, 1:, :] - weights[:, :, :, :-1, :])  # z-gradient
-        reg_loss = tf.reduce_mean(dx) + tf.reduce_mean(dy) + tf.reduce_mean(dz)
+        loss_deform = tf.reduce_mean(dx) + tf.reduce_mean(dy) + tf.reduce_mean(dz)
 
         # Combine total loss
-        loss = 1.0 * sim_loss + 0.1 * reg_loss
+        loss = 1.0 * loss_image + 0.1 * loss_deform
     gradients = tape.gradient(loss, [weights])
     optimizer.apply_gradients(zip(gradients, [weights]))
     return loss, loss_image, loss_deform

@@ -101,7 +101,7 @@ def train_step(warper, weights, optimizer, mov, fix) -> tuple:
         reg_loss = tf.reduce_mean(dx) + tf.reduce_mean(dy) + tf.reduce_mean(dz)
 
         # Combine total loss
-        total_loss = 1.0 * sim_loss + 0.1 * reg_loss
+        loss = 1.0 * sim_loss + 0.1 * reg_loss
     gradients = tape.gradient(loss, [weights])
     optimizer.apply_gradients(zip(gradients, [weights]))
     return loss, loss_image, loss_deform

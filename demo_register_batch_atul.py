@@ -58,33 +58,51 @@ fixed_image = tf.cast(tf.expand_dims(fid["image1"], axis=0), dtype=tf.float32)
 # Normalized Mutual Information (NMI) Loss Function
 def normalized_mutual_information_loss(fixed, warped, num_bins=32):
     """
-    Compute the negative normalized mutual information between two images.
+    Compute the negative normalized mutual information (NMI) between two images.
+
     Args:
-        fixed (tf.Tensor): Fixed image tensor [1, D, H, W].
-        warped (tf.Tensor): Warped image tensor [1, D, H, W].
+        fixed (tf.Tensor): Fixed image tensor of shape [1, D, H, W].
+        warped (tf.Tensor): Warped image tensor of shape [1, D, H, W].
         num_bins (int): Number of histogram bins for intensity values.
+
     Returns:
         tf.Tensor: Negative normalized mutual information loss.
     """
+    # Flatten the tensors
     fixed_flat = tf.reshape(fixed, [-1])
     warped_flat = tf.reshape(warped, [-1])
 
-    # Joint histogram
-    joint_hist = tf.histogram_fixed_width_2d(fixed_flat, warped_flat, [num_bins, num_bins], dtype=tf.int32)
-    joint_hist = tf.cast(joint_hist, tf.float32)
-    joint_hist /= tf.reduce_sum(joint_hist)  # Normalize joint histogram
+    # Define histogram bin edges
+    bin_edges = tf.linspace(0.0, 1.0, num_bins + 1)
 
-    # Marginal histograms
-    fixed_hist = tf.reduce_sum(joint_hist, axis=1)  # Marginal histogram for fixed
-    warped_hist = tf.reduce_sum(joint_hist, axis=0)  # Marginal histogram for warped
+    # Compute histograms
+    fixed_hist = tf.histogram_fixed_width(fixed_flat, [0.0, 1.0], nbins=num_bins)
+    warped_hist = tf.histogram_fixed_width(warped_flat, [0.0, 1.0], nbins=num_bins)
 
-    # Entropy terms
+    # Compute joint histogram manually
+    joint_hist = tf.zeros([num_bins, num_bins], dtype=tf.float32)
+    for i in range(num_bins):
+        for j in range(num_bins):
+            joint_hist = tf.tensor_scatter_nd_add(
+                joint_hist,
+                [[i, j]],
+                [tf.reduce_sum(tf.cast((fixed_flat >= bin_edges[i]) & (fixed_flat < bin_edges[i + 1]) &
+                                       (warped_flat >= bin_edges[j]) & (warped_flat < bin_edges[j + 1]), tf.float32))]
+            )
+
+    # Normalize histograms
+    joint_hist /= tf.reduce_sum(joint_hist)
+    fixed_hist = tf.cast(fixed_hist, tf.float32) / tf.reduce_sum(fixed_hist)
+    warped_hist = tf.cast(warped_hist, tf.float32) / tf.reduce_sum(warped_hist)
+
+    # Compute entropy terms
     H_fixed = -tf.reduce_sum(fixed_hist * tf.math.log(fixed_hist + 1e-8))
     H_warped = -tf.reduce_sum(warped_hist * tf.math.log(warped_hist + 1e-8))
     H_joint = -tf.reduce_sum(joint_hist * tf.math.log(joint_hist + 1e-8))
 
-    # Normalized mutual information
+    # Compute normalized mutual information
     nmi = (H_fixed + H_warped) / (H_joint + 1e-8)
+
     return -nmi  # Return negative NMI for optimization
 
 # Optimization function

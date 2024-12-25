@@ -75,9 +75,9 @@ def normalized_mutual_information_loss(fixed, warped, num_bins=32):
     # Define histogram bin edges
     bin_edges = tf.linspace(0.0, 1.0, num_bins + 1)
 
-    # Compute histograms
-    fixed_hist = tf.histogram_fixed_width(fixed_flat, [0.0, 1.0], nbins=num_bins)
-    warped_hist = tf.histogram_fixed_width(warped_flat, [0.0, 1.0], nbins=num_bins)
+    # Compute histograms (cast results to tf.float32)
+    fixed_hist = tf.cast(tf.histogram_fixed_width(fixed_flat, [0.0, 1.0], nbins=num_bins), tf.float32)
+    warped_hist = tf.cast(tf.histogram_fixed_width(warped_flat, [0.0, 1.0], nbins=num_bins), tf.float32)
 
     # Compute joint histogram manually
     joint_hist = tf.zeros([num_bins, num_bins], dtype=tf.float32)
@@ -95,8 +95,8 @@ def normalized_mutual_information_loss(fixed, warped, num_bins=32):
 
     # Normalize histograms
     joint_hist /= tf.reduce_sum(joint_hist)
-    fixed_hist = tf.cast(fixed_hist, tf.float32) / tf.reduce_sum(fixed_hist)
-    warped_hist = tf.cast(warped_hist, tf.float32) / tf.reduce_sum(warped_hist)
+    fixed_hist /= tf.reduce_sum(fixed_hist)
+    warped_hist /= tf.reduce_sum(warped_hist)
 
     # Compute entropy terms
     H_fixed = -tf.reduce_sum(fixed_hist * tf.math.log(fixed_hist + 1e-8))

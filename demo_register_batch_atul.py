@@ -83,11 +83,14 @@ def normalized_mutual_information_loss(fixed, warped, num_bins=32):
     joint_hist = tf.zeros([num_bins, num_bins], dtype=tf.float32)
     for i in range(num_bins):
         for j in range(num_bins):
+            condition = (
+                    (fixed_flat >= bin_edges[i]) & (fixed_flat < bin_edges[i + 1]) &
+                    (warped_flat >= bin_edges[j]) & (warped_flat < bin_edges[j + 1])
+            )
             joint_hist = tf.tensor_scatter_nd_add(
                 joint_hist,
                 [[i, j]],
-                [tf.reduce_sum(tf.cast((fixed_flat >= bin_edges[i]) & (fixed_flat < bin_edges[i + 1]) &
-                                       (warped_flat >= bin_edges[j]) & (warped_flat < bin_edges[j + 1]), tf.float32))]
+                [tf.reduce_sum(tf.cast(condition, tf.float32))]
             )
 
     # Normalize histograms

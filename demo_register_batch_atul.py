@@ -45,7 +45,7 @@ DATA_PATH = "dataset"
 FILE_PATH = os.path.join(DATA_PATH,args.thisfilename) #sys.argv[1]) ### "demo2.h5")
 print(FILE_PATH)
 # registration parameters
-image_loss_config = {"name": "lncc"}
+image_loss_config = {"name": "gmi"}
 deform_loss_config = {"name": "bending"}
 weight_deform_loss = 1
 learning_rate = 0.1

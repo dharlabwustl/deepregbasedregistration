@@ -47,13 +47,13 @@ print(FILE_PATH)
 # registration parameters
 image_loss_configs = [
     {"name": "lncc"},  # Local normalized cross-correlation
-    {"name": "nmi"},   # Normalized mutual information
+    {"name": "gmi"},   # Normalized mutual information
 ]
 deform_loss_configs = [
     {"name": "bending"},  # Bending energy regularization
     {"name": "elastic"},  # Elastic regularization
 ]
-weights = {"lncc": 1.0, "nmi": 0.5, "bending": 1.0, "elastic": 0.5}
+weights = {"lncc": 1.0, "gmi": 0.5, "bending": 1.0, "elastic": 0.5}
 
 learning_rate = 0.1
 number_it=3000  #*4
@@ -84,21 +84,21 @@ def train_step(warper, weights, optimizer, mov, fix) -> tuple:
     :return:
         a tuple:
             - loss: overall loss to optimise
-            - individual losses: lncc, nmi, bending, elastic
+            - individual losses: lncc, gmi, bending, elastic
     """
     with tf.GradientTape() as tape:
         pred = warper(inputs=[weights, mov])
 
         # Compute individual losses
         loss_lncc = REGISTRY.build_loss(image_loss_configs[0])(y_true=fix, y_pred=pred)
-        loss_nmi = REGISTRY.build_loss(image_loss_configs[1])(y_true=fix, y_pred=pred)
+        loss_gmi = REGISTRY.build_loss(image_loss_configs[1])(y_true=fix, y_pred=pred)
         loss_bending = REGISTRY.build_loss(deform_loss_configs[0])(inputs=weights)
         loss_elastic = REGISTRY.build_loss(deform_loss_configs[1])(inputs=weights)
 
         # Total loss
         total_loss = (
                 weights["lncc"] * loss_lncc +
-                weights["nmi"] * loss_nmi +
+                weights["gmi"] * loss_gmi +
                 weights["bending"] * loss_bending +
                 weights["elastic"] * loss_elastic
         )
@@ -106,7 +106,7 @@ def train_step(warper, weights, optimizer, mov, fix) -> tuple:
     gradients = tape.gradient(total_loss, [weights])
     optimizer.apply_gradients(zip(gradients, [weights]))
 
-    return total_loss, loss_lncc, loss_nmi, loss_bending, loss_elastic
+    return total_loss, loss_lncc, loss_gmi, loss_bending, loss_elastic
 
 # ddf as trainable weights
 fixed_image_size = fixed_image.shape
@@ -116,7 +116,7 @@ var_ddf = tf.Variable(initializer(fixed_image_size + [3]), name="ddf", trainable
 warping = layer.Warping(fixed_image_size=fixed_image_size[1:4])
 optimiser = tf.optimizers.Adam(learning_rate)
 for step in range(total_iter):
-    loss_opt, loss_lncc, loss_nmi, loss_bending, loss_elastic = train_step(
+    loss_opt, loss_lncc, loss_gmi, loss_bending, loss_elastic = train_step(
         warping, var_ddf, optimiser, moving_image, fixed_image
     )
     if (step % 50) == 0:  # print info
@@ -128,7 +128,7 @@ for step in range(total_iter):
             "LNCC",
             loss_lncc,
             "NMI",
-            loss_nmi,
+            loss_gmi,
             "Bending",
             loss_bending,
             "Elastic",

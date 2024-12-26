@@ -18,9 +18,9 @@ from deepreg.registry import REGISTRY
 # python script.py --full
 parser = argparse.ArgumentParser()
 parser.add_argument("thisfilename",
-                    help="The name of the current file to be used for registration")
+                   help="The name of the current file to be used for registration")
 parser.add_argument("thisdirectoryname",
-                    help="The name of the current file to be used for registration")
+                   help="The name of the current file to be used for registration")
 parser.add_argument(
     "--test",
     help="Execute the script with reduced image size for test purpose.",
@@ -45,16 +45,9 @@ DATA_PATH = "dataset"
 FILE_PATH = os.path.join(DATA_PATH,args.thisfilename) #sys.argv[1]) ### "demo2.h5")
 print(FILE_PATH)
 # registration parameters
-image_loss_configs = [
-    {"name": "lncc"},  # Local normalized cross-correlation
-    {"name": "nmi"},   # Normalized mutual information
-]
-deform_loss_configs = [
-    {"name": "bending"},  # Bending energy regularization
-    {"name": "elastic"},  # Elastic regularization
-]
-weights = {"lncc": 1.0, "nmi": 0.5, "bending": 1.0, "elastic": 0.5}
-
+image_loss_config = {"name": "lncc"}
+deform_loss_config = {"name": "bending"}
+weight_deform_loss = 1
 learning_rate = 0.1
 number_it=3000  #*4
 total_iter = int(10) if args.test else int(number_it) #3000)
@@ -70,6 +63,7 @@ fid = h5py.File(FILE_PATH, "r")
 moving_image = tf.cast(tf.expand_dims(fid["image0"], axis=0), dtype=tf.float32)
 fixed_image = tf.cast(tf.expand_dims(fid["image1"], axis=0), dtype=tf.float32)
 
+
 # optimisation
 @tf.function
 def train_step(warper, weights, optimizer, mov, fix) -> tuple:
@@ -84,29 +78,23 @@ def train_step(warper, weights, optimizer, mov, fix) -> tuple:
     :return:
         a tuple:
             - loss: overall loss to optimise
-            - individual losses: lncc, nmi, bending, elastic
+            - loss_image: image dissimilarity
+            - loss_deform: deformation regularisation
     """
     with tf.GradientTape() as tape:
         pred = warper(inputs=[weights, mov])
-
-        # Compute individual losses
-        loss_lncc = REGISTRY.build_loss(image_loss_configs[0])(y_true=fix, y_pred=pred)
-        loss_nmi = REGISTRY.build_loss(image_loss_configs[1])(y_true=fix, y_pred=pred)
-        loss_bending = REGISTRY.build_loss(deform_loss_configs[0])(inputs=weights)
-        loss_elastic = REGISTRY.build_loss(deform_loss_configs[1])(inputs=weights)
-
-        # Total loss
-        total_loss = (
-                weights["lncc"] * loss_lncc +
-                weights["nmi"] * loss_nmi +
-                weights["bending"] * loss_bending +
-                weights["elastic"] * loss_elastic
+        loss_image = REGISTRY.build_loss(config=image_loss_config)(
+            y_true=fix,
+            y_pred=pred,
         )
-
-    gradients = tape.gradient(total_loss, [weights])
+        loss_deform = REGISTRY.build_loss(config=deform_loss_config)(
+            inputs=weights,
+        )
+        loss = loss_image + weight_deform_loss * loss_deform
+    gradients = tape.gradient(loss, [weights])
     optimizer.apply_gradients(zip(gradients, [weights]))
+    return loss, loss_image, loss_deform
 
-    return total_loss, loss_lncc, loss_nmi, loss_bending, loss_elastic
 
 # ddf as trainable weights
 fixed_image_size = fixed_image.shape
@@ -116,23 +104,19 @@ var_ddf = tf.Variable(initializer(fixed_image_size + [3]), name="ddf", trainable
 warping = layer.Warping(fixed_image_size=fixed_image_size[1:4])
 optimiser = tf.optimizers.Adam(learning_rate)
 for step in range(total_iter):
-    loss_opt, loss_lncc, loss_nmi, loss_bending, loss_elastic = train_step(
+    loss_opt, loss_image_opt, loss_deform_opt = train_step(
         warping, var_ddf, optimiser, moving_image, fixed_image
     )
     if (step % 50) == 0:  # print info
         tf.print(
             "Step",
             step,
-            "Total Loss",
+            "loss",
             loss_opt,
-            "LNCC",
-            loss_lncc,
-            "NMI",
-            loss_nmi,
-            "Bending",
-            loss_bending,
-            "Elastic",
-            loss_elastic,
+            image_loss_config["name"],
+            loss_image_opt,
+            deform_loss_config["name"],
+            loss_deform_opt,
         )
 
 # warp the moving image using the optimised ddf
@@ -144,7 +128,10 @@ fixed_label = tf.cast(tf.expand_dims(fid["label1"], axis=0), dtype=tf.float32)
 warped_moving_label = warping(inputs=[var_ddf, moving_label])
 
 # save output to files
-SAVE_PATH = args.thisdirectoryname
+SAVE_PATH =args.thisdirectoryname #sys.argv[2] # "logs_reg"
+# if os.path.exists(SAVE_PATH):
+#     shutil.rmtree(SAVE_PATH)
+# os.mkdir(SAVE_PATH)
 
 arrays = [
     tf.squeeze(a)
@@ -158,8 +145,18 @@ arrays = [
         var_ddf,
     ]
 ]
+# arr_names = [
+#     "moving_image",
+#     "fixed_image",
+#     "warped_moving_image",
+#     "moving_label",
+#     "fixed_label",
+#     "warped_moving_label",
+#     "ddf",
+# ]
 filename_prefix=os.path.basename(args.thisfilename).split('_resaved_levelset')[0]+"_"
 arr_names = [
+
     "moving_image",
     "fixed_image",
     "warped_moving_image",
@@ -167,6 +164,13 @@ arr_names = [
     "fixed_label",
     "warped_moving_label",
     "ddf",
+    # filename_prefix+"moving_image",
+    # filename_prefix+"fixed_image",
+    # filename_prefix+"warped_moving_image",
+    # filename_prefix+"moving_label",
+    # filename_prefix+"fixed_label",
+    # filename_prefix+"warped_moving_label",
+    # filename_prefix+"ddf",
 ]
 for arr, arr_name in zip(arrays, arr_names):
     util.save_array(

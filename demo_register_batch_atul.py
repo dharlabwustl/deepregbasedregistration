@@ -46,6 +46,7 @@ FILE_PATH = os.path.join(DATA_PATH,args.thisfilename) #sys.argv[1]) ### "demo2.h
 print(FILE_PATH)
 # registration parameters
 image_loss_config = {"name": "gmi"}
+image_loss_config_1 = {"name": "lncc"}
 deform_loss_config = {"name": "bending"}
 weight_deform_loss = 1
 learning_rate = 0.1
@@ -87,10 +88,14 @@ def train_step(warper, weights, optimizer, mov, fix) -> tuple:
             y_true=fix,
             y_pred=pred,
         )
+        loss_image_1 = REGISTRY.build_loss(config=image_loss_config_1)(
+            y_true=fix,
+            y_pred=pred,
+        )
         loss_deform = REGISTRY.build_loss(config=deform_loss_config)(
             inputs=weights,
         )
-        loss = loss_image + weight_deform_loss * loss_deform
+        loss = loss_image + loss_image_1+ weight_deform_loss * loss_deform
     gradients = tape.gradient(loss, [weights])
     optimizer.apply_gradients(zip(gradients, [weights]))
     return loss, loss_image, loss_deform

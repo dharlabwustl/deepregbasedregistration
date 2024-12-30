@@ -46,8 +46,8 @@ util.save_array(
 )
 warped_image=nib.load(os.path.join(SAVE_PATH,'warped_'+ os.path.basename(ventricle_mask_file)))
 warped_image_data=warped_image.get_fdata()
-warped_image_data[warped_image_data<=0.5]=0
-warped_image_data[warped_image_data>0.5]=1
+warped_image_data[warped_image_data<=0.6]=0
+warped_image_data[warped_image_data>0.6]=1
 arr_name='warped_1_' + os.path.basename(ventricle_mask_file).split(".nii")[0] #scct_strippedResampled1_onlyventricle.nii.gz'
 util.save_array(
     save_dir=SAVE_PATH, arr=tf.squeeze(warped_image_data), name=arr_name, normalize=True, save_png=False

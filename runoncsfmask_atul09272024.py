@@ -37,7 +37,7 @@ moving_image = tf.cast(tf.expand_dims(ventricle_mask_data, axis=0), dtype=tf.flo
 # moving_image = tf.cast(tf.expand_dims(fid["image0"], axis=0), dtype=tf.float32)
 # warped_moving_image = warping(inputs=[var_ddf, moving_image])
 # Apply warping with nearest-neighbor interpolation
-warped_image = warping([fixed_image, var_ddf], interp_method="nearest")
+warped_image = warping([var_ddf, moving_image], interp_method="nearest")
 print(type(warped_moving_image))
 # warped_moving_image[warped_moving_image<0.9]=0
 print('warped_moving_image {}'.format(warped_moving_image.shape))

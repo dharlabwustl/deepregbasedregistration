@@ -50,8 +50,8 @@ warped_image=nib.load(os.path.join(SAVE_PATH,'warped_'+ os.path.basename(ventric
 warped_image_data=warped_image.get_fdata()
 threshold_for_probability=0.5
 warped_image_data[warped_image_data<=threshold_for_probability]=0
-warped_image_data[warped_image_data>threshold_for_probability]=1
-arr_name='warped_1_' + str(threshold_for_probability).replace('.','thresh_')+os.path.basename(ventricle_mask_file).split(".nii")[0] #scct_strippedResampled1_onlyventricle.nii.gz'
+warped_image_data[warped_image_data>threshold_for_probability]=1 ##+ str(threshold_for_probability).replace('.','thresh_')
+arr_name='warped_1_' +os.path.basename(ventricle_mask_file).split(".nii")[0] #scct_strippedResampled1_onlyventricle.nii.gz'
 util.save_array(
     save_dir=SAVE_PATH, arr=tf.squeeze(warped_image_data), name=arr_name, normalize=True, save_png=False
 )

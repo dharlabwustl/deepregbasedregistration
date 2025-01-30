@@ -43,7 +43,7 @@ if [[ ${TYPE_OF_PROGRAM} == 'APPLYDEEPREG' ]]; then
   echo " I AM AT TYPE_OF_PROGRAM==APPLYDEEPREG"
   /software/deepregbasedregis.sh $SESSION_ID $XNAT_USER $XNAT_PASS $XNAT_HOST /input /output
 fi
-if [[ ${TYPE_OF_PROGRAM} == 'APPLYDEEPREG_FOR_VEN_SEP' ]]; then
+if [[ ${TYPE_OF_PROGRAM} == 'APPLYDEEPREG_FOR_VEN_SEP'   ]]; then
   echo " I AM AT TYPE_OF_PROGRAM==APPLYDEEPREG_FOR_VEN_SEP"
   /software/deepregbasedregis_for_vent_sep.sh $SESSION_ID $XNAT_USER $XNAT_PASS $XNAT_HOST /input /output
 fi

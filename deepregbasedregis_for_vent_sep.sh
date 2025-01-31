@@ -362,6 +362,14 @@ registration_nii_file=${working_dir}/'mov_'$(basename ${moving_image_filename%.n
 
 #fixed_image=${working_dir}/'${template_prefix}_normalized_fix.nii.gz' ###'/software/${template_prefix}.nii.gz'
 #echo $(ls ${fixed_image})
+#COLI_HLP02_07132020_1026_4_brain_f_BET.nii.gz
+#COLI_HLP02_07132020_1026_4_brain_f.nii.gz
+#COLI_HLP02_07132020_1026_4_NIFTILOCATION.csv
+#mov_scct_strippedResampled1_fixed_COLI_HLP02_07132020_1026_4_brain_f_lin1_BET.nii.gz
+#mov_scct_strippedResampled1_fixed_COLI_HLP02_07132020_1026_4_brain_f_lin1.mat
+#mov_scct_strippedResampled1_fixed_COLI_HLP02_07132020_1026_4_brain_f_lin1.nii.gz
+#mov_scct_strippedResampled1_onlyventricle_fixed_COLI_HLP02_07132020_1026_4_brain_f_lin1_BET.nii.gz
+
 
 moving_image=${registration_nii_file} #${working_dir}/mov_${session_ct_bname_noext}_brain_f_fixed_${template_prefix}_lin1.nii.gz ##${session_ct_bet_gray} ##${working_dir}/"mov_warped_mov_mni_icbm152_t1_tal_nlin_sym_55_ext_bet_gray_fixed_${template_prefix}_lin1_fixed_${nifti_file_without_ext}_brain_f_lin1.nii.gz"
 echo "moving_image::${moving_image}::fixed_image::${fixed_image}"
@@ -386,48 +394,48 @@ rm ${working_dir}/warped_1*
     infarct_mask_after_lin_reg=${working_dir}/mov_${moving_image_filename%.nii*}_fixed_${template_prefix}_lin1_BET.nii.gz
       echo "/opt/conda/envs/deepreg/bin/python3 /software/runoncsfmask_atul09272024.py ${infarct_mask_after_lin_reg} ${working_dir_1} ${sessionID} ${scanID} $(basename  ${original_nifti_filename})"
       /opt/conda/envs/deepreg/bin/python3 /software/runoncsfmask_atul09272024.py ${infarct_mask_after_lin_reg} ${working_dir_1} ${sessionID} ${scanID} $(basename  ${original_nifti_filename})
-#      done mov_COLI_HLP12_09122020_2351_3_resaved_csf_unet_fixed_COLIHM620406202215542_lin1_BET.nii.gz
-    moving_image_filename=${session_ct_bname_noext}_resaved_csf_unet.nii.gz
-    #moving_image_filename=${moving_image_filename%.nii*}resampled_mov.nii.gz
-      csf_mask_after_lin_reg=${working_dir}/mov_${moving_image_filename%.nii*}_fixed_${template_prefix}_lin1_BET.nii.gz
-      echo "/opt/conda/envs/deepreg/bin/python3 /software/runoncsfmask_atul09272024.py ${csf_mask_after_lin_reg} ${working_dir_1} ${sessionID} ${scanID} $(basename  ${original_nifti_filename})"
-      /opt/conda/envs/deepreg/bin/python3 /software/runoncsfmask_atul09272024.py ${csf_mask_after_lin_reg} ${working_dir_1} ${sessionID} ${scanID} $(basename  ${original_nifti_filename})
-#      done
-
-      snipr_output_foldername="PREPROCESS_SEGM"
-#      uploadsinglefile ${sessionID} ${scanID} ${mask_binary_output_dir} ${snipr_output_foldername} ${mask_binary_output_filename}
-#      uploadsinglefile ${sessionID} ${scanID} ${mask_binary_output_dir} ${snipr_output_foldername} ${mask_binary_output_filename}
-            snipr_output_foldername="PREPROCESS_SEGM"
-            all_warped_files=$(find ${working_dir} -name 'warped'*${template_prefix}*'.nii.gz')
-            for eachfile in ${all_warped_files};
-            do
-              echo ${eachfile}
-              uploadsinglefile ${sessionID} ${scanID} $(dirname ${eachfile}) ${snipr_output_foldername} $(basename ${eachfile} )
-            done
-
-            for eachfile in ${output_directory}/*image*.nii*;
-            do
-              echo ${eachfile}
-              uploadsinglefile ${sessionID} ${scanID} $(dirname ${eachfile}) ${snipr_output_foldername} $(basename ${eachfile} )
-            done
-            for eachfile in ${output_directory}/*ddf*.nii*;
-            do
-              echo ${eachfile}
-              uploadsinglefile ${sessionID} ${scanID} $(dirname ${eachfile}) ${snipr_output_foldername} $(basename ${eachfile} )
-            done
-
-
-#  for each_warped_1 in ${working_dir_1}/warped_1* ; do
-#  call_function=('call_copy_affine' ${each_warped_1} ${original_nifti_filename} ${each_warped_1} )
-#  outputfiles_present=$(/opt/conda/envs/deepreg/bin/python3 utilities_simple_trimmed.py "${call_function[@]}")
-#  done
-      ## COPY IT TO THE SNIPR RESPECTIVE SCAN RESOURCES
-#      file_suffixes=( warped_1_*resaved_infarct_auto_removesmall_fixed_${template_prefix}_lin1_BET* ) #sys.argv[5]
-#      for file_suffix in ${file_suffixes[@]}; do
-#        copyoutput_with_prefix_to_snipr ${sessionID} ${scanID} "${working_dir_1}" ${snipr_output_foldername} ${file_suffix}
-#      done
-###      ######################################################################################################################
-      echo " FILES NOT PRESENT I AM WORKING ON IT"
+##      done mov_COLI_HLP12_09122020_2351_3_resaved_csf_unet_fixed_COLIHM620406202215542_lin1_BET.nii.gz
+#    moving_image_filename=${session_ct_bname_noext}_resaved_csf_unet.nii.gz
+#    #moving_image_filename=${moving_image_filename%.nii*}resampled_mov.nii.gz
+#      csf_mask_after_lin_reg=${working_dir}/mov_${moving_image_filename%.nii*}_fixed_${template_prefix}_lin1_BET.nii.gz
+#      echo "/opt/conda/envs/deepreg/bin/python3 /software/runoncsfmask_atul09272024.py ${csf_mask_after_lin_reg} ${working_dir_1} ${sessionID} ${scanID} $(basename  ${original_nifti_filename})"
+#      /opt/conda/envs/deepreg/bin/python3 /software/runoncsfmask_atul09272024.py ${csf_mask_after_lin_reg} ${working_dir_1} ${sessionID} ${scanID} $(basename  ${original_nifti_filename})
+##      done
+#
+#      snipr_output_foldername="PREPROCESS_SEGM"
+##      uploadsinglefile ${sessionID} ${scanID} ${mask_binary_output_dir} ${snipr_output_foldername} ${mask_binary_output_filename}
+##      uploadsinglefile ${sessionID} ${scanID} ${mask_binary_output_dir} ${snipr_output_foldername} ${mask_binary_output_filename}
+#            snipr_output_foldername="PREPROCESS_SEGM"
+#            all_warped_files=$(find ${working_dir} -name 'warped'*${template_prefix}*'.nii.gz')
+#            for eachfile in ${all_warped_files};
+#            do
+#              echo ${eachfile}
+#              uploadsinglefile ${sessionID} ${scanID} $(dirname ${eachfile}) ${snipr_output_foldername} $(basename ${eachfile} )
+#            done
+#
+#            for eachfile in ${output_directory}/*image*.nii*;
+#            do
+#              echo ${eachfile}
+#              uploadsinglefile ${sessionID} ${scanID} $(dirname ${eachfile}) ${snipr_output_foldername} $(basename ${eachfile} )
+#            done
+#            for eachfile in ${output_directory}/*ddf*.nii*;
+#            do
+#              echo ${eachfile}
+#              uploadsinglefile ${sessionID} ${scanID} $(dirname ${eachfile}) ${snipr_output_foldername} $(basename ${eachfile} )
+#            done
+#
+#
+##  for each_warped_1 in ${working_dir_1}/warped_1* ; do
+##  call_function=('call_copy_affine' ${each_warped_1} ${original_nifti_filename} ${each_warped_1} )
+##  outputfiles_present=$(/opt/conda/envs/deepreg/bin/python3 utilities_simple_trimmed.py "${call_function[@]}")
+##  done
+#      ## COPY IT TO THE SNIPR RESPECTIVE SCAN RESOURCES
+##      file_suffixes=( warped_1_*resaved_infarct_auto_removesmall_fixed_${template_prefix}_lin1_BET* ) #sys.argv[5]
+##      for file_suffix in ${file_suffixes[@]}; do
+##        copyoutput_with_prefix_to_snipr ${sessionID} ${scanID} "${working_dir_1}" ${snipr_output_foldername} ${file_suffix}
+##      done
+####      ######################################################################################################################
+#      echo " FILES NOT PRESENT I AM WORKING ON IT"
     else
       echo " FILES ARE PRESENT "
     ######################################################################################################################

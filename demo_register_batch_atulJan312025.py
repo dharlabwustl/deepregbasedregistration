@@ -18,9 +18,9 @@ from deepreg.registry import REGISTRY
 # python script.py --full
 parser = argparse.ArgumentParser()
 parser.add_argument("thisfilename",
-                    help="The name of the current file to be used for registration")
+                   help="The name of the current file to be used for registration")
 parser.add_argument("thisdirectoryname",
-                    help="The name of the current file to be used for registration")
+                   help="The name of the current file to be used for registration")
 parser.add_argument(
     "--test",
     help="Execute the script with reduced image size for test purpose.",
@@ -46,6 +46,7 @@ FILE_PATH = os.path.join(DATA_PATH,args.thisfilename) #sys.argv[1]) ### "demo2.h
 print(FILE_PATH)
 # registration parameters
 image_loss_config = {"name": "lncc"}
+image_loss_gmi_config = {"name": "gmi"}
 deform_loss_config = {"name": "bending"}
 weight_deform_loss = 1
 learning_rate = 0.1
@@ -87,10 +88,16 @@ def train_step(warper, weights, optimizer, mov, fix) -> tuple:
             y_true=fix,
             y_pred=pred,
         )
+        # loss_image_gmi = REGISTRY.build_loss(config=image_loss_gmi_config)(
+        #     y_true=fix,
+        #     y_pred=pred,
+        # )
+
         loss_deform = REGISTRY.build_loss(config=deform_loss_config)(
             inputs=weights,
         )
         loss = loss_image + weight_deform_loss * loss_deform
+        # loss = loss_image + weight_deform_loss * loss_deform + loss_image_gmi
     gradients = tape.gradient(loss, [weights])
     optimizer.apply_gradients(zip(gradients, [weights]))
     return loss, loss_image, loss_deform

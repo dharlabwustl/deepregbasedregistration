@@ -88,15 +88,16 @@ def train_step(warper, weights, optimizer, mov, fix) -> tuple:
             y_true=fix,
             y_pred=pred,
         )
-        loss_image_gmi = REGISTRY.build_loss(config=image_loss_gmi_config)(
-            y_true=fix,
-            y_pred=pred,
-        )
+        # loss_image_gmi = REGISTRY.build_loss(config=image_loss_gmi_config)(
+        #     y_true=fix,
+        #     y_pred=pred,
+        # )
 
         loss_deform = REGISTRY.build_loss(config=deform_loss_config)(
             inputs=weights,
         )
-        loss = loss_image + weight_deform_loss * loss_deform + loss_image_gmi
+        loss = loss_image + weight_deform_loss * loss_deform
+        # loss = loss_image + weight_deform_loss * loss_deform + loss_image_gmi
     gradients = tape.gradient(loss, [weights])
     optimizer.apply_gradients(zip(gradients, [weights]))
     return loss, loss_image, loss_deform

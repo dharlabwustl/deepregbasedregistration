@@ -1,0 +1,12 @@
+name: deepreg
+channels:
+  - defaults
+  - conda-forge
+dependencies:
+  - python=3.9
+  - pip
+  - pip:
+      - tensorflow[and-cuda]==2.18.0
+#      - tensorrt==9.0.0  # Compatible newer version
+
+

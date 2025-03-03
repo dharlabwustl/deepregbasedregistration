@@ -1,0 +1,15 @@
+dataset:
+  train:
+    dir: "data/test/nifti/unpaired/train"
+    format: "nifti"
+    labeled: true
+  valid:
+    dir: "data/test/nifti/unpaired/test"
+    format: "nifti"
+    labeled: true
+  test:
+    dir: "data/test/nifti/unpaired/test"
+    format: "nifti"
+    labeled: true
+  type: "unpaired" # paired / unpaired / grouped
+  image_shape: [16, 16, 16]

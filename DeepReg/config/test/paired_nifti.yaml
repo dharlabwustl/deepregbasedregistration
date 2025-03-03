@@ -1,0 +1,16 @@
+dataset:
+  train:
+    dir: "data/test/nifti/paired/train"
+    format: "nifti"
+    labeled: true
+  valid:
+    dir: "data/test/nifti/paired/test"
+    format: "nifti"
+    labeled: true
+  test:
+    dir: "data/test/nifti/paired/test"
+    format: "nifti"
+    labeled: true
+  type: "paired" # paired / unpaired / grouped
+  moving_image_shape: [16, 16, 16]
+  fixed_image_shape: [8, 8, 8]

@@ -1,0 +1,16 @@
+dataset:
+  train:
+    dir: "data/test/h5/paired/train"
+    format: "h5"
+    labeled: true
+  valid:
+    dir: "data/test/h5/paired/test"
+    format: "h5"
+    labeled: true
+  test:
+    dir: "data/test/h5/paired/test"
+    format: "h5"
+    labeled: true
+  type: "paired" # paired / unpaired / grouped
+  moving_image_shape: [16, 16, 16]
+  fixed_image_shape: [8, 8, 8]

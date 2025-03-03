@@ -1,0 +1,6 @@
+name: deepreg
+channels:
+  - defaults
+dependencies:
+  - python=3.7
+  - pip

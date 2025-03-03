@@ -26,6 +26,12 @@ fi
 
 
 echo ${TYPE_OF_PROGRAM}::TYPE_OF_PROGRAM::${SUBTYPE_OF_PROGRAM}::${ADDR[0]}::${ADDR[2]}::${ADDR[3]}
+
+if [[ ${TYPE_OF_PROGRAM} ==   'APPLYDEEPREG_CSF_SEP' ]]; then
+  echo " I AM AT TYPE_OF_PROGRAM==APPLYDEEPREG_CSF_SEP"
+  /software/deepregbasedregis_csf_separation.sh $SESSION_ID $XNAT_USER $XNAT_PASS $XNAT_HOST /input /output
+fi
+
 if [[ ${TYPE_OF_PROGRAM} == 'APPLYDEEPREG_V1' ]]; then
   echo " I AM AT TYPE_OF_PROGRAM==APPLYDEEPREG_V1"
   /software/deepregbasedregis_location_v1.sh $SESSION_ID $XNAT_USER $XNAT_PASS $XNAT_HOST /input /output

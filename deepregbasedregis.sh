@@ -341,7 +341,7 @@ for niftifile_csvfilename in ${working_dir}/*NIFTILOCATION.csv; do
        template_csf_file_after_linear_transformation=${template_T_OUTPUT_dir}/${template_csf_file_path%.nii*}${betfilename}
       original_nifti_filename=$(ls ${working_dir_1}/*.nii)
       /opt/conda/envs/deepreg/bin/python3 /software/runoncsfmask_atul09272024.py ${template_csf_file_after_linear_transformation} ${output_directory} ${sessionID} ${scanID} $(basename  ${original_nifti_filename})
-      snipr_output_foldername="PREPROCESS_SEGM"
+      snipr_output_foldername="PREPROCESS_SEGM_1"
       file_suffixes=( warped_1_ ) #sys.argv[5]
       for file_suffix in ${file_suffixes[@]}; do
         copyoutput_with_prefix_to_snipr ${sessionID} ${scanID} "${output_directory}" ${snipr_output_foldername} ${file_suffix}

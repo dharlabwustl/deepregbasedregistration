@@ -382,7 +382,12 @@ rm ${working_dir}/warped_1*
               echo ${eachfile}
               uploadsinglefile ${sessionID} ${scanID} $(dirname ${eachfile}) ${snipr_output_foldername} $(basename ${eachfile} )
             done
-
+            all_warped_files=$(find ${working_dir_1} -name 'warped'*${template_prefix}*'.nii.gz')
+            for eachfile in ${all_warped_files};
+            do
+              echo ${eachfile}
+              uploadsinglefile ${sessionID} ${scanID} $(dirname ${eachfile}) ${snipr_output_foldername} $(basename ${eachfile} )
+            done
             for eachfile in ${output_directory}/*image*.nii*;
             do
               echo ${eachfile}

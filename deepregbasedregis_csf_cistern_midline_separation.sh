@@ -368,11 +368,11 @@ rm ${working_dir}/warped_1*
       /opt/conda/envs/deepreg/bin/python3 /software/runoncsfmask_atul09272024.py ${csf_mask_after_lin_reg} ${working_dir_1} ${sessionID} ${scanID} $(basename  ${original_nifti_filename})
 ########### cistern
 cistern_mask_file_moving_original=/software/cistern_area.nii.gz
-cistern_mask_after_lin_reg=${working_dir}/'mov_'$(basename ${cistern_mask_file_moving_original%.nii*})_fixed_$(basename  ${fixed_image_original_filename%.nii*})_lin1.nii.gz
+cistern_mask_after_lin_reg=${working_dir}/'mov_'$(basename ${cistern_mask_file_moving_original%.nii*})_fixed_$(basename  ${fixed_image_original_filename%.nii*})_lin1_BET.nii.gz
 /opt/conda/envs/deepreg/bin/python3 /software/runoncsfmask_atul09272024.py ${cistern_mask_after_lin_reg} ${working_dir_1} ${sessionID} ${scanID} $(basename  ${original_nifti_filename})
 ######
 midline_mask_file_moving_original=/software/midlinecssfResampled1.nii.gz
-midline_mask_after_lin_reg=${working_dir}/'mov_'$(basename ${midline_mask_file_moving_original%.nii*})_fixed_$(basename  ${fixed_image_original_filename%.nii*})_lin1.nii.gz
+midline_mask_after_lin_reg=${working_dir}/'mov_'$(basename ${midline_mask_file_moving_original%.nii*})_fixed_$(basename  ${fixed_image_original_filename%.nii*})_lin1_BET.nii.gz
 
 ############ midline
 /opt/conda/envs/deepreg/bin/python3 /software/runoncsfmask_atul09272024.py ${midline_mask_after_lin_reg} ${working_dir_1} ${sessionID} ${scanID} $(basename  ${original_nifti_filename})

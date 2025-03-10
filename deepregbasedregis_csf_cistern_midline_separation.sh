@@ -354,8 +354,8 @@ rm ${working_dir}/warped_1*
 #      cp /software/data.h5 /software/DeepReg/demos/classical_mr_prostate_nonrigid/dataset/
       cp /software/demo_register_batch_atul.py /software/DeepReg/demos/classical_mr_prostate_nonrigid/
 #      /opt/conda/envs/deepreg/bin/python3 /software/demo_register_batch_atul.py /software/DeepReg/demos/classical_mr_prostate_nonrigid/dataset/data.h5 ${output_directory}
-    cp workinginput/ddf.nii.gz  workingoutput/
-    cp workinginput/fixed_image.nii.gz  workingoutput/
+    cp /workinginput/ddf.nii.gz  /workingoutput/
+    cp /workinginput/fixed_image.nii.gz  /workingoutput/
 
     original_nifti_filename=$(ls ${working_dir_1}/*.nii)
     csf_mask_file_moving_original=/software/scct_strippedResampled1_onlyventricle.nii.gz

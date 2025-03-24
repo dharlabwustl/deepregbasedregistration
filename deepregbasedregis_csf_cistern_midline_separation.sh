@@ -299,6 +299,15 @@ for niftifile_csvfilename in ${working_dir}/*NIFTILOCATION.csv; do
     outputfiles_present=$(/opt/conda/envs/deepreg/bin/python3 download_with_session_ID.py "${call_check_if_a_file_exist_in_snipr_arguments[@]}")
 
     ################################################
+    ####################################
+    function_with_arguments=('call_delete_file_with_ext' ${sessionID} ${scanID} ${snipr_output_foldername} 'warped_1_' ) ##'warped_1_mov_mri_region_' )
+    #    echo "outputfiles_present="'$(python3 utilities_simple_trimmed.py' "${function_with_arguments[@]}"
+    outputfiles_present=$(python3 download_with_session_ID.py "${function_with_arguments[@]}")
+#    function_with_arguments=('call_delete_file_with_ext' ${sessionID} ${scanID} MASKS '_total.nii.gz' ) ##'warped_1_mov_mri_region_' )
+#    #    echo "outputfiles_present="'$(python3 utilities_simple_trimmed.py' "${function_with_arguments[@]}"
+#    outputfiles_present=$(python3 download_with_session_ID.py "${function_with_arguments[@]}")
+    ####################################
+
 #    outputfiles_present=0
     echo "outputfiles_present:: "${outputfiles_present: -1}"::outputfiles_present"
     #echo "outputfiles_present::ATUL${outputfiles_present}::outputfiles_present"

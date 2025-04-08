@@ -357,10 +357,10 @@ echo "moving_image::${moving_image}::fixed_image::${fixed_image_original_filenam
 rm ${working_dir}/warped_1*
 #####################################################################################################################
 
-#      /opt/conda/envs/deepreg/bin/python3 create_datah5files_May24_2023.py ${moving_image} ${fixed_image}
+      /opt/conda/envs/deepreg/bin/python3 create_datah5files_May24_2023.py ${moving_image} ${fixed_image}
 ##      mkdir /rapids/notebooks/DeepReg/demos/classical_mr_prostate_nonrigid/dataset
       cp -r /rapids/notebooks/DeepReg /software/
-#      cp /software/data.h5 /software/DeepReg/demos/classical_mr_prostate_nonrigid/dataset/
+      cp /software/data.h5 /software/DeepReg/demos/classical_mr_prostate_nonrigid/dataset/
       cp /software/demo_register_batch_atul.py /software/DeepReg/demos/classical_mr_prostate_nonrigid/
       /opt/conda/envs/deepreg/bin/python3 /software/demo_register_batch_atul.py /software/DeepReg/demos/classical_mr_prostate_nonrigid/dataset/data.h5 ${output_directory}
     cp /workinginput/ddf.nii.gz  /workingoutput/

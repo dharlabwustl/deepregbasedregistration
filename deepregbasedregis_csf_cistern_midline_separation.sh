@@ -362,7 +362,7 @@ rm ${working_dir}/warped_1*
       cp -r /rapids/notebooks/DeepReg /software/
 #      cp /software/data.h5 /software/DeepReg/demos/classical_mr_prostate_nonrigid/dataset/
       cp /software/demo_register_batch_atul.py /software/DeepReg/demos/classical_mr_prostate_nonrigid/
-#      /opt/conda/envs/deepreg/bin/python3 /software/demo_register_batch_atul.py /software/DeepReg/demos/classical_mr_prostate_nonrigid/dataset/data.h5 ${output_directory}
+      /opt/conda/envs/deepreg/bin/python3 /software/demo_register_batch_atul.py /software/DeepReg/demos/classical_mr_prostate_nonrigid/dataset/data.h5 ${output_directory}
     cp /workinginput/ddf.nii.gz  /workingoutput/
     cp /workinginput/fixed_image.nii.gz  /workingoutput/
 

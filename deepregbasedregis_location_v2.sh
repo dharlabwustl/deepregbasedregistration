@@ -395,7 +395,7 @@ rm ${working_dir}/warped_1*
 #      uploadsinglefile ${sessionID} ${scanID} ${mask_binary_output_dir} ${snipr_output_foldername} ${mask_binary_output_filename}
             snipr_output_foldername="PREPROCESS_SEGM"
             all_warped_files=$(find ${working_dir} -name 'warped*') ## 'warped'*${template_prefix}*'.nii.gz')
-            for eachfile in ${output_directory}/warped*.nii*; #${all_warped_files};
+            for eachfile in ${working_dir}/warped*.nii*; #${all_warped_files};
             do
               echo ${eachfile}
               uploadsinglefile ${sessionID} ${scanID} $(dirname ${eachfile}) ${snipr_output_foldername} $(basename ${eachfile} )

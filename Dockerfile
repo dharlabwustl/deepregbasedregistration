@@ -33,6 +33,7 @@ RUN /opt/conda/envs/deepreg/bin/pip3 install \
   SimpleITK \
   h5py \
   webcolors \
-  antspyx
+  antspyx \
+  SQLAlchemy
   
 

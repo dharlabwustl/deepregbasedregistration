@@ -12,6 +12,7 @@ import numpy as np
 import pathlib
 import argparse,xmltodict
 from xnatSession import XnatSession
+from biomarkerdbclass import  BiomarkerDB
 from redcapapi_functions import *
 catalogXmlRegex = re.compile(r'.*\.xml$')
 XNAT_HOST_URL=os.environ['XNAT_HOST']  #'http://snipr02.nrg.wustl.edu:8080' #'https://snipr02.nrg.wustl.edu' #'https://snipr.wustl.edu'
@@ -24,6 +25,122 @@ xnatSession.renew_httpsession()
 class arguments:
     def __init__(self,stuff=[]):
         self.stuff=stuff
+
+def call_fill_google_mysql_db_with_single_value(args):
+    db_table_name=args.stuff[1]
+    session_id=args.stuff[2]
+    column_name=args.stuff[3]
+    column_value=args.stuff[4]
+    try:
+        fill_google_mysql_db_with_single_value(db_table_name, session_id,column_name,column_value)
+    except:
+        pass
+
+def call_fill_google_mysql_db_from_csv(args):
+    db_table_name=args.stuff[1]
+    csv_file_path=args.stuff[2]
+    id_column=args.stuff[3]
+    # column_value=args.stuff[4]
+    try:
+        fill_google_mysql_db_from_csv(db_table_name, csv_file_path, id_column)
+        command = "echo  success at : " +  inspect.stack()[0][3]  + " >> " + "/output/error.txt"
+        subprocess.call(command,shell=True)
+    except:
+        command = "echo  failed at : " +  inspect.stack()[0][3]  + " >> " + "/output/error.txt"
+        subprocess.call(command,shell=True)
+        pass
+
+def fill_google_mysql_db_from_csv(db_table_name, csv_file_path, id_column="session_id"):
+    # Replace with actual module path
+
+    try:
+        df = pd.read_csv(csv_file_path)
+    except Exception as e:
+        print(f"Failed to load CSV: {e}")
+        return
+
+    db = BiomarkerDB(
+        host=os.environ["GOOGLE_MYSQL_DB_IP"],
+        user="root",
+        password=os.environ["GOOGLE_MYSQL_DB_PASS"],
+        database="BIOMARKERS"
+    )
+
+    if not db.initialized:
+        print("Database initialization failed.")
+        return
+
+    for index, row in df.iterrows():
+        session_id = row[id_column]
+        for column_name in df.columns:
+            if column_name == id_column:
+                continue  # Skip ID column
+            column_value = row[column_name]
+            try:
+                db.upsert_single_field_by_id(db_table_name, session_id, column_name, column_value)
+            except Exception as e:
+                print(f"Failed to insert {column_name}={column_value} for session_id={session_id}: {e}")
+
+    db.close()
+
+
+def fill_google_mysql_db_with_single_value(db_table_name, session_id,column_name,column_value):
+    db = BiomarkerDB(
+        host=os.environ["GOOGLE_MYSQL_DB_IP"],             # Replace with your instance IP
+        user="root",                     # Replace if using a different user
+        password=os.environ["GOOGLE_MYSQL_DB_PASS"] , ##"dharlabwustl1!",   # Replace with your actual password
+        database="BIOMARKERS"
+    )
+    try:
+        if db.initialized:
+            db.upsert_single_field_by_id(db_table_name, session_id, column_name, column_value)
+            db.close()
+    except:
+        command = "echo  failed at : " +  inspect.stack()[0][3]  + " >> " + "/output/error.txt"
+        subprocess.call(command,shell=True)
+        pass
+
+def pipeline_step_completed(db_table_name,session_id,scan_id,column_name,column_value,resource_dir,list_of_file_ext_tobe_checked):
+    try:
+        # list_of_file_ext_tobe_checked_len=len(list_of_file_ext_tobe_checked)
+        count=0
+        URI=f'/data/experiments/{session_id}/scans/{scan_id}'
+        list_of_files_in_resource_dir=get_resourcefiles_metadata(URI,resource_dir)
+        df_scan_resource = pd.read_json(json.dumps(list_of_files_in_resource_dir)) #pd.read_json(json.dumps(metadata_masks))
+        # Check if each extension exists in **any** row in the url column
+        ext_found = [any(df_scan_resource['URI'].str.contains(ext, case=False)) for ext in list_of_file_ext_tobe_checked]
+
+        # Final decision: are all extensions found at least once in any row?
+        all_found = int(all(ext_found))
+        if all_found==1:
+            column_value=1 #all_found
+        # pd.DataFrame(df_scan).to_csv(os.path.join(dir_to_receive_the_data,output_csvfile),index=False)
+        fill_google_mysql_db_with_single_value(db_table_name, session_id,column_name,column_value)
+        command = "echo  success at : " +  inspect.stack()[0][3]  + " >> " + "/output/error.txt"
+        subprocess.call(command,shell=True)
+    except:
+        command = "echo  failed at : " +  inspect.stack()[0][3]  + " >> " + "/output/error.txt"
+        subprocess.call(command,shell=True)
+        pass
+    return 1
+def call_pipeline_step_completed(args):
+    db_table_name=args.stuff[1]
+    session_id=args.stuff[2]
+    scan_id=args.stuff[3]
+    column_name=args.stuff[4]
+    column_value=args.stuff[5]
+    resource_dir=args.stuff[6]
+    list_of_file_ext_tobe_checked=args.stuff[7:]
+    try:
+        pipeline_step_completed(db_table_name,session_id,scan_id,column_name,column_value,resource_dir,list_of_file_ext_tobe_checked)
+        command = "echo  success at : " +  inspect.stack()[0][3]  + " >> " + "/output/error.txt"
+        subprocess.call(command,shell=True)
+    except:
+        command = "echo  failed at : " +  inspect.stack()[0][3]  + " >> " + "/output/error.txt"
+        subprocess.call(command,shell=True)
+        pass
+    return 1
+
 def bet_gray_when_bet_binary_given():
     grayfilename_nib=nib.load(sys.argv[1] ) #grayfilename)
     betfilename_nib=nib.load(sys.argv[2] ) #betfilename)
@@ -2336,6 +2453,40 @@ def downloadfiletolocaldir_py(sessionId,scanId,resource_dirname,output_dirname):
     copy_mat_to_a_dir(output_dirname)
 
     return True
+def call_get_session_project(args):
+    returnvalue=0
+    try:
+        sessionId=args.stuff[1]
+        outputfile=args.stuff[2]
+        get_session_project(sessionId,outputfile=outputfile)
+        command="echo successful at :: {}::maskfilename::{} >> /software/error.txt".format(inspect.stack()[0][3],'call_get_session_project')
+        subprocess.call(command,shell=True)
+        returnvalue=1
+    except:
+        command="echo failed at :: {} >> /software/error.txt".format(inspect.stack()[0][3])
+        subprocess.call(command,shell=True)
+    return returnvalue
+def get_session_project(sessionId,outputfile="NONE.csv"):
+    returnvalue=''
+    try:
+        #xnatSession = XnatSession(username=XNAT_USER, password=XNAT_PASS, host=XNAT_HOST)
+        #xnatSession.renew_httpsession()
+        # sessionId='SNIPR02_E02933'
+
+        url = ("/data/experiments/%s/?format=json" %    (sessionId)) #scans/
+        response = xnatSession.httpsess.get(xnatSession.host + url)
+        #xnatSession.close_httpsession())
+        session_label=response.json()['items'][0]['data_fields']['project']
+        df_session=pd.DataFrame([session_label])
+        df_session.columns=['SESSION_PROJECT']
+        df_session.to_csv(outputfile,index=False)
+        command="echo successful at :: {}::maskfilename::{} >> /software/error.txt".format(inspect.stack()[0][3],'get_session_project')
+        subprocess.call(command,shell=True)
+        returnvalue=session_label
+    except:
+        command="echo failed at :: {} >> /software/error.txt".format(inspect.stack()[0][3])
+        subprocess.call(command,shell=True)
+    return returnvalue
 
 
 def main():
@@ -2380,6 +2531,14 @@ def main():
         return_value=call_get_session_label(args)
     if name_of_the_function=="call_downloadfiletolocaldir_py":
         return_value=call_downloadfiletolocaldir_py(args)
+    if name_of_the_function=="call_fill_google_mysql_db_with_single_value":
+        return_value=call_fill_google_mysql_db_with_single_value(args)
+    if name_of_the_function=="call_fill_google_mysql_db_from_csv":
+        return_value=call_fill_google_mysql_db_from_csv(args) #
+    if name_of_the_function=="call_get_session_project":
+        return_value=call_get_session_project(args)
+    if name_of_the_function=="call_pipeline_step_completed":
+        return_value=call_pipeline_step_completed(args)
     print(return_value)
     if "call" not in name_of_the_function:
         globals()[args.stuff[0]](args)

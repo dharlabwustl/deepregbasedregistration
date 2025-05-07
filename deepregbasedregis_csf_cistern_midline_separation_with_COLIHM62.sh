@@ -405,26 +405,31 @@ midline_mask_after_lin_reg=${working_dir}/'mov_'$(basename ${midline_mask_file_m
 #      uploadsinglefile ${sessionID} ${scanID} ${mask_binary_output_dir} ${snipr_output_foldername} ${mask_binary_output_filename}
 #      uploadsinglefile ${sessionID} ${scanID} ${mask_binary_output_dir} ${snipr_output_foldername} ${mask_binary_output_filename}
 #            snipr_output_foldername="PREPROCESS_SEGM_3"
+            all_files_to_upload=()
             all_warped_files=$(find ${working_dir} -name 'warped'*${template_prefix}*'.nii.gz')
             for eachfile in ${all_warped_files};
             do
               echo ${eachfile}
+              all_files_to_upload+=("$(basename ${eachfile})")
               uploadsinglefile ${sessionID} ${scanID} $(dirname ${eachfile}) ${snipr_output_foldername} $(basename ${eachfile} )
             done
             all_warped_files=$(find ${working_dir_1} -name 'warped'*${template_prefix}*'.nii.gz')
             for eachfile in ${all_warped_files};
             do
               echo ${eachfile}
+              all_files_to_upload+=("$(basename ${eachfile})")
               uploadsinglefile ${sessionID} ${scanID} $(dirname ${eachfile}) ${snipr_output_foldername} $(basename ${eachfile} )
             done
             for eachfile in ${output_directory}/*image*.nii*;
             do
               echo ${eachfile}
+              all_files_to_upload+=("$(basename ${eachfile})")
               uploadsinglefile ${sessionID} ${scanID} $(dirname ${eachfile}) ${snipr_output_foldername} $(basename ${eachfile} )
             done
             for eachfile in ${output_directory}/*ddf*.nii*;
             do
               echo ${eachfile}
+              all_files_to_upload+=("$(basename ${eachfile})")
               uploadsinglefile ${sessionID} ${scanID} $(dirname ${eachfile}) ${snipr_output_foldername} $(basename ${eachfile} )
             done
 
@@ -439,6 +444,28 @@ midline_mask_after_lin_reg=${working_dir}/'mov_'$(basename ${midline_mask_file_m
 #        copyoutput_with_prefix_to_snipr ${sessionID} ${scanID} "${working_dir_1}" ${snipr_output_foldername} ${file_suffix}
 #      done
 ###      ######################################################################################################################
+      call_get_session_label_arguments=('call_get_session_project' ${sessionID} ${output_directory}/${session_ct_bname_noext}_SESSION_PROJECT.csv)
+      outputfiles_present=$(python3 download_with_session_ID.py "${call_get_session_label_arguments[@]}")
+      ####################### GET PROJECT NAME ###############################
+      #################### WRITE TO THE MYSQL DATABASE IF THE STEP IS DONE #######################################################
+      csv_file=${output_directory}/${session_ct_bname_noext}_SESSION_PROJECT.csv
+      column_name="SESSION_PROJECT"
+      # Get the index (column number) of the desired column
+      col_index=$(awk -F, -v col="$column_name" 'NR==1 {
+        for (i=1; i<=NF; i++) if ($i == col) { print i; exit }
+      }' "$csv_file")
+      # Get the first value under that column (excluding header)
+      first_value=$(awk -F, -v idx="$col_index" 'NR==2 { print $idx }' "$csv_file")
+      database_table_name=${first_value}
+      echo "database_table_name::${database_table_name}"
+      function_with_arguments=('call_pipeline_step_completed' ${database_table_name} ${sessionID} ${scanID} "NONRIGID_REGIS_WITH_COLIHM62_COMPLETE" 0 ${snipr_output_foldername} ) ##$(basename  ${fixed_image_filename}) $(basename  ${infarct_mask_binary_output_filename})  $(basename  ${registration_mat_file}) $(basename  ${registration_nii_file}) $(basename  ${mask_binary_output_dir}/${mask_binary_output_filename})  ) ##'warped_1_mov_mri_region_' )
+      # Append all warped files to the arguments array
+      for f in "${all_files_to_upload[@]}"; do
+        function_with_arguments+=("$f")
+      done
+
+      echo "outputfiles_present=(python3 download_with_session_ID.py ${function_with_arguments[@]})"
+      outputfiles_present=$(python3 download_with_session_ID.py "${function_with_arguments[@]}")
       echo " FILES NOT PRESENT I AM WORKING ON IT"
     else
       echo " FILES ARE PRESENT "

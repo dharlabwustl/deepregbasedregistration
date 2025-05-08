@@ -445,7 +445,7 @@ midline_mask_after_lin_reg=${working_dir}/'mov_'$(basename ${midline_mask_file_m
 #      done
 ###      ######################################################################################################################
       call_get_session_label_arguments=('call_get_session_project' ${sessionID} ${output_directory}/${session_ct_bname_noext}_SESSION_PROJECT.csv)
-      outputfiles_present=$(python3 download_with_session_ID.py "${call_get_session_label_arguments[@]}")
+      outputfiles_present=$(/opt/conda/envs/deepreg/bin/python3 download_with_session_ID.py "${call_get_session_label_arguments[@]}")
       ####################### GET PROJECT NAME ###############################
       #################### WRITE TO THE MYSQL DATABASE IF THE STEP IS DONE #######################################################
       csv_file=${output_directory}/${session_ct_bname_noext}_SESSION_PROJECT.csv
@@ -465,7 +465,7 @@ midline_mask_after_lin_reg=${working_dir}/'mov_'$(basename ${midline_mask_file_m
       done
 
       echo "outputfiles_present=(python3 download_with_session_ID.py ${function_with_arguments[@]})"
-      outputfiles_present=$(python3 download_with_session_ID.py "${function_with_arguments[@]}")
+      outputfiles_present=$(/opt/conda/envs/deepreg/bin/python3 download_with_session_ID.py "${function_with_arguments[@]}")
       echo " FILES NOT PRESENT I AM WORKING ON IT"
     else
       echo " FILES ARE PRESENT "

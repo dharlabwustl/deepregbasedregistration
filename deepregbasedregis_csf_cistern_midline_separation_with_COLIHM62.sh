@@ -1,7 +1,7 @@
 #!/bin/bash
-export XNAT_USER=${2}
-export XNAT_PASS=${3}
-export XNAT_HOST=${4}
+#export XNAT_USER=${2}
+#export XNAT_PASS=${3}
+#export XNAT_HOST=${4}
 sessionID=${1}
 working_dir=/workinginput
 working_dir_1=/input1

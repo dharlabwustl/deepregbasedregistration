@@ -727,6 +727,26 @@ def dummy_copy_nifti_parameters_scaleintensity_sh():
     nib.save(array_img, os.path.join(output_directoryname,target_save))
     return "x"
 
+def mask_area_from_gray(grayscaleimagefile,maskfilename,outputfilename):
+    inputfile=grayscaleimagefile #sys.argv[1]
+    # bet_inputfile_dir=maskfilename #sys.argv[2]
+    betgrayfile=maskfilename #outputfilename #os.path.join(bet_inputfile_dir,os.path.basename(inputfile).split(".nii.gz")[0] + "_bet.nii.gz")   #sys.argv[2]
+    ## take the grayscalefiles in the inputdirectory betgrayfile== betbinary
+    #    allgrayfiles=glob.glob(inputdirectory+ "/*" + betgrayfileext)
+    #    for eachgrayfiles in allgrayfiles:
+    eachgrayfiles=inputfile
+    niifilenametosave=outputfilename #os.path.join("/output",os.path.basename(inputfile).split(".nii")[0] + "_brain_f.nii.gz") #outputfilename #os.path.join(outputdirectory,os.path.basename(eachgrayfiles).split(".nii")[0]+"_bet.nii.gz")
+    print('eachgrayfiles')
+    print(eachgrayfiles)
+    gray_nifti=nib.load(eachgrayfiles)
+    gray_nifti_data=gray_nifti.get_fdata()
+    bet_nifti=nib.load(betgrayfile)
+    bet_nifti_data=bet_nifti.get_fdata()
+    gray_nifti_data[bet_nifti_data<np.max(bet_nifti_data)]=np.min(gray_nifti_data)
+    array_img = nib.Nifti1Image(gray_nifti_data, affine=gray_nifti.affine, header=gray_nifti.header)
+    nib.save(array_img, niifilenametosave)
+    return niifilenametosave
+
 
 def betgrayfrombetbinary1_sh():
     inputfile=sys.argv[1]

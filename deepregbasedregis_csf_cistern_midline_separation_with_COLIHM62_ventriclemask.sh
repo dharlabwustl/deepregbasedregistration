@@ -359,7 +359,7 @@ for niftifile_csvfilename in ${working_dir}/*NIFTILOCATION.csv; do
 ventricle_mask=${working_dir}/'mov_'VENTRICLE_COLIHM62_fixed_$(basename  ${fixed_image_original_filename%.nii*})_lin1.nii.gz
 save_grayscale_slices_with_ventricles ${rigid_registration_nii_file} ${ventricle_mask} ${rigid_registration_nii_file%.nii*}_THIS.nii.gz  #(){
 output1=/output/
-copy_masks_data ${sessionID} ${scanID} MASKS ${output1}
+copy_masks_data ${sessionID} ${scanID} MASKS ${working_dir}
 to_original_nifti_rf ${working_dir}/${session_ct_bname_noext}_brain_f.nii.gz ${working_dir}/${session_ct_bname_noext}_resaved_levelset_ventricle_total.nii.gz ${output1} # (){
 save_grayscale_slices_with_ventricles ${working_dir}/${session_ct_bname_noext}_brain_f.nii.gz ${output1}/${session_ct_bname_noext}_resaved_levelset_ventricle_total.nii.gz ${working_dir}/${session_ct_bname_noext}_brain_f_THIS.nii.gz
 

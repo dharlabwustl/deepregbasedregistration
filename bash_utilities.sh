@@ -2,7 +2,7 @@
 get_scan_id(){
     local sessionid=${1}
     call_download_files_in_a_resource_in_a_session_arguments=('call_download_files_in_a_resource_in_a_session' ${sessionid} "NIFTI_LOCATION" ${working_dir})
-    outputfiles_present=$(python3 download_with_session_ID.py "${call_download_files_in_a_resource_in_a_session_arguments[@]}")
+    outputfiles_present=$(/opt/conda/envs/deepreg/bin/python3 download_with_session_ID.py "${call_download_files_in_a_resource_in_a_session_arguments[@]}")
 
     # Get CSV file
     shopt -s nullglob
@@ -51,7 +51,7 @@ delete_a_file(){
     local substring=${4}
 #        snipr_output_foldername='PREPROCESS_SEGM'
         function_with_arguments=('call_delete_file_with_ext' ${sessionID} ${scanID} ${snipr_output_foldername} ${substring} ) ##'warped_1_mov_mri_region_' )
-        echo "outputfiles_present="'$(python3 utilities_simple_trimmed.py' "${function_with_arguments[@]}"
+        echo "outputfiles_present="'$(/opt/conda/envs/deepreg/bin/python3 utilities_simple_trimmed.py' "${function_with_arguments[@]}"
 
 }
 to_original_nifti_rf(){
@@ -59,7 +59,7 @@ to_original_nifti_rf(){
   local levelset_infarct_mask_file=${2}
   local output_directory=${3}
 
-  python3 -c "
+  /opt/conda/envs/deepreg/bin/python3 -c "
 import sys
 sys.path.append('/software/')
 from utilities_simple_trimmed import levelset2originalRF_new_flip_py
@@ -75,7 +75,7 @@ to_betgray_given_gray_n_binary(){
   local levelset_infarct_mask_file=${2}
   local output_directory=${3}
 
-  python3 -c "
+  /opt/conda/envs/deepreg/bin/python3 -c "
 import sys
 sys.path.append('/software/')
 from utilities_simple_trimmed import betgrayfrombetbinary1_py
@@ -106,7 +106,7 @@ local snipr_output_foldername=${4}
 local mask_binary_output_filename=${5}
 
 echo ${mask_binary_output_dir}/${mask_binary_output_filename}
-python3 -c "
+/opt/conda/envs/deepreg/bin/python3 -c "
 import sys
 sys.path.append('/software');
 from download_with_session_ID import *;
@@ -117,7 +117,7 @@ copy_nifti_parameters(){
 local  file=${1}
 local file1=${2}
 local output_directoryname=${3} #  sys.argv[2]
-python3 -c "
+/opt/conda/envs/deepreg/bin/python3 -c "
 import sys
 sys.path.append('/software');
 from utilities_simple_trimmed import *;
@@ -129,7 +129,7 @@ copy_nifti_parameters_py(sys.argv[1], sys.argv[2], sys.argv[3])" ${file} ${file1
  local  grayscaleimagefile=${1}
  local maskfilename=${2}
  local outputfilename=${3} #  sys.argv[2] (grayscaleimagefile,maskfilename,outputfilename)
-#  python3 -c "
+#  /opt/conda/envs/deepreg/bin/python3 -c "
 # import sys
 # sys.path.append('/software');
 # from utilities_simple_trimmed import *;

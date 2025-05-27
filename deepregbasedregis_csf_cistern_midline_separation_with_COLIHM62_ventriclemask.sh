@@ -361,6 +361,8 @@ output1=/output/
 copy_masks_data ${sessionID} ${scanID} MASKS ${output1}
 to_original_nifti_rf ${working_dir}/${session_ct_bname_noext}_brain_f.nii.gz ${working_dir}/${session_ct_bname_noext}_resaved_levelset_ventricle_total.nii.gz ${output1} # (){
 save_grayscale_slices_with_ventricles ${working_dir}/${session_ct_bname_noext}_brain_f.nii.gz ${output1}/${session_ct_bname_noext}_resaved_levelset_ventricle_total.nii.gz ${working_dir}/${session_ct_bname_noext}_brain_f_THIS.nii.gz
+
+exit
 #  local original_ct_file=${1}
 #  local levelset_infarct_mask_file=${2}
 #  local output_directory=${3}

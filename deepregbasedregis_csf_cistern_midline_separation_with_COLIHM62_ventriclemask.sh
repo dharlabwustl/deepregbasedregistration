@@ -354,14 +354,14 @@ for niftifile_csvfilename in ${working_dir}/*NIFTILOCATION.csv; do
 #      template_prefix=${session_ct_bname_noext}  ##'COLIHM620406202215542'
       fixed_image_original_filename=${working_dir}/${session_ct_bname_noext}_brain_f.nii.gz
 #      template_prefix=$(basename ${fixed_image_filename%.nii*})
-      mov_COLIHM620406202215542_FILE=${working_dir}/'mov_'$(basename ${moving_image_original_filename%.nii*})_fixed_$(basename  ${fixed_image_original_filename%.nii*})_lin1.nii.gz
+      mov_COLIHM620406202215542_FILE=${working_dir}/'mov_'$(basename ${COLIHM620406202215542_FILE%.nii*})_fixed_$(basename  ${fixed_image_original_filename%.nii*})_lin1.nii.gz
 
       VENTRICLE_COLIHM62_gray_FILE=/software/VENTRICLE_COLIHM62_gray.nii.gz ###COLIHM620406202215542.nii.gz ###COLIHM620406202215542.nii.gz ##'  ####${template_prefix}.nii.gz ##${session_ct_bet_gray}
       ##'COLIHM620406202215542'
 #      template_prefix=${session_ct_bname_noext}  ##'COLIHM620406202215542'
       fixed_image_original_filename=${working_dir}/${session_ct_bname_noext}_brain_f.nii.gz
 #      template_prefix=$(basename ${fixed_image_filename%.nii*})
-      mov_VENTRICLE_COLIHM62_gray_FILE=${working_dir}/'mov_'$(basename ${moving_image_original_filename%.nii*})_fixed_$(basename  ${fixed_image_original_filename%.nii*})_lin1.nii.gz
+      mov_VENTRICLE_COLIHM62_gray_FILE=${working_dir}/'mov_'$(basename ${VENTRICLE_COLIHM62_gray_FILE%.nii*})_fixed_$(basename  ${fixed_image_original_filename%.nii*})_lin1.nii.gz
 
 
 mask_area_from_gray ${mov_COLIHM620406202215542_FILE} ${mov_VENTRICLE_COLIHM62_gray_FILE} ${mov_VENTRICLE_COLIHM62_gray_FILE}

@@ -1943,6 +1943,52 @@ def createh5file(image0_file,image1_file,label0_file,label1_file,output_dir="./"
         subprocess.call(command,shell=True)
     # print(returnvalue)
     return  returnvalue
+import nibabel as nib
+import numpy as np
+import os
+
+def save_grayscale_slices_with_ventricles(gray_img_path, mask_img_path, out_file): ##output_dir="ventricle_slices"):
+    """
+    Extracts and saves grayscale 2D slices (NIfTI) where ventricle mask is non-zero in Z-plane.
+    Preserves original header and affine.
+
+    Parameters:
+        gray_img_path (str): Path to the grayscale NIfTI image.
+        mask_img_path (str): Path to the binary mask NIfTI image.
+        output_dir (str): Directory to save extracted slice files.
+
+    Returns:
+        List of tuples: (z_index, saved_file_path)
+    """
+    # Load images
+    gray_nii = nib.load(gray_img_path)
+    mask_nii = nib.load(mask_img_path)
+
+    gray_data = gray_nii.get_fdata()
+    mask_data = mask_nii.get_fdata()
+    affine = gray_nii.affine
+    header = gray_nii.header.copy()  # preserve original header
+
+    assert gray_data.shape == mask_data.shape, "Image and mask must have the same shape"
+
+    # os.makedirs(output_dir, exist_ok=True)
+    ventricle_slices = []
+
+    for z in range(mask_data.shape[2]):
+        if np.any(mask_data[:, :, z]):
+            slice_data = gray_data[:, :, z]
+
+            # Expand slice to 3D shape (x, y, 1) to preserve NIfTI dimensionality
+            slice_data_3d = slice_data[:, :, np.newaxis]
+
+            # Save NIfTI with same affine and header
+            slice_nii = nib.Nifti1Image(slice_data_3d, affine=affine, header=header)
+            # out_file = os.path.join(output_dir, f"grayscale_z{z:03d}.nii.gz")
+            nib.save(slice_nii, out_file)
+
+            ventricle_slices.append((z, out_file))
+
+    return ventricle_slices
 
 
 def call_createh5file(args):

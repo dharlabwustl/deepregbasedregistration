@@ -7,7 +7,7 @@ sessionID=${1}
 working_dir=/workinginput
 working_dir_1=/input1
 output_directory=/workingoutput
-
+output_directory_output=/output/
 final_output_directory=/outputinsidedocker
 
 copyoutput_to_snipr() {
@@ -343,12 +343,25 @@ for niftifile_csvfilename in ${working_dir}/*NIFTILOCATION.csv; do
 #      copy_masks_data ${sessionID} ${scanID} ${resource_dirname} ${output_dirname}
       resource_dirname='PREPROCESS_SEGM_3'
       copy_masks_data ${sessionID} ${scanID} ${resource_dirname} ${output_dirname}
+
       ###########################
       session_ct=$( ls ${working_dir_1}/*'.nii' )
       session_ct_bname_noext=$(basename ${session_ct})
       session_ct_bname_noext=${session_ct_bname_noext%.nii*}
 #      template_ct='/software/COLIHM620406202215542.nii.gz' ###${template_prefix}.nii.gz'
 ########################
+      copy_masks_data ${sessionID} ${scanID} MASKS ${output_directory_output}
+      #################
+      full_string=$(to_original_nifti_rf ${session_ct} ${output_directory_output}/${session_ct_bname_noext}_resaved_levelset_ventricle_total.nii.gz   ${output_directory_output})
+      ventricle_total_mask=$(echo "$full_string" | awk -F'_parsehere_' '{print $2}' | xargs)
+      echo ventricle_total_mask::${ventricle_total_mask}
+      #####################
+#      save_grayscale_slices_with_ventricles ${}
+      save_grayscale_slices_with_ventricles ${working_dir}/${session_ct_bname_noext}_brain_f.nii.gz ${output_directory_output}/${session_ct_bname_noext}_resaved_levelset_ventricle_total.nii.gz   ${working_dir}/${session_ct_bname_noext}_brain_f.nii.gz
+#local  file=${1}
+#local file1=${2}
+#local output_directoryname=${3} #  sys.argv[2]
+      #########################################################################
       COLIHM620406202215542_FILE=/software/COLIHM620406202215542.nii.gz ###COLIHM620406202215542.nii.gz ###COLIHM620406202215542.nii.gz ##'  ####${template_prefix}.nii.gz ##${session_ct_bet_gray}
       ##'COLIHM620406202215542'
 #      template_prefix=${session_ct_bname_noext}  ##'COLIHM620406202215542'
@@ -359,19 +372,20 @@ for niftifile_csvfilename in ${working_dir}/*NIFTILOCATION.csv; do
       VENTRICLE_COLIHM62_gray_FILE=/software/VENTRICLE_COLIHM62_gray.nii.gz ###COLIHM620406202215542.nii.gz ###COLIHM620406202215542.nii.gz ##'  ####${template_prefix}.nii.gz ##${session_ct_bet_gray}
       ##'COLIHM620406202215542'
 #      template_prefix=${session_ct_bname_noext}  ##'COLIHM620406202215542'
-      fixed_image_original_filename=${working_dir}/${session_ct_bname_noext}_brain_f.nii.gz
+#      fixed_image_original_filename=${working_dir}/${session_ct_bname_noext}_brain_f.nii.gz
 #      template_prefix=$(basename ${fixed_image_filename%.nii*})
       mov_VENTRICLE_COLIHM62_gray_FILE=${working_dir}/'mov_'$(basename ${VENTRICLE_COLIHM62_gray_FILE%.nii*})_fixed_$(basename  ${fixed_image_original_filename%.nii*})_lin1_BET.nii.gz
+save_grayscale_slices_with_ventricles ${mov_COLIHM620406202215542_FILE} ${mov_VENTRICLE_COLIHM62_gray_FILE}   ${mov_COLIHM620406202215542_FILE}
+#local
 
-
-mask_area_from_gray ${mov_COLIHM620406202215542_FILE} ${mov_VENTRICLE_COLIHM62_gray_FILE} ${mov_VENTRICLE_COLIHM62_gray_FILE}
+#mask_area_from_gray ${mov_COLIHM620406202215542_FILE} ${mov_VENTRICLE_COLIHM62_gray_FILE} ${mov_VENTRICLE_COLIHM62_gray_FILE}
 ############################
 #      moving_image_original_filename=/software/VENTRICLE_COLIHM62_gray.nii.gz ###COLIHM620406202215542.nii.gz ###COLIHM620406202215542.nii.gz ##'  ####${template_prefix}.nii.gz ##${session_ct_bet_gray}
       ##'COLIHM620406202215542'
 #      template_prefix=${session_ct_bname_noext}  ##'COLIHM620406202215542'
       fixed_image_original_filename=${working_dir}/${session_ct_bname_noext}_brain_f.nii.gz
 #      template_prefix=$(basename ${fixed_image_filename%.nii*})
-      rigid_registration_nii_file=${mov_VENTRICLE_COLIHM62_gray_FILE} ##${working_dir}/'mov_'$(basename ${moving_image_original_filename%.nii*})_fixed_$(basename  ${fixed_image_original_filename%.nii*})_lin1.nii.gz
+      rigid_registration_nii_file=${mov_COLIHM620406202215542_FILE} #${mov_VENTRICLE_COLIHM62_gray_FILE} ##${working_dir}/'mov_'$(basename ${moving_image_original_filename%.nii*})_fixed_$(basename  ${fixed_image_original_filename%.nii*})_lin1.nii.gz
 
 fixed_image=${fixed_image_original_filename}
 moving_image=${rigid_registration_nii_file} #${working_dir}/mov_${session_ct_bname_noext}_brain_f_fixed_${template_prefix}_lin1.nii.gz ##${session_ct_bet_gray} ##${working_dir}/"mov_warped_mov_mni_icbm152_t1_tal_nlin_sym_55_ext_bet_gray_fixed_${template_prefix}_lin1_fixed_${nifti_file_without_ext}_brain_f_lin1.nii.gz"
@@ -386,7 +400,7 @@ rm ${working_dir}/warped_1*
       cp /software/demo_register_batch_atul.py /software/DeepReg/demos/classical_mr_prostate_nonrigid/
       if [ ! -f /workinginput/fixed_image.nii.gz  ]; then
           echo "File does not exist."
-      /opt/conda/envs/deepreg/bin/python3 /software/demo_register_batch_atul.py /software/DeepReg/demos/classical_mr_prostate_nonrigid/dataset/data.h5 ${output_directory}
+#      /opt/conda/envs/deepreg/bin/python3 /software/demo_register_batch_atul.py /software/DeepReg/demos/classical_mr_prostate_nonrigid/dataset/data.h5 ${output_directory}
           fi
     cp /workinginput/ddf.nii.gz  /workingoutput/
     cp /workinginput/fixed_image.nii.gz  /workingoutput/
@@ -437,26 +451,26 @@ midline_mask_after_lin_reg=${working_dir}/'mov_'$(basename ${midline_mask_file_m
             do
               echo ${eachfile}
               all_files_to_upload+=("$(basename ${eachfile})")
-              uploadsinglefile ${sessionID} ${scanID} $(dirname ${eachfile}) ${snipr_output_foldername} $(basename ${eachfile} )
+#              uploadsinglefile ${sessionID} ${scanID} $(dirname ${eachfile}) ${snipr_output_foldername} $(basename ${eachfile} )
             done
             all_warped_files=$(find ${working_dir_1} -name 'warped'*${template_prefix}*'.nii.gz')
             for eachfile in ${all_warped_files};
             do
               echo ${eachfile}
               all_files_to_upload+=("$(basename ${eachfile})")
-              uploadsinglefile ${sessionID} ${scanID} $(dirname ${eachfile}) ${snipr_output_foldername} $(basename ${eachfile} )
+#              uploadsinglefile ${sessionID} ${scanID} $(dirname ${eachfile}) ${snipr_output_foldername} $(basename ${eachfile} )
             done
             for eachfile in ${output_directory}/*image*.nii*;
             do
               echo ${eachfile}
               all_files_to_upload+=("$(basename ${eachfile})")
-              uploadsinglefile ${sessionID} ${scanID} $(dirname ${eachfile}) ${snipr_output_foldername} $(basename ${eachfile} )
+#              uploadsinglefile ${sessionID} ${scanID} $(dirname ${eachfile}) ${snipr_output_foldername} $(basename ${eachfile} )
             done
             for eachfile in ${output_directory}/*ddf*.nii*;
             do
               echo ${eachfile}
               all_files_to_upload+=("$(basename ${eachfile})")
-              uploadsinglefile ${sessionID} ${scanID} $(dirname ${eachfile}) ${snipr_output_foldername} $(basename ${eachfile} )
+#              uploadsinglefile ${sessionID} ${scanID} $(dirname ${eachfile}) ${snipr_output_foldername} $(basename ${eachfile} )
             done
 
 

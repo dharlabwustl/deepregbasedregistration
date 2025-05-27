@@ -146,3 +146,16 @@ sys.path.append('/software');
 from utilities_simple_trimmed import *;
 mask_area_from_gray(sys.argv[1], sys.argv[2], sys.argv[3])" ${grayscaleimagefile} ${maskfilename} ${outputfilename}
 }
+
+save_grayscale_slices_with_ventricles(){
+local  file=${1}
+local file1=${2}
+local output_directoryname=${3} #  sys.argv[2]
+  /opt/conda/envs/deepreg/bin/python3 -c "
+import sys
+sys.path.append('/software');
+from utilities_simple_trimmed import *;
+save_grayscale_slices_with_ventricles(sys.argv[1], sys.argv[2], sys.argv[3])" ${file} ${file1} ${output_directoryname}
+}
+
+

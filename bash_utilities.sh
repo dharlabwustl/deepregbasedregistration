@@ -125,12 +125,24 @@ copy_nifti_parameters_py(sys.argv[1], sys.argv[2], sys.argv[3])" ${file} ${file1
 }
 
  mask_area_from_gray(){
+   echo " AM AT mask_area_from_gray"
  local  grayscaleimagefile=${1}
  local maskfilename=${2}
  local outputfilename=${3} #  sys.argv[2] (grayscaleimagefile,maskfilename,outputfilename)
- python3 -c "
- import sys
- sys.path.append('/software');
- from utilities_simple_trimmed import *;
- mask_area_from_gray(sys.argv[1], sys.argv[2], sys.argv[3])" ${grayscaleimagefile} ${maskfilename} ${outputfilename}
+#  python3 -c "
+# import sys
+# sys.path.append('/software');
+# from utilities_simple_trimmed import *;
+# mask_area_from_gray(sys.argv[1], sys.argv[2], sys.argv[3])" ${grayscaleimagefile} ${maskfilename} ${outputfilename}
+#  # rm -r /ZIPFILEDIR/*
+#  sessionID=${1}
+#  scanID=${2}
+#  resource_dirname=${3} #str(sys.argv[4])
+#  output_dirname=${4}   #str(sys.argv[3])
+#  echo output_dirname::${output_dirname}
+  /opt/conda/envs/deepreg/bin/python3 -c "
+import sys
+sys.path.append('/software');
+from utilities_simple_trimmed import *;
+mask_area_from_gray(sys.argv[1], sys.argv[2], sys.argv[3])" ${grayscaleimagefile} ${maskfilename} ${outputfilename}
 }

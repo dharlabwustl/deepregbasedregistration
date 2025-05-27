@@ -393,6 +393,14 @@ midline_mask_after_lin_reg=${working_dir}/'mov_'$(basename ${midline_mask_file_m
 ############ midline
 /opt/conda/envs/deepreg/bin/python3 /software/runoncsfmask_atul09272024.py ${midline_mask_after_lin_reg} ${working_dir_1} ${sessionID} ${scanID} $(basename  ${original_nifti_filename})
 ######
+######
+midline_mask_file_moving_original=/software/scct_strippedResampled1_left_half.nii.gz ####midlinecssfResampled1.nii.gz ##CISTERN_COLIHM62.nii.gz
+midline_mask_after_lin_reg=${working_dir}/'mov_'$(basename ${midline_mask_file_moving_original%.nii*})_fixed_$(basename  ${fixed_image_original_filename%.nii*})_lin1_BET.nii.gz
+
+############ midline
+/opt/conda/envs/deepreg/bin/python3 /software/runoncsfmask_atul09272024.py ${midline_mask_after_lin_reg} ${working_dir_1} ${sessionID} ${scanID} $(basename  ${original_nifti_filename})
+######
+
 #      done mov_COLI_HLP12_09122020_2351_3_resaved_csf_unet_fixed_COLIHM620406202215542_lin1_BET.nii.gz
 #    moving_image_filename=${session_ct_bname_noext}_resaved_csf_unet.nii.gz
     #moving_image_filename=${moving_image_filename%.nii*}resampled_mov.nii.gz

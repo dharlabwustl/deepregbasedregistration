@@ -122,7 +122,7 @@ import sys
 sys.path.append('/software');
 from utilities_simple_trimmed import *;
 copy_nifti_parameters_py(sys.argv[1], sys.argv[2], sys.argv[3])" ${file} ${file1} ${output_directoryname}
- }
+}
 
  mask_area_from_gray(){
  local  grayscaleimagefile=${1}
@@ -133,4 +133,4 @@ copy_nifti_parameters_py(sys.argv[1], sys.argv[2], sys.argv[3])" ${file} ${file1
  sys.path.append('/software');
  from utilities_simple_trimmed import *;
  mask_area_from_gray(sys.argv[1], sys.argv[2], sys.argv[3])" ${grayscaleimagefile} ${maskfilename} ${outputfilename}
-  }
+}

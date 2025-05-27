@@ -366,7 +366,7 @@ for niftifile_csvfilename in ${working_dir}/*NIFTILOCATION.csv; do
 
 mask_area_from_gray ${mov_COLIHM620406202215542_FILE} ${mov_VENTRICLE_COLIHM62_gray_FILE} ${mov_VENTRICLE_COLIHM62_gray_FILE}
 ############################
-      moving_image_original_filename=/software/VENTRICLE_COLIHM62_gray.nii.gz ###COLIHM620406202215542.nii.gz ###COLIHM620406202215542.nii.gz ##'  ####${template_prefix}.nii.gz ##${session_ct_bet_gray}
+#      moving_image_original_filename=/software/VENTRICLE_COLIHM62_gray.nii.gz ###COLIHM620406202215542.nii.gz ###COLIHM620406202215542.nii.gz ##'  ####${template_prefix}.nii.gz ##${session_ct_bet_gray}
       ##'COLIHM620406202215542'
 #      template_prefix=${session_ct_bname_noext}  ##'COLIHM620406202215542'
       fixed_image_original_filename=${working_dir}/${session_ct_bname_noext}_brain_f.nii.gz

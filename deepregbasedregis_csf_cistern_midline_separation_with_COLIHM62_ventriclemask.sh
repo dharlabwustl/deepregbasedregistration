@@ -361,7 +361,7 @@ for niftifile_csvfilename in ${working_dir}/*NIFTILOCATION.csv; do
 #      template_prefix=${session_ct_bname_noext}  ##'COLIHM620406202215542'
       fixed_image_original_filename=${working_dir}/${session_ct_bname_noext}_brain_f.nii.gz
 #      template_prefix=$(basename ${fixed_image_filename%.nii*})
-      mov_VENTRICLE_COLIHM62_gray_FILE=${working_dir}/'mov_'$(basename ${VENTRICLE_COLIHM62_gray_FILE%.nii*})_fixed_$(basename  ${fixed_image_original_filename%.nii*})_lin1.nii.gz
+      mov_VENTRICLE_COLIHM62_gray_FILE=${working_dir}/'mov_'$(basename ${VENTRICLE_COLIHM62_gray_FILE%.nii*})_fixed_$(basename  ${fixed_image_original_filename%.nii*})_lin1_BET.nii.gz
 
 
 mask_area_from_gray ${mov_COLIHM620406202215542_FILE} ${mov_VENTRICLE_COLIHM62_gray_FILE} ${mov_VENTRICLE_COLIHM62_gray_FILE}
@@ -371,7 +371,7 @@ mask_area_from_gray ${mov_COLIHM620406202215542_FILE} ${mov_VENTRICLE_COLIHM62_g
 #      template_prefix=${session_ct_bname_noext}  ##'COLIHM620406202215542'
       fixed_image_original_filename=${working_dir}/${session_ct_bname_noext}_brain_f.nii.gz
 #      template_prefix=$(basename ${fixed_image_filename%.nii*})
-      rigid_registration_nii_file=${working_dir}/'mov_'$(basename ${moving_image_original_filename%.nii*})_fixed_$(basename  ${fixed_image_original_filename%.nii*})_lin1.nii.gz
+      rigid_registration_nii_file=${mov_VENTRICLE_COLIHM62_gray_FILE} ##${working_dir}/'mov_'$(basename ${moving_image_original_filename%.nii*})_fixed_$(basename  ${fixed_image_original_filename%.nii*})_lin1.nii.gz
 
 fixed_image=${fixed_image_original_filename}
 moving_image=${rigid_registration_nii_file} #${working_dir}/mov_${session_ct_bname_noext}_brain_f_fixed_${template_prefix}_lin1.nii.gz ##${session_ct_bet_gray} ##${working_dir}/"mov_warped_mov_mni_icbm152_t1_tal_nlin_sym_55_ext_bet_gray_fixed_${template_prefix}_lin1_fixed_${nifti_file_without_ext}_brain_f_lin1.nii.gz"

@@ -2052,7 +2052,7 @@ def save_grayscale_slices_with_ventricles(gray_img_path, mask_img_path, out_file
             slice_data = gray_data[:, :, z]
 
             # Expand slice to 3D shape (x, y, 1) to preserve NIfTI dimensionality
-            slice_data_3d = slice_data[:, :, z] ##np.newaxis]
+            slice_data_3d[:,:,z] = slice_data ##[:, :, z] ##np.newaxis]
 
             # Save NIfTI with same affine and header
     slice_nii = nib.Nifti1Image(slice_data_3d, affine=affine, header=header)

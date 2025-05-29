@@ -356,7 +356,7 @@ for niftifile_csvfilename in ${working_dir}/*NIFTILOCATION.csv; do
 #      template_prefix=$(basename ${fixed_image_filename%.nii*})
       rigid_registration_nii_file=${working_dir}/'mov_'$(basename ${moving_image_original_filename%.nii*})_fixed_$(basename  ${fixed_image_original_filename%.nii*})_lin1.nii.gz
 
-ventricle_mask=${working_dir}/'mov_'VENTRICLE_COLIHM62_fixed_$(basename  ${fixed_image_original_filename%.nii*})_lin1.nii.gz
+ventricle_mask=${working_dir}/'mov_'VENTRICLE_COLIHM62_fixed_$(basename  ${fixed_image_original_filename%.nii*})_lin1_BET.nii.gz
 save_grayscale_slices_with_ventricles ${rigid_registration_nii_file} ${ventricle_mask} ${rigid_registration_nii_file%.nii*}_THIS.nii.gz  #(){
 output1=/output/
 copy_masks_data ${sessionID} ${scanID} MASKS ${working_dir}

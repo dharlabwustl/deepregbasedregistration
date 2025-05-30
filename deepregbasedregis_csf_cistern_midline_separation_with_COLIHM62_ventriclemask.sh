@@ -388,7 +388,7 @@ rm ${working_dir}/warped_1*
       if [ ! -f /workinginput/fixed_image.nii.gz  ]; then
           echo "File does not exist."
       /opt/conda/envs/deepreg/bin/python3 /software/demo_register_batch_atul.py /software/DeepReg/demos/classical_mr_prostate_nonrigid/dataset/data.h5 ${output_directory}
-          fi
+      fi
     cp /workinginput/ddf.nii.gz  /workingoutput/
     cp /workinginput/fixed_image.nii.gz  /workingoutput/
 

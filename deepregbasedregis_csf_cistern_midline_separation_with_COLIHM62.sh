@@ -283,6 +283,7 @@ get_maskfile_scan_metadata()" ${sessionId} ${scanId} ${resource_foldername} ${di
 call_download_files_in_a_resource_in_a_session_arguments=('call_download_files_in_a_resource_in_a_session' ${sessionID} "NIFTI_LOCATION" ${working_dir})
 outputfiles_present=$(/opt/conda/envs/deepreg/bin/python3 download_with_session_ID.py "${call_download_files_in_a_resource_in_a_session_arguments[@]}")
 echo '$outputfiles_present'::$outputfiles_present
+echo $(ls ${working_dir}/*NIFTILOCATION.csv)
 ########################################
 for niftifile_csvfilename in ${working_dir}/*NIFTILOCATION.csv; do
   rm ${final_output_directory}/*.*

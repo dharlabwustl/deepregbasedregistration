@@ -284,7 +284,7 @@ call_download_files_in_a_resource_in_a_session_arguments=('call_download_files_i
 outputfiles_present=$(/opt/conda/envs/deepreg/bin/python3 download_with_session_ID.py "${call_download_files_in_a_resource_in_a_session_arguments[@]}")
 echo '$outputfiles_present'::$outputfiles_present
 echo $(ls ${working_dir}/*NIFTILOCATION.csv)
-echo $XNAT_HOST
+echo ${XNAT_HOST}:XNAT_HOST
 ########################################
 for niftifile_csvfilename in ${working_dir}/*NIFTILOCATION.csv; do
   rm ${final_output_directory}/*.*

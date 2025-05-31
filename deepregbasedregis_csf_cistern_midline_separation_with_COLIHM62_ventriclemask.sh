@@ -364,7 +364,7 @@ output1=/output/
 copy_masks_data ${sessionID} ${scanID} MASKS ${working_dir}
 to_original_nifti_rf ${working_dir}/${session_ct_bname_noext}_brain_f.nii.gz ${working_dir}/${session_ct_bname_noext}_resaved_levelset_ventricle_total.nii.gz ${output1} # (){
 save_grayscale_slices_with_ventricles ${working_dir}/${session_ct_bname_noext}_brain_f.nii.gz ${output1}/${session_ct_bname_noext}_resaved_levelset_ventricle_total.nii.gz ${working_dir}/${session_ct_bname_noext}_brain_f.nii.gz
-
+exit
       ############################
 #      session_ct=$( ls ${working_dir_1}/*'.nii' )
 #      session_ct_bname_noext=$(basename ${session_ct})

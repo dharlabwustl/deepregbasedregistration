@@ -35,55 +35,7 @@ def call_fill_google_mysql_db_with_single_value(args):
         fill_google_mysql_db_with_single_value(db_table_name, session_id,column_name,column_value)
     except:
         pass
-def delete_file_with_ext(session_id,scan_id,resource_dir,extensions_to_delete,prefix_if_any=''):
-    #         resource_dir='MASKS' #'NIFTI_LOCATION'
-    try:
 
-        URL='/data/experiments/'+session_id+'/scans/'+scan_id
-        metadata_masks=get_resourcefiles_metadata(URL,resource_dir)
-        df_scan = pd.read_json(json.dumps(metadata_masks))
-        #         extensions_to_delete=['_resaved_levelset_sulci_above_ventricle.nii.gz','_resaved_levelset_sulci_at_ventricle.nii.gz','_resaved_levelset_sulci_below_ventricle.nii.gz',
-        #                                  '_resaved_levelset_sulci_total.nii.gz','_resaved_levelset_ventricle_total.nii.gz']
-        # for each_extension in extensions_to_delete:
-        matched_rows = df_scan[df_scan['URI'].str.contains(extensions_to_delete, case=False, na=False)]
-        command = "echo  success at  DELETED: " +  inspect.stack()[0][3]  + " >> " + "/output/error.txt"
-        subprocess.call(command,shell=True)
-        if len(prefix_if_any)>0:
-            matched_rows = matched_rows[matched_rows['URI'].str.contains(prefix_if_any, case=False, na=False)]
-
-        if matched_rows.shape[0]>0:
-            matched_rows=matched_rows.reset_index()
-            print(matched_rows)
-            for each_row_id,each_row in matched_rows.iterrows():
-                command = "echo  success at  DELETED each_row_id: " +  inspect.stack()[0][3]  + " >> " + "/output/error.txt"
-                subprocess.call(command,shell=True)
-                url=each_row['URI'] #matched_rows.at[0,'URI']
-                print(url)
-                delete_a_file_with_URIString(url)
-                print("DELETED::{}".format(url))
-
-    except:
-        pass
-
-def call_delete_file_with_ext(args): #session_id,scan_id,resource_dir,extensions_to_delete):
-    try:
-        session_id=args.stuff[1]
-        scan_id=args.stuff[2]
-        resource_dir=args.stuff[3]
-        extensions_to_delete=args.stuff[4]
-        prefix_if_any=''
-        if len(args.stuff)>5:
-
-            prefix_if_any=args.stuff[5]
-        delete_file_with_ext(session_id,scan_id,resource_dir,extensions_to_delete,prefix_if_any=prefix_if_any)
-        command = "echo  success at : " +  inspect.stack()[0][3]  + " >> " + "/output/error.txt"
-        subprocess.call(command,shell=True)
-        return 1
-    except:
-        command = "echo  failed at : " +  inspect.stack()[0][3]  + " >> " + "/output/error.txt"
-        subprocess.call(command,shell=True)
-        pass
-        return 0
 def call_fill_google_mysql_db_from_csv(args):
     db_table_name=args.stuff[1]
     csv_file_path=args.stuff[2]
@@ -2244,7 +2196,7 @@ def download_files_in_a_resource(URI,dir_to_save):
         for item_id, row in df_listfile.iterrows():
             # print("row::{}".format(row))
             # download_a_singlefile_with_URLROW(row,dir_to_save)
-            download_a_singlefile_with_URIString(str(row['URI']),str(row['Name']),dir_to_save)
+            download_a_singlefile_with_URIString(row['URI'],row['Name'],dir_to_save)
             print("DOWNLOADED ::{}".format(row))
     except:
         print("FAILED AT ::{}".format("download_files_in_a_resource"))
@@ -2587,8 +2539,6 @@ def main():
         return_value=call_get_session_project(args)
     if name_of_the_function=="call_pipeline_step_completed":
         return_value=call_pipeline_step_completed(args)
-    if name_of_the_function=="call_delete_file_with_ext":
-        return_value=call_delete_file_with_ext(args)
     print(return_value)
     if "call" not in name_of_the_function:
         globals()[args.stuff[0]](args)

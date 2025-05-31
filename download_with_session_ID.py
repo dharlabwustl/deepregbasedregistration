@@ -2244,7 +2244,7 @@ def download_files_in_a_resource(URI,dir_to_save):
         for item_id, row in df_listfile.iterrows():
             # print("row::{}".format(row))
             # download_a_singlefile_with_URLROW(row,dir_to_save)
-            download_a_singlefile_with_URIString(row['URI'],row['Name'],dir_to_save)
+            download_a_singlefile_with_URIString(str(row['URI']),str(row['Name']),dir_to_save)
             print("DOWNLOADED ::{}".format(row))
     except:
         print("FAILED AT ::{}".format("download_files_in_a_resource"))

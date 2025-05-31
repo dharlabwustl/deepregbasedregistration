@@ -296,7 +296,7 @@ for niftifile_csvfilename in ${working_dir}/*NIFTILOCATION.csv; do
     echo scanId::${scanID}
     snipr_output_foldername="PREPROCESS_SEGM_3"
     ### check if the file exists:
-    call_check_if_a_file_exist_in_snipr_arguments=('call_check_if_a_file_exist_in_snipr' ${sessionID} ${scanID} ${snipr_output_foldername} .pdf .csv)
+    call_check_if_a_file_exist_in_snipr_arguments=('call_check_if_a_file_exist_in_snipr' ${sessionID} ${scanID} ${snipr_output_foldername} warped_ )
     outputfiles_present=$(/opt/conda/envs/deepreg/bin/python3 download_with_session_ID.py "${call_check_if_a_file_exist_in_snipr_arguments[@]}")
 
     ################################################
@@ -304,6 +304,7 @@ for niftifile_csvfilename in ${working_dir}/*NIFTILOCATION.csv; do
     function_with_arguments=('call_delete_file_with_ext' ${sessionID} ${scanID} ${snipr_output_foldername} 'warped_' ) ##'warped_1_mov_mri_region_' )
     #    echo "outputfiles_present="'$(python3 utilities_simple_trimmed.py' "${function_with_arguments[@]}"
     outputfiles_present=$(/opt/conda/envs/deepreg/bin/python3 download_with_session_ID.py "${function_with_arguments[@]}")
+    exit
 
 #        function_with_arguments=('call_delete_file_with_ext' ${sessionID} ${scanID} ${snipr_output_foldername} 'warped_1_mov_' ) ##'warped_1_mov_mri_region_' )
 #        #    echo "outputfiles_present="'$(python3 utilities_simple_trimmed.py' "${function_with_arguments[@]}"

@@ -2,7 +2,6 @@
 #export XNAT_USER=${2}
 #export XNAT_PASS=${3}
 #export XNAT_HOST=${4}
-source /software/bash_utilities.sh
 sessionID=${1}
 working_dir=/workinginput
 working_dir_1=/input1
@@ -284,6 +283,8 @@ get_maskfile_scan_metadata()" ${sessionId} ${scanId} ${resource_foldername} ${di
 call_download_files_in_a_resource_in_a_session_arguments=('call_download_files_in_a_resource_in_a_session' ${sessionID} "NIFTI_LOCATION" ${working_dir})
 outputfiles_present=$(/opt/conda/envs/deepreg/bin/python3 download_with_session_ID.py "${call_download_files_in_a_resource_in_a_session_arguments[@]}")
 echo '$outputfiles_present'::$outputfiles_present
+echo $(ls ${working_dir}/*NIFTILOCATION.csv)
+echo ${XNAT_HOST}:XNAT_HOST
 ########################################
 for niftifile_csvfilename in ${working_dir}/*NIFTILOCATION.csv; do
   rm ${final_output_directory}/*.*
@@ -296,20 +297,18 @@ for niftifile_csvfilename in ${working_dir}/*NIFTILOCATION.csv; do
     echo scanId::${scanID}
     snipr_output_foldername="PREPROCESS_SEGM_3"
     ### check if the file exists:
-    call_check_if_a_file_exist_in_snipr_arguments=('call_check_if_a_file_exist_in_snipr' ${sessionID} ${scanID} ${snipr_output_foldername} warped_ )
+    call_check_if_a_file_exist_in_snipr_arguments=('call_check_if_a_file_exist_in_snipr' ${sessionID} ${scanID} ${snipr_output_foldername} .pdf .csv)
     outputfiles_present=$(/opt/conda/envs/deepreg/bin/python3 download_with_session_ID.py "${call_check_if_a_file_exist_in_snipr_arguments[@]}")
 
     ################################################
     ####################################
-    function_with_arguments=('call_delete_file_with_ext' ${sessionID} ${scanID} ${snipr_output_foldername} 'warped_' ) ##'warped_1_mov_mri_region_' )
+    function_with_arguments=('call_delete_file_with_ext' ${sessionID} ${scanID} ${snipr_output_foldername} 'warped_mov_' ) ##'warped_1_mov_mri_region_' )
     #    echo "outputfiles_present="'$(python3 utilities_simple_trimmed.py' "${function_with_arguments[@]}"
     outputfiles_present=$(/opt/conda/envs/deepreg/bin/python3 download_with_session_ID.py "${function_with_arguments[@]}")
-    echo ${outputfiles_present}
-#    exit
 
-#        function_with_arguments=('call_delete_file_with_ext' ${sessionID} ${scanID} ${snipr_output_foldername} 'warped_1_mov_' ) ##'warped_1_mov_mri_region_' )
-#        #    echo "outputfiles_present="'$(python3 utilities_simple_trimmed.py' "${function_with_arguments[@]}"
-#        outputfiles_present=$(/opt/conda/envs/deepreg/bin/python3 download_with_session_ID.py "${function_with_arguments[@]}")
+        function_with_arguments=('call_delete_file_with_ext' ${sessionID} ${scanID} ${snipr_output_foldername} 'warped_1_mov_' ) ##'warped_1_mov_mri_region_' )
+        #    echo "outputfiles_present="'$(python3 utilities_simple_trimmed.py' "${function_with_arguments[@]}"
+        outputfiles_present=$(/opt/conda/envs/deepreg/bin/python3 download_with_session_ID.py "${function_with_arguments[@]}")
 #    function_with_arguments=('call_delete_file_with_ext' ${sessionID} ${scanID} MASKS '_total.nii.gz' ) ##'warped_1_mov_mri_region_' )
 #    #    echo "outputfiles_present="'$(python3 utilities_simple_trimmed.py' "${function_with_arguments[@]}"
 #    outputfiles_present=$(python3 download_with_session_ID.py "${function_with_arguments[@]}")
@@ -346,6 +345,7 @@ for niftifile_csvfilename in ${working_dir}/*NIFTILOCATION.csv; do
       resource_dirname='PREPROCESS_SEGM_3'
       copy_masks_data ${sessionID} ${scanID} ${resource_dirname} ${output_dirname}
       ###########################
+      ###########################
       session_ct=$( ls ${working_dir_1}/*'.nii' )
       session_ct_bname_noext=$(basename ${session_ct})
       session_ct_bname_noext=${session_ct_bname_noext%.nii*}
@@ -365,14 +365,18 @@ copy_masks_data ${sessionID} ${scanID} MASKS ${working_dir}
 to_original_nifti_rf ${working_dir}/${session_ct_bname_noext}_brain_f.nii.gz ${working_dir}/${session_ct_bname_noext}_resaved_levelset_ventricle_total.nii.gz ${output1} # (){
 save_grayscale_slices_with_ventricles ${working_dir}/${session_ct_bname_noext}_brain_f.nii.gz ${output1}/${session_ct_bname_noext}_resaved_levelset_ventricle_total.nii.gz ${working_dir}/${session_ct_bname_noext}_brain_f.nii.gz
 
-exit
-#  local original_ct_file=${1}
-#  local levelset_infarct_mask_file=${2}
-#  local output_directory=${3}
-
-#local  file=${1}
-#local file1=${2}
-#local output_directoryname=${3} #  sys.argv[2]
+      ############################
+#      session_ct=$( ls ${working_dir_1}/*'.nii' )
+#      session_ct_bname_noext=$(basename ${session_ct})
+#      session_ct_bname_noext=${session_ct_bname_noext%.nii*}
+##      template_ct='/software/COLIHM620406202215542.nii.gz' ###${template_prefix}.nii.gz'
+#
+#      moving_image_original_filename=/software/COLIHM620406202215542.nii.gz ###COLIHM620406202215542.nii.gz ##'  ####${template_prefix}.nii.gz ##${session_ct_bet_gray}
+#      ##'COLIHM620406202215542'
+##      template_prefix=${session_ct_bname_noext}  ##'COLIHM620406202215542'
+#      fixed_image_original_filename=${working_dir}/${session_ct_bname_noext}_brain_f.nii.gz
+##      template_prefix=$(basename ${fixed_image_filename%.nii*})
+#      rigid_registration_nii_file=${working_dir}/'mov_'$(basename ${moving_image_original_filename%.nii*})_fixed_$(basename  ${fixed_image_original_filename%.nii*})_lin1.nii.gz
 
 fixed_image=${fixed_image_original_filename}
 moving_image=${rigid_registration_nii_file} #${working_dir}/mov_${session_ct_bname_noext}_brain_f_fixed_${template_prefix}_lin1.nii.gz ##${session_ct_bet_gray} ##${working_dir}/"mov_warped_mov_mni_icbm152_t1_tal_nlin_sym_55_ext_bet_gray_fixed_${template_prefix}_lin1_fixed_${nifti_file_without_ext}_brain_f_lin1.nii.gz"
@@ -383,14 +387,12 @@ rm ${working_dir}/warped_1*
       /opt/conda/envs/deepreg/bin/python3 create_datah5files_May24_2023.py ${moving_image} ${fixed_image}
 ##      mkdir /rapids/notebooks/DeepReg/demos/classical_mr_prostate_nonrigid/dataset
       cp -r /rapids/notebooks/DeepReg /software/
-      rm  $(find ./ -name 'data.h5')
-      rm /software/DeepReg/demos/classical_mr_prostate_nonrigid/dataset/data.h5
       cp /software/data.h5 /software/DeepReg/demos/classical_mr_prostate_nonrigid/dataset/
       cp /software/demo_register_batch_atul.py /software/DeepReg/demos/classical_mr_prostate_nonrigid/
       if [ ! -f /workinginput/fixed_image.nii.gz  ]; then
           echo "File does not exist."
       /opt/conda/envs/deepreg/bin/python3 /software/demo_register_batch_atul.py /software/DeepReg/demos/classical_mr_prostate_nonrigid/dataset/data.h5 ${output_directory}
-      fi
+          fi
     cp /workinginput/ddf.nii.gz  /workingoutput/
     cp /workinginput/fixed_image.nii.gz  /workingoutput/
 

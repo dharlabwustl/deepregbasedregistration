@@ -364,8 +364,8 @@ rm ${working_dir}/warped_1*
 #####################################################################################################################
 
       python3 create_datah5files_May24_2023.py ${moving_image} ${fixed_image}
-##      mkdir /rapids/notebooks/DeepReg/demos/classical_mr_prostate_nonrigid/dataset
-      cp -r /rapids/notebooks/DeepReg /software/
+##      mkdir /workspace/deepreg/DeepReg/demos/classical_mr_prostate_nonrigid/dataset
+      cp -r /workspace/deepreg/DeepReg /software/
       cp /software/data.h5 /software/DeepReg/demos/classical_mr_prostate_nonrigid/dataset/
       cp /software/demo_register_batch_atul.py /software/DeepReg/demos/classical_mr_prostate_nonrigid/
       if [ ! -f /workinginput/fixed_image.nii.gz  ]; then

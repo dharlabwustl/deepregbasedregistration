@@ -7,7 +7,7 @@ git_dir=$(basename $y)
 mv ${git_dir}/* /software/
 chmod +x /software/*.sh 
 #cp -r /home/rapids/DeepReg/deepreg /software/
-cp -r  /software/deepreg /software/
+cp -r  /software/Deepreg/deepreg /software/
 SESSION_ID=${1}
 XNAT_USER=${2}
 XNAT_PASS=${3}

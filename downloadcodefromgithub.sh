@@ -5,7 +5,7 @@ git clone ${git_link} #https://github.com/dharlabwustl/EDEMA_MARKERS_PROD.git
 y=${git_link%.git}
 git_dir=$(basename $y)
 mv ${git_dir}/* /software/
-mv /software/deepreg /software/
+cp -r  /software/Deepreg/deepreg /software/
 chmod +x /software/*.sh 
 
 SESSION_ID=${1}

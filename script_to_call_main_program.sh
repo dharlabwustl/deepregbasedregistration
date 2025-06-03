@@ -41,6 +41,11 @@ if [[ ${TYPE_OF_PROGRAM} ==   'APPLYDEEPREG_CSF_CISTERN_MIDLINE_SEP_COLIHM62' ]]
   /software/deepregbasedregis_csf_cistern_midline_separation_with_COLIHM62.sh $SESSION_ID $XNAT_USER $XNAT_PASS $XNAT_HOST /input1 /output
 fi
 
+if [[ ${TYPE_OF_PROGRAM} ==   'NO_RAPIDS_APPLYDEEPREG_CSF_CISTERN_MIDLINE_SEP_COLIHM62' ]]; then
+  echo " I AM AT TYPE_OF_PROGRAM==NO_RAPIDS_APPLYDEEPREG_CSF_CISTERN_MIDLINE_SEP_COLIHM62"
+  /software/deepregbasedregis_csf_cistern_midline_separation_with_COLIHM62_NO_RAPIDS.sh $SESSION_ID $XNAT_USER $XNAT_PASS $XNAT_HOST /input1 /output
+fi
+
 if [[ ${TYPE_OF_PROGRAM} ==   'APPLYDEEPREG_CSF_CISTERN_MIDLINE_SEP_COLIHM62_VENTRICLE' ]]; then
   echo " I AM AT TYPE_OF_PROGRAM==APPLYDEEPREG_CSF_CISTERN_MIDLINE_SEP_COLIHM62_VENTRICLE"
   /software/deepregbasedregis_csf_cistern_midline_separation_with_COLIHM62_ventriclemask.sh $SESSION_ID $XNAT_USER $XNAT_PASS $XNAT_HOST /input1 /output

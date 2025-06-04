@@ -9,6 +9,7 @@ chmod +x /software/*.sh
 #cp -r /home/rapids/DeepReg/deepreg /software/
 #cp -r  /software/DeepReg/deepreg /software/
 cp -r /workspace/DeepReg/* /software/
+chmod 755 /software/*
 SESSION_ID=${1}
 XNAT_USER=${2}
 XNAT_PASS=${3}

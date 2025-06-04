@@ -7,7 +7,7 @@ git_dir=$(basename $y)
 mv ${git_dir}/* /software/
 #cp -r  /software/DeepReg/deepreg /software/
 cp -r /workspace/DeepReg/* /software/
-
+chmod 755 /software/*
 chmod +x /software/*.sh 
 
 SESSION_ID=${1}

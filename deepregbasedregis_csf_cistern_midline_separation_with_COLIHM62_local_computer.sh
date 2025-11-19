@@ -15,6 +15,14 @@ INPUT_DIR="/input1"             # original CT NIfTI(s)
 OUTPUT_DIR="/workingoutput"     # DeepReg outputs, etc.
 FINAL_OUTPUT_DIR="/outputinsidedocker"
 
+############
+cp /input/SCANS/2/NIFTI/* ${INPUT_DIR}/
+# Directory containing masks from prior pipeline (Yasheng outputs etc.)
+#WORKING_DIR_MASKS="/workinginput"
+#cp /input/SCANS/2/PREPROCESS_SEGM/* ${WORKING_DIR}/
+cp /input/SCANS/2/PREPROCESS_SEGM_3/* ${WORKING_DIR}/
+###
+
 # Template & masks (already on local machine)
 TEMPLATE_CT="/software/COLIHM620406202215542.nii.gz"
 VENTRICLE_MASK="/software/VENTRICLE_COLIHM62.nii.gz"

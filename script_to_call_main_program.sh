@@ -36,6 +36,12 @@ if [[ ${TYPE_OF_PROGRAM} ==   'APPLYDEEPREG_CSF_CISTERN_MIDLINE_SEP' ]]; then
   echo " I AM AT TYPE_OF_PROGRAM==APPLYDEEPREG_CSF_CISTERN_MIDLINE_SEP"
   /software/deepregbasedregis_csf_cistern_midline_separation.sh $SESSION_ID $XNAT_USER $XNAT_PASS $XNAT_HOST /input1 /output
 fi
+
+if [[ ${TYPE_OF_PROGRAM} ==   'APPLYDEEPREG_CSF_CISTERN_MIDLINE_SEP_COLIHM62_LOCAL_COMPUTER' ]]; then
+  echo " I AM AT TYPE_OF_PROGRAM==APPLYDEEPREG_CSF_CISTERN_MIDLINE_SEP_COLIHM62_LOCAL_COMPUTER"
+  /software/deepregbasedregis_csf_cistern_midline_separation_with_COLIHM62_local_computer.sh  $SESSION_ID $XNAT_USER $XNAT_PASS $XNAT_HOST /input1 /output
+fi
+
 if [[ ${TYPE_OF_PROGRAM} ==   'APPLYDEEPREG_CSF_CISTERN_MIDLINE_SEP_COLIHM62' ]]; then
   echo " I AM AT TYPE_OF_PROGRAM==APPLYDEEPREG_CSF_CISTERN_MIDLINE_SEP_COLIHM62"
   /software/deepregbasedregis_csf_cistern_midline_separation_with_COLIHM62.sh $SESSION_ID $XNAT_USER $XNAT_PASS $XNAT_HOST /input1 /output

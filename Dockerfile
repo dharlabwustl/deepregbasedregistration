@@ -1,3 +1,4 @@
+
 ##FROM tensorflow/tensorflow:2.3.1-gpu
 #FROM nvcr.io/nvidia/tensorflow:23.06-tf2-py3
 #
@@ -86,7 +87,7 @@ RUN pip3 install \
   antspyx \
   SQLAlchemy \
   mysql-connector-python==8.0.27
-
+RUN export NVIDIA_VISIBLE_DEVICES=all
 ENV REDCAP_API='36F3BA05DE0507BEBDFB94CC5DA13F93'
 ENV GOOGLE_MYSQL_DB_IP='34.58.59.235'
 ENV GOOGLE_MYSQL_DB_PASS='dharlabwustl1!'

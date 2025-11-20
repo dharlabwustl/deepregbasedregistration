@@ -199,5 +199,6 @@ fi
 for ct in "${ct_files[@]}"; do
   run_csf_and_midline_pipeline "${ct}"
 done
-
+cp ${INPUT_DIR}/* /input/SCANS/2/PREPROCESS_SEGM_3/
+cp ${OUTPUT_DIR}/* /input/SCANS/2/PREPROCESS_SEGM_3/
 echo "[*] Done."

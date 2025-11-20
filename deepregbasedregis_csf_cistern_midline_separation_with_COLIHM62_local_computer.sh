@@ -61,7 +61,7 @@ prepare_deepreg_dataset() {
 run_deepreg_registration() {
   echo "[*] Running DeepReg registration (if needed)..."
 
-  if [ ! -f "${WORKING_DIR}/fixed_image.nii.gz" ]; then
+  if [ ! -f "${WORKING_DIR}/ddf.nii.gz" ]; then
     ${PYTHON_BIN} "${DEEPREG_DEMO_DIR}/demo_register_batch_atul.py" \
       "${DEEPREG_DEMO_DATASET_DIR}/data.h5" \
       "${OUTPUT_DIR}"

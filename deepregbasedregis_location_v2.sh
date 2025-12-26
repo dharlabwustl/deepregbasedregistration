@@ -412,7 +412,7 @@ rm ${working_dir}/warped_1*
               uploadsinglefile ${sessionID} ${scanID} $(dirname ${eachfile}) ${snipr_output_foldername} $(basename ${eachfile} )
             done
 
-
+#/software/bulk_start.py
 #  for each_warped_1 in ${working_dir_1}/warped_1* ; do
 #  call_function=('call_copy_affine' ${each_warped_1} ${original_nifti_filename} ${each_warped_1} )
 #  outputfiles_present=$(/opt/conda/envs/deepreg/bin/python3 utilities_simple_trimmed.py "${call_function[@]}")

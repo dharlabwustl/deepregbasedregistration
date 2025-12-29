@@ -364,14 +364,12 @@ echo "moving_image::${moving_image}::fixed_image::${fixed_image}"
 rm ${working_dir}/warped_1*
 #####################################################################################################################
 
-#      /opt/conda/envs/deepreg/bin/python3 create_datah5files_May24_2023.py ${moving_image} ${fixed_image}
+      /opt/conda/envs/deepreg/bin/python3 create_datah5files_May24_2023.py ${moving_image} ${fixed_image}
 ##      mkdir /rapids/notebooks/DeepReg/demos/classical_mr_prostate_nonrigid/dataset
       cp -r /rapids/notebooks/DeepReg /software/
       cp /software/data.h5 /software/DeepReg/demos/classical_mr_prostate_nonrigid/dataset/
       cp /software/demo_register_batch_atul.py /software/DeepReg/demos/classical_mr_prostate_nonrigid/
-      cp ${working_dir}/ddf.nii.gz '/workingoutput/ddf.nii.gz'
-      cp ${working_dir}/fixed_image.nii.gz '/workingoutput/fixed_image.nii.gz'
-#      /opt/conda/envs/deepreg/bin/python3 /software/demo_register_batch_atul.py /software/DeepReg/demos/classical_mr_prostate_nonrigid/dataset/data.h5 ${output_directory}
+      /opt/conda/envs/deepreg/bin/python3 /software/demo_register_batch_atul.py /software/DeepReg/demos/classical_mr_prostate_nonrigid/dataset/data.h5 ${output_directory}
 #    infarct_mask_after_lin_reg=${working_dir}/mov_${session_ct_bname_noext}_resaved_infarct_auto_removesmall_fixed_${template_prefix}_lin1.nii.gz
 
 #    location_mask_directory=${working_dir}
@@ -396,8 +394,8 @@ rm ${working_dir}/warped_1*
 #      uploadsinglefile ${sessionID} ${scanID} ${mask_binary_output_dir} ${snipr_output_foldername} ${mask_binary_output_filename}
 #      uploadsinglefile ${sessionID} ${scanID} ${mask_binary_output_dir} ${snipr_output_foldername} ${mask_binary_output_filename}
             snipr_output_foldername="PREPROCESS_SEGM"
-            all_warped_files=$(find ${working_dir} -name 'warped'*${template_prefix}*'.nii.gz')
-            for eachfile in ${all_warped_files};
+            all_warped_files=$(find ${working_dir_1} -name 'warped*') ## 'warped'*${template_prefix}*'.nii.gz')
+            for eachfile in ${working_dir_1}/warped*.nii*; #${all_warped_files};
             do
               echo ${eachfile}
               uploadsinglefile ${sessionID} ${scanID} $(dirname ${eachfile}) ${snipr_output_foldername} $(basename ${eachfile} )
@@ -414,7 +412,7 @@ rm ${working_dir}/warped_1*
               uploadsinglefile ${sessionID} ${scanID} $(dirname ${eachfile}) ${snipr_output_foldername} $(basename ${eachfile} )
             done
 
-
+#/software/bulk_start.py
 #  for each_warped_1 in ${working_dir_1}/warped_1* ; do
 #  call_function=('call_copy_affine' ${each_warped_1} ${original_nifti_filename} ${each_warped_1} )
 #  outputfiles_present=$(/opt/conda/envs/deepreg/bin/python3 utilities_simple_trimmed.py "${call_function[@]}")

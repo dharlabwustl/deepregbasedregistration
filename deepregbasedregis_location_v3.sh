@@ -411,6 +411,11 @@ rm ${working_dir}/warped_1*
               echo ${eachfile}
               uploadsinglefile ${sessionID} ${scanID} $(dirname ${eachfile}) ${snipr_output_foldername} $(basename ${eachfile} )
             done
+            session_list_filename="/software/this_session.txt"
+            echo "${sessionID}" > ${session_list_filename}
+            next_command_for_snipr='CALL_LOCATION_DISTRIBUTION'
+            /software/command.sh ${session_list_filename} ${next_command_for_snipr}
+
 
 #/software/bulk_start.py
 #  for each_warped_1 in ${working_dir_1}/warped_1* ; do

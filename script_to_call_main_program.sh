@@ -65,9 +65,9 @@ if [[ ${TYPE_OF_PROGRAM} == 'APPLYDEEPREG_V2' ]]; then
   echo " I AM AT TYPE_OF_PROGRAM==APPLYDEEPREG_V2"
   /software/deepregbasedregis_location_v2.sh $SESSION_ID $XNAT_USER $XNAT_PASS $XNAT_HOST /input1 /output
 fi
-if [[ ${TYPE_OF_PROGRAM} == 'APPLYDEEPREG_V2_THEN_CALL_SNIPR' ]]; then
-  echo " I AM AT TYPE_OF_PROGRAM==APPLYDEEPREG_V2_THEN_CALL_SNIPR"
-  /software/deepregbasedregis_location_v2.sh $SESSION_ID $XNAT_USER $XNAT_PASS $XNAT_HOST /input1 /output
+if [[ ${TYPE_OF_PROGRAM} == 'APPLYDEEPREG_V2_SNIPR_CALL_LOCATION_DISTRIBUTION' ]]; then
+  echo " I AM AT TYPE_OF_PROGRAM==APPLYDEEPREG_V2_SNIPR_CALL_LOCATION_DISTRIBUTION"
+  /software/deepregbasedregis_location_v3.sh $SESSION_ID $XNAT_USER $XNAT_PASS $XNAT_HOST /input1 /output
 fi
 
 if [[ ${TYPE_OF_PROGRAM} == 'APPLYDEEPREG_V2_WITH_TF' ]]; then

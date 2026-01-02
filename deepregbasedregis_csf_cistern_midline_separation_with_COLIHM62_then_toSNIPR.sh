@@ -479,7 +479,7 @@ midline_mask_after_lin_reg=${working_dir}/'mov_'$(basename ${midline_mask_file_m
       echo " FILES NOT PRESENT I AM WORKING ON IT"
       session_list_filename="/software/this_session.txt"
       echo "${sessionID}" > ${session_list_filename}
-      next_command_for_snipr='VENT_BOUND_IN_SNIPR_CSF_WITH_CISTERN_MIDLINE_WITH_COLI_HM62'
+      next_command_for_snipr='COMPARTMENT_SEPARATION_THEN_PDF_FOR_EDEMA_BIOMARKER_N_CSF_COMPARTMENT_WITH_REST_API' ######'VENT_BOUND_IN_SNIPR_CSF_WITH_CISTERN_MIDLINE_WITH_COLI_HM62'
       /software/command.sh ${session_list_filename} ${next_command_for_snipr}
     else
       echo " FILES ARE PRESENT "

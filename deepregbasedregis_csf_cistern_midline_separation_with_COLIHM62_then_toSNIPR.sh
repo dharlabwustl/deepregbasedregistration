@@ -468,10 +468,12 @@ midline_mask_after_lin_reg=${working_dir}/'mov_'$(basename ${midline_mask_file_m
       first_value=$(awk -F, -v idx="$col_index" 'NR==2 { print $idx }' "$csv_file")
       database_table_name=${first_value}
       echo "database_table_name::${database_table_name}"
+
       function_with_arguments=('call_pipeline_step_completed' ${database_table_name} ${sessionID} ${scanID} "NONRIGID_REGIS_WITH_COLIHM62_COMPLETE" 0 ${snipr_output_foldername} ) ##$(basename  ${fixed_image_filename}) $(basename  ${infarct_mask_binary_output_filename})  $(basename  ${registration_mat_file}) $(basename  ${registration_nii_file}) $(basename  ${mask_binary_output_dir}/${mask_binary_output_filename})  ) ##'warped_1_mov_mri_region_' )
       # Append all warped files to the arguments array
       for f in "${all_files_to_upload[@]}"; do
         function_with_arguments+=("$f")
+
       done
 
       echo "outputfiles_present=(python3 download_with_session_ID.py ${function_with_arguments[@]})"

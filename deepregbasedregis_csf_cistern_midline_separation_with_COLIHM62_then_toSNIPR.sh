@@ -483,7 +483,7 @@ midline_mask_after_lin_reg=${working_dir}/'mov_'$(basename ${midline_mask_file_m
       echo "${sessionID}" > ${session_list_filename}
       next_command_for_snipr='COMPARTMENT_SEPARATION_THEN_PDF_FOR_EDEMA_BIOMARKER_N_CSF_COMPARTMENT_WITH_REST_API' ######'VENT_BOUND_IN_SNIPR_CSF_WITH_CISTERN_MIDLINE_WITH_COLI_HM62'
       read PROJECT_ID SUBJECT_ID <<< $(
-python3 -c "
+/opt/conda/envs/deepreg/bin/python3 -c "
 from utilities_using_xnat_python import given_sessionid_get_project_n_subjectids
 p, s = given_sessionid_get_project_n_subjectids('${sessionID}')
 if p is not None and s is not None:

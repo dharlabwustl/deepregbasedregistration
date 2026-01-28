@@ -27,7 +27,7 @@ api_token=os.environ['REDCAP_API']
 import inspect
 import traceback
 from datetime import datetime
-from railway_fill_database import apply_single_row_csv_to_table
+# from railway_fill_database import apply_single_row_csv_to_table
 LOG_FILE = "./xnat_session_errors.log"
 import inspect
 import traceback
